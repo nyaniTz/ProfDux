@@ -1,0 +1,11 @@
+*[lang=tr] .locked-text::before,
+*[lang=tr] *[lang=en] .locked-text::before {
+    content: attr(data-tr);
+    position: relative;
+}
+
+.locked-text::before,
+*[lang=en] .locked-text::before {
+    content: attr(data-en);
+    position: relative;
+}

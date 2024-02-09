@@ -1,0 +1,45 @@
+.header {
+    position: relative;
+    width: 100vw;
+    border-bottom: 1.5px solid var(--border-fade);
+    background: white;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 1fr auto;
+    height: 65px;
+    align-items: center;
+    padding: 0px 15px;
+}
+
+.header-logo {
+    position: relative;
+    display: grid;
+}
+
+.header-logo > img {
+    height: calc( 65px * 0.7 );
+}
+
+.header-action-bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    grid-gap: 20px;
+    align-items: center;
+}
+
+.user-image{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.user-image img{
+    height: 100%;
+    width: 100%;
+}
+
+.username {
+    font-size: 1.13em;
+    color: var(--accent);
+}

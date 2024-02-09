@@ -1,0 +1,95 @@
+.dropdown {
+    --dropdown-accent: var(--accent);
+    --border-radius: 10px;
+    list-style: none;
+    background-color: var(--dropdown-accent);
+    border-radius: var(--border-radius);
+    height: 50px;
+    display: grid;
+    /* place-content: center; */
+    align-content: center;
+    padding: 0px 13px;
+    color: white;
+    font-weight: 600;
+    position: relative;
+    cursor: pointer;
+
+    max-width: 400px;
+    width: 100%;
+    place-self: center;
+
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}.dropdown.open {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.dropdown::before {
+    content: attr(data-value);
+    color: inherit;
+}
+
+.dropdown::after {
+    content: "";
+    position: absolute;
+    background-image: url("../img/down.png");
+    background-size: 20px;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 20px;
+    display: grid;
+    background-position: 0 50%;
+    align-self: center;
+    right: 10px;
+    transform: rotate(0deg);
+}.dropdown.open::after { transform: rotate(180deg); }
+
+.dropdown > .values {
+    top: 100%;
+    width: 100%;
+    max-height: 175px;
+    overflow: scroll;
+    background: white;
+    border: 2px solid var(--dropdown-accent);
+    position: absolute;
+    border-top: none;
+    border-bottom-right-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    display: none;
+}.dropdown.open > .values { display: grid; }
+
+.dropdown > .values > li {
+    border-bottom: 2px solid var(--dropdown-accent);
+    color: var(--dropdown-accent);
+    padding: 13px;
+    transition: 0.3s;
+    background: white;
+}
+
+.dropdown > .values > li:last-child {
+    border-bottom: none;
+}
+
+.dropdown > .values > li:hover{
+    background: var(--dropdown-accent);
+    color: white;
+}
+
+*[lang=tr] .dropdown::before {
+    content: attr(data-value-tr);
+    color: inherit;
+}
+
+.dropdown::before,
+*[lang=en] .dropdown::before {
+    content: attr(data-value-en);
+    color: inherit;
+}
+
+*[lang=tr] .dropdown[data-type="fixed"]::before  {
+    content: attr(data-value-tr);
+    color: inherit;
+}

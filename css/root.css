@@ -1,0 +1,41 @@
+:root{
+    --accent: #6F2036;
+    --pop: #C70037;
+    --border-shade: #6F203620;
+    --border-fade: #6F203620;
+}
+
+*,
+*::before,
+*::after {
+    font-family: Avenir Next;
+    margin: 0 0;
+    padding: 0 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+}
+
+.outer-container {
+    height: 100%;
+    display: inline-block;
+}
+
+.main-container {
+    width: calc(100vw - 300px);
+    height: calc(100vh - 65px);
+    display: grid;
+    float: left;
+    padding: 20px 25px;
+}
+
+.medium-title {
+    font-size: 1.3em;
+    color: var(--accent);
+}
+
+.regular-icon {
+    height: 24px;
+}

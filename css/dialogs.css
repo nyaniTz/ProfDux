@@ -1,0 +1,127 @@
+.overlay {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0px;
+    left: 0px;
+    display: none;
+    background: #00000030;
+    place-items: center;
+    z-index: 1000 !important;
+}
+
+.dialog {
+    padding: 30px;
+    display: grid;
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0,0.06) 0px 0px 0px 1px; 
+    border-radius: 20px;
+    max-width: 450px;
+    justify-items: center;
+    grid-gap: 20px;
+    color: var(--accent);
+    transform: scale(0);
+    transition: all 0.8s;
+}
+
+.dialog .icon {
+    height: 30px;
+    filter: invert(17%) sepia(35%) saturate(2414%) hue-rotate(308deg) brightness(96%) contrast(96%);
+}
+
+.dialog .dialog-header {
+    display: grid;
+    /* grid-template-columns: auto 1fr; */
+    grid-gap: 20px;
+    place-items: center;
+    text-align: center;
+}
+
+.dialog .dialog-header > * {
+    word-wrap: anywhere;
+}
+
+.dialog .options {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: auto auto;
+    margin-top: 20px;
+}
+
+.dialog .options > * {
+    padding: 0.5em 2em;
+    border-radius: 30px;
+    border: 3px solid grey;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.dialog .options > *:hover {
+    background-color: #00000010;
+}
+
+.dialog .options > .deny {
+    color: grey;
+}
+
+.dialog .options > .accept {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.dialog .options > .accept:hover{
+    background-color: var(--accent);
+    color: white;
+}
+
+.dialog .message {
+    justify-self: center;
+    text-align: center;
+    grid-column: 1/-1;
+}
+
+/* Loader */
+
+    .user-select-none {
+        user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .loading-overlay {
+        --sk-size: 50px;
+        --sk-color: var(--pop);
+
+        --accent: #6F2036;
+        --pop: #C70037;
+        --border-shade: #6F203620;
+    
+        --form-control-accent: var(--accent);
+        --form-control-pop: var(--pop);
+        --form-control-disabled: #959495;
+
+        position: fixed;
+        top: 0px;
+        background-color: #fffafaf0;
+        display: grid;
+        height: 100vh;
+        width: 100vw;
+        place-items: center;
+        z-index: 99 !important;
+        transition: 1s;
+    }
+
+    .loading-message{
+        color: var(--pop);
+        cursor: default;
+        max-width: 300px;
+        text-align: center;
+    }
+
+    .overlay-inner-container{
+        display: grid;
+        grid-gap: 40px;
+        place-items: center;
+    }
