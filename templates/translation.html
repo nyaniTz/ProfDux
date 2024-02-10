@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../css/translation.css">
+    <script src="../js/translator.js" defer></script>
+</head>
+<body>
+    
+    <div class="gtranslate_wrapper"></div>
+
+    <div>hello brother</div>
+
+    <script>
+
+        function setLanguage(){
+
+            try {
+                // sessionStorage.setItem("language","en");
+
+                let language = sessionStorage.getItem("language") || "en";
+                let htmlElement = document.querySelector("html");
+                htmlElement.setAttribute("lang", language);
+                console.log(language);
+            }
+            catch(error){
+                console.log(error);
+            }
+        }
+
+        setLanguage();
+
+        function welp(){
+            window.gtranslateSettings = { 
+                "default_language": "en", 
+                "languages": 
+                    ["en", "fr", "de", "it", "es", "tr"], 
+                    "wrapper_selector": ".gtranslate_wrapper", 
+                    "switcher_horizontal_position": "left", 
+                    "switcher_vertical_position": "bottom", 
+                    "float_switcher_open_direction": "bottom", 
+                    "flag_style": "3d" 
+            }
+
+            startTranslation();
+        }
+
+        document.querySelector("body").addEventListener("click", () => {
+            welp();
+            console.log(window.gtranslateSettings);
+        })
+
+    </script>
+
+
+<script>
+    window.gtranslateSettings = 
+        { 
+            "default_language": "en", 
+            "languages": 
+                ["tr", "fr", "de", "it", "es", "en"], 
+                "wrapper_selector": ".gtranslate_wrapper", 
+                "switcher_horizontal_position": "left", 
+                "switcher_vertical_position": "bottom", 
+                "float_switcher_open_direction": "bottom", 
+                "flag_style": "3d" 
+        }
+</script>
+    
+</body>
+</html>
