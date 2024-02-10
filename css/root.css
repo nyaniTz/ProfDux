@@ -39,3 +39,31 @@ body {
 .regular-icon {
     height: 24px;
 }
+
+.button {
+    padding: 10px 26px;
+    color: white;
+    background: var(--accent);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.inner-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 20px;
+}
+
+.grid-container {
+    display: grid;
+    grid-gap: 30px;
+
+    /* TODO: Remove */
+    margin-top: 40px;
+} 
+
+.two-column-grid{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 20px;
+}
