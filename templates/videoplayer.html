@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="../css/root.css">
+    <link rel="stylesheet" href="../css/video-viewer.css">
+    <script src="../js/videoViewer.js"></script>
+</head>
+<body>
+
+    <style>
+        video {
+            width: 750px !important;
+            height: 440px !important;
+            position: absolute;
+        }
+
+
+
+    </style>
+
+    <button onclick="go()">Click To View Video</button>
+    <button onclick="dontgo()">Click To View Video</button>
+
+    <script>
+
+        function go(){
+            openVideoViewer("video.mp4");
+        }
+
+        function dontgo(){
+            openVideoViewer("video2.mp4");
+        }
+
+    </script>
+
+    
+</body>
+</html>

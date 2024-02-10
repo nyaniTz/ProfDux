@@ -9,7 +9,7 @@ function openPDFViewer(pdfUrl) {
     closeButton.className = "close-button";
 
     let closeButtonIcon = document.createElement("img");
-    closeButtonIcon.src = "icons/close.png";
+    closeButtonIcon.src = "../assets/icons/close.png";
     closeButton.addEventListener("click", () => closePDFViewer());
     
     let pdfViewer = document.createElement("div");

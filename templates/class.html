@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course</title>
+    <link rel="stylesheet" href="../css/translation.css">
+    <link rel="stylesheet" href="../css/root.css">
+    <script src="../js/localize.js" defer></script>
+    <script src="Course.js" defer></script>
+</head>
+<body>
+
+    <div class="inner-header">
+        <div>
+            <h1 class="medium-title" id="course-title"></h1>
+            <p class="small-title" id="course-code"></p>
+        </div>
+        <div class="button">
+            <text>Save</text>
+        </div>
+    </div>
+    
+    <div class="grid-container" id="course-grid-container">
+        <div class="lecture-section">
+            <div class="itemization">1.</div>
+        
+            <div class="lecture-inner-container">
+                <div class="input-element">
+                    <input type="text">
+                    <div class="delete-button">
+                        <img src="../assets/icons/fi/fi-rr-delete.svg" alt="">
+                    </div>
+                </div>
+        
+                <!-- <div class="subtopics-container">
+                    <div class="input-element">
+                        <input type="text">
+        
+        
+        
+                        <div class="delete-button">
+                            <img src="../assets/icons/fi/fi-rr-delete.svg" alt="">
+                        </div>
+        
+                        <div class="attachments-button">
+                            <img src="../assets/icons/fi/fi-rr-paperclip-vertical.svg" alt="">
+                        </div>
+                    </div>
+        
+                    <div class="input-element">
+                        <input type="text">
+        
+                        <div class="attachments-button">
+                            <div class="badge">2</div>
+                        </div>
+        
+        
+                        <div class="delete-button">
+                            <img src="../assets/icons/fi/fi-rr-delete.svg" alt="">
+                        </div>
+                    </div>
+        
+                    <div class="input-element">
+                        <input type="text">
+                    </div>
+                </div>
+        
+                <div class="add-subtopic-button">
+                    <img src="../assets/icons/fi/fi-rr-plus.svg" alt="">
+                </div> -->
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+
+        body {
+            padding: 100px 50px 40px 300px;
+        }
+
+        .button {
+            padding: 10px 26px;
+            color: white;
+            background: var(--accent);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .inner-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-gap: 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-gap: 30px;
+
+            /* TODO: Remove */
+            margin-top: 40px;
+        } 
+
+        .lecture-section {
+            display: grid;
+            column-gap: 40px;
+            grid-template-columns: auto 1fr;
+        }
+        
+        .itemization {
+            color: var(--accent);
+            font-size: 2em;
+        }
+
+        .lecture-inner-container {
+            display: grid;
+            grid-gap: 20px;
+            position: relative;
+        }
+
+        .input-element input{
+            border: 2px solid var(--accent);
+            border-radius: 5px;
+            padding: 10px 13px;
+            font-size: 1em;
+            width: 100%;
+
+            outline: none;
+        }
+
+        .lecture-inner-container .input-element {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-gap: 20px;
+            align-items: center;
+            position: relative;
+            
+        }.lecture-inner-container .input-element:hover .delete-button {
+            opacity: 1;
+        }
+
+        .subtopics-container {
+            display: grid;
+            width: calc(100% - 50px);
+            justify-self: end;
+            grid-gap: 20px;
+            position: relative;
+        }
+
+        .add-subtopic-button, .delete-button{
+            background: var(--accent);
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            margin-left: 50px;
+            justify-self: center;
+        }
+
+        .delete-button {
+            margin-left: 0px;
+            justify-self: unset;
+            height: 30px;
+            width: 30px;
+            opacity: 0;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .delete-button img{
+            height: 15px;
+            width: 15px;
+        }
+
+        .add-subtopic-button img, .attachments-button img {
+            height: 20px;
+            width: 20px;
+        }
+
+        .attachments-button {
+            display: grid;
+            border-left: 2px solid var(--accent);
+            position: absolute;
+            width: 50px;
+            height: 100%;
+            right: 50px;
+            place-content: center;
+
+            /* background: red; */
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            cursor: pointer;
+        }
+
+        .attachments-button:hover{
+            background-color: var(--accent);
+        }
+
+        .badge {
+            background: var(--accent);
+            color: white;
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            display: grid;
+            place-content: center;
+        }
+
+
+    </style>
+
+</body>
+</html>
