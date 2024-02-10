@@ -2,6 +2,12 @@
     display: grid;
     column-gap: 40px;
     grid-template-columns: auto 1fr;
+    position: relative;
+}
+
+#course-grid-container{
+    grid-gap: 100px;
+    padding-bottom: 100px;
 }
 
 .itemization {
@@ -53,6 +59,19 @@
     place-items: center;
     margin-left: 50px;
     justify-self: center;
+}
+
+.add-subtopic-button {
+    position: absolute;
+    top: 100%;
+    margin-top: 20px;
+    background: transparent;
+    border: 3px solid var(--accent);
+    opacity: 0.4;
+    transition: 0.3s all;
+}.add-subtopic-button:hover { 
+    background: var(--accent); 
+    opacity: 1;
 }
 
 .delete-button {

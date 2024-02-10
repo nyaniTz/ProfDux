@@ -70,17 +70,45 @@ class Course {
         let lectureInnerContainer = document.createElement("div");
         lectureInnerContainer.className = "lecture-inner-container";
 
-        let lectureInputElement = this.createInputElement(lectureID, "", this.newLectureTitle, "lecture");
+        let lectureInputElement = this.createInputElement([lectureID, this.id], "", this.newLectureTitle, "lecture");
+
+        let addSubtopicButton = document.createElement("div");
+        addSubtopicButton.className = "add-subtopic-button";
+        addSubtopicButton.innerHTML = `<img src="../assets/icons/fi/fi-rr-plus.svg" alt="">`;
+        
+        let subtopicsContainer = document.createElement("div");
+        subtopicsContainer.className = "subtopics-container";
+
+        addSubtopicButton.addEventListener("click", () => {
+            this.addSubtopicElement(lectureID, subtopicsContainer);
+        });
 
         lectureInnerContainer.appendChild(lectureInputElement);
-
-        // lectureInnerContainer.appendChild(subtopicsContainer);
+        lectureInnerContainer.appendChild(subtopicsContainer);
+        lectureSection.appendChild(addSubtopicButton);
         lectureSection.appendChild(itemizationElement);
         lectureSection.appendChild(lectureInnerContainer);
         courseGridContainer.appendChild(lectureSection);
 
         console.log("Done adding lecture element")
     }
+
+    addSubtopicElement(lectureID, parentElement){
+
+        let subtopicID = uniqueID(1);
+
+        let attachButton = document.createElement("div");
+        attachButton.className = "attachments-button";
+        attachButton.innerHTML = `<img src="../assets/icons/fi/fi-rr-paperclip-vertical.svg" alt="">`;
+        attachButton.addEventListener("click", () => {});
+
+        let subtopicInputElement = this.createInputElement([subtopicID, lectureID], "", this.newSubtopicTitle, "subtopic");
+        subtopicInputElement.appendChild(attachButton);
+
+        parentElement.appendChild(subtopicInputElement);
+
+    }
+
     updateLectureTitle(id, title, _this){
         console.log(_this);
         _this.lectureUpdates[id] = { id, title };
@@ -92,9 +120,14 @@ class Course {
         console.log("subtopic Updates: ", _this.subtopicUpdates);
     }
 
-    newLectureTitle(id, title, _this){
-        _this.newLectures[id] = { id, title };
+    newLectureTitle([id, courseID], title, _this){
+        _this.newLectures[id] = { id, title, courseID };
         console.log("new lecture: ", _this.newLectures);
+    }
+
+    newSubtopicTitle([id, lectureID], title, _this){
+        _this.newSubtopics[id] = { id, lectureID, title };
+        console.log("new subtopics: ", _this.newSubtopics);
     }
 
     deleteLectureTitle(id, title, _this){
@@ -138,9 +171,16 @@ class Course {
 
             lectureInnerContainer.appendChild(lectureInputElement);
 
+            let addSubtopicButton = document.createElement("div");
+            addSubtopicButton.className = "add-subtopic-button";
+            addSubtopicButton.innerHTML = `<img src="../assets/icons/fi/fi-rr-plus.svg" alt="">`;
 
             let subtopicsContainer = document.createElement("div");
             subtopicsContainer.className = "subtopics-container";
+
+            addSubtopicButton.addEventListener("click", () => {
+                this.addSubtopicElement(lecture.id, subtopicsContainer);
+            });
 
             lecture.subtopics.forEach( subtopic => {
 
@@ -156,6 +196,7 @@ class Course {
             })
 
             lectureInnerContainer.appendChild(subtopicsContainer);
+            lectureSection.appendChild(addSubtopicButton);
             lectureSection.appendChild(itemizationElement);
             lectureSection.appendChild(lectureInnerContainer);
             courseGridContainer.appendChild(lectureSection);
@@ -166,16 +207,25 @@ class Course {
 
     searchAndDeleteLecture(id){
 
+        let deleted = false;
+
         this.lectures.forEach( (lecture, index) => {
             if(lecture.id == id) {
                 this.deleteLectureTitle(id, "", this);
+                deleted = true;
                 return;
             }
         })
 
+        if(!deleted){
+            delete this.newLectures[id]
+        }
+
     }
 
     searchAndDeleteSubtopic(id){
+
+        let deleted = false;
 
         let lectureIndex = null;
         let [_id, _lectureID ] = id;
@@ -191,9 +241,14 @@ class Course {
             this.lectures[lectureIndex].subtopics.forEach( (subtopic,index) => {
                 if(subtopic.id == _id){
                     this.deleteSubtopicTitle(id, "", this);
+                    deleted = true;
                     return;
                 }
             })
+        }
+
+        if(!deleted){
+            delete this.newSubtopics[id]
         }
 
     }
@@ -244,31 +299,138 @@ class Course {
 
 }
 
-let myCourse = {
-    id: "343",
-    title: "Water Theory",
-    courseCode: "C005",
-    lectures: [
-        {
-            id: "256",
-            title: "Introduction",
-            subtopics: [
-                { id: "64d", title: "Me as a teacher", resources: ["a", "b", "c"] },
-                { id: "54d", title: "Me not as a teacher", resources: ["a", "b", "c"] },
-                { id: "77k", title: "Hooray", resources: ["a", "b", "c"] },
-            ]
+// let myCourse = {
+//     id: "343",
+//     title: "Water Theory",
+//     courseCode: "C005",
+//     lectures: [
+//         {
+//             id: "256",
+//             title: "Introduction",
+//             subtopics: [
+//                 { id: "64d", title: "Me as a teacher", resources: ["a", "b", "c"] },
+//                 { id: "54d", title: "Me not as a teacher", resources: ["a", "b", "c"] },
+//                 { id: "77k", title: "Hooray", resources: ["a", "b", "c"] },
+//             ]
+//         }
+//     ]
+// }
+
+async function fetchCourses(){
+
+    let courses = await AJAXCall({
+        phpFilePath: "../include/course/getCourseDetails.php",
+        rejectMessage: "Getting Details Failed",
+        params: "",
+        type: "fetch"
+    });
+
+    console.log(courses[0]);
+
+    let course = new Course(courses[0]);
+    course.renderTitle();
+    course.renderCourseCode();
+    course.renderLectureSection();
+
+    document.querySelector("#addNewLecture").addEventListener("click", () => {
+        course.addLectureElement();
+    })
+
+    document.querySelector("#saveCourseDetails").addEventListener("click", async () => {
+        await loopThroughObjectForAsync(course.lectureUpdates, updateLectureTitleToDatabase);
+        await loopThroughObjectForAsync(course.newLectures, addLectureTitleToDatabase);
+        await loopThroughObjectForAsync(course.subtopicUpdates, updateSubtopicTitleToDatabase);
+        await loopThroughObjectForAsync(course.newSubtopics, addSubtopicTitleToDatabase);
+    })
+
+    async function loopThroughObjectForAsync(courseObject, asyncCallback){
+        
+        if(courseObject){
+
+            let __courseObjectEntries = Object.entries(courseObject);
+
+            __courseObjectEntries.map( async([key, details] = entry) => {
+                try {
+                    let result = await asyncCallback(details);
+                    console.log(result);
+                }
+                catch(error){
+                    console.log(error);
+                }
+            });
+            
         }
-    ]
+    }
+
 }
 
-let course = new Course(myCourse);
-course.renderTitle();
-course.renderCourseCode();
-course.renderLectureSection();
+fetchCourses();
 
-document.querySelector("#addNewLecture").addEventListener("click", () => {
-    course.addLectureElement();
-})
+async function updateLectureTitleToDatabase(lectureOject){
+    let { id, title } = lectureOject;
+
+    let params = `lectureID=${id}&&title=${title}`;
+
+    let courses = await AJAXCall({
+        phpFilePath: "../include/course/editLectureDetails.php",
+        rejectMessage: "Getting Details Failed",
+        params,
+        type: "post"
+    });
+
+    console.log(courses);
+
+}
+
+async function updateSubtopicTitleToDatabase(subtopicObject){
+    let { id, title } = subtopicObject;
+
+    let params = `id=${id}&&title=${title}`;
+
+    let courses = await AJAXCall({
+        phpFilePath: "../include/course/editSubtopicDetails.php",
+        rejectMessage: "Setting Details Failed",
+        params,
+        type: "post"
+    });
+
+    console.log(courses);
+
+}
+
+async function addLectureTitleToDatabase(lectureOject){
+    let { id, title, courseID } = lectureOject;
+
+    let params = `id=${id}&&title=${title}&&courseID=${courseID}`;
+
+    let lecture = await AJAXCall({
+        phpFilePath: "../include/course/addNewLecture.php",
+        rejectMessage: "Setting Details Failed",
+        params,
+        type: "post"
+    });
+
+    console.log(lecture);
+
+}
+
+async function addSubtopicTitleToDatabase(subtopicObject){
+    let { id, lectureID, title } = subtopicObject;
+
+    let params = `id=${id}&&title=${title}&&lectureID=${lectureID}`;
+
+    let result = await AJAXCall({
+        phpFilePath: "../include/course/addNewSubtopic.php",
+        rejectMessage: "Adding New Subtopic Failed",
+        params,
+        type: "post"
+    });
+
+    console.log(result);
+
+}
+
+
 
 // TODO:  create a function that fetches all the data and
 // compiles it into the object we need
