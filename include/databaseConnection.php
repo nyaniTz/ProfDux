@@ -2,9 +2,9 @@
    function OpenConnection(){
       
       $host = "localhost";
-      $username = "aiiovdft_dux";
+      $username = "aiiovdft_lms";
       $password = "strong#dux13";
-      $dbname = "aiiovdft_dux";
+      $dbname = "aiiovdft_lms";
       
       $conn = new mysqli($host, $username, $password, $dbname) or die("Connection to database failed: %s\n". $conn -> error);
 
