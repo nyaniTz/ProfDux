@@ -8,6 +8,8 @@
 #course-grid-container{
     grid-gap: 100px;
     padding-bottom: 100px;
+    min-height: 80vh;
+    align-items: start;
 }
 
 .itemization {
@@ -114,6 +116,9 @@
 }
 
 .badge {
+    position: absolute;
+    right: 60px;
+    font-size: 13px;
     background: var(--accent);
     color: white;
     height: 30px;
@@ -121,4 +126,62 @@
     border-radius: 50%;
     display: grid;
     place-content: center;
+}
+
+.upload-options-container{
+    border: 1px solid red;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 20px;
+}
+
+.upload-option{
+    display: grid;
+    place-items: center;
+    grid-gap: 10px;
+}
+
+.circular-wrapper{
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--accent);
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+}
+
+.upload-option img {
+    height: 20px;
+    width: 20px;
+}
+
+.upload-input{
+    display: none;
+}   
+
+.upload-progress-container{
+    display: none;
+    width: 100%;
+}
+
+.filename-container {
+    border: 2px solid var(--border-shade);
+    padding: 13px 18px;
+    font-size: 13px;
+    color: var(--accent);
+    display: grid;
+    align-items: center;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.filename-container .progress{
+    position: absolute;
+    top: calc(100% - 2px);
+    height: 2px;
+    background: var(--accent);
+    width: 0%;
+    left: 0;
+    transition: 2s all;
 }

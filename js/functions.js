@@ -1,4 +1,6 @@
-let outcomeRowsCount;
+function truncateString(string, limit = 30) {
+    return string.substring(0, limit) + "...";
+}
 
 function logoutDialog(_options){
 
@@ -110,58 +112,58 @@ function cascadingDateChanges(){
     });
 }
 
-function showBatchSelectContainerView(){
+// function showBatchSelectContainerView(){
 
-    let view;
-    let container = document.querySelector("#studentsListAll");
-    let batchSelectContainer = document.querySelector(".batch-select-container");
-    let studentCheckboxes = container.querySelectorAll('input[type="checkbox"]');
+//     let view;
+//     let container = document.querySelector("#studentsListAll");
+//     let batchSelectContainer = document.querySelector(".batch-select-container");
+//     let studentCheckboxes = container.querySelectorAll('input[type="checkbox"]');
 
-    let count = 0;
+//     let count = 0;
 
-    studentCheckboxes.forEach( checkbox => {
-        if(!checkbox.checked){
-            count++;
-        }
-    });
+//     studentCheckboxes.forEach( checkbox => {
+//         if(!checkbox.checked){
+//             count++;
+//         }
+//     });
 
-    let textRequest = count == 1 ? "Request" : "Requests";
-    let areIs = count == 1 ? "is" : "are";
+//     let textRequest = count == 1 ? "Request" : "Requests";
+//     let areIs = count == 1 ? "is" : "are";
 
-    if(count > 0){
-        view = `
-            <p>There ${areIs} ( <b>${count}</b> ) new ${textRequest}</p>
-            <button onclick="SelectAllCheckboxes()">Approve ${count} ${textRequest}</button>
-        `;
-    }
-    else{
-        view = `<p class="stretch-x">There are no new requests</p>`
-    }
+//     if(count > 0){
+//         view = `
+//             <p>There ${areIs} ( <b>${count}</b> ) new ${textRequest}</p>
+//             <button onclick="SelectAllCheckboxes()">Approve ${count} ${textRequest}</button>
+//         `;
+//     }
+//     else{
+//         view = `<p class="stretch-x">There are no new requests</p>`
+//     }
 
-    batchSelectContainer.innerHTML = view;
+//     batchSelectContainer.innerHTML = view;
 
-}
+// }
 
-function SelectAllCheckboxes(){
+// function SelectAllCheckboxes(){
 
-    let container = document.querySelector("#studentsListAll");
-    let studentCheckboxes = container.querySelectorAll('input[type="checkbox"]');
+//     let container = document.querySelector("#studentsListAll");
+//     let studentCheckboxes = container.querySelectorAll('input[type="checkbox"]');
     
-    studentCheckboxes.forEach( checkbox => {
-        if( !checkbox.checked ){
-            checkbox.checked = true;
+//     studentCheckboxes.forEach( checkbox => {
+//         if( !checkbox.checked ){
+//             checkbox.checked = true;
 
-            // Create a new 'change' event
-            var event = new Event('change');
+//             // Create a new 'change' event
+//             var event = new Event('change');
 
-            // Dispatch it.
-            checkbox.dispatchEvent(event);
-        }
-    });
+//             // Dispatch it.
+//             checkbox.dispatchEvent(event);
+//         }
+//     });
 
-    showBatchSelectContainerView();
+//     showBatchSelectContainerView();
 
-}
+// }
 
 function uniqueID(stregth = 2){
     const date = Date.now();
@@ -170,13 +172,6 @@ function uniqueID(stregth = 2){
     if(stregth == 1) return base36(date);
     if(stregth == -1) return  base36(dateReversed);
     return base36(dateReversed) + base36(date);
-}
-
-function deleteFormGroup(elementID){
-
-    let elementToDelete = document.querySelector(`.${elementID}`);
-    elementToDelete.remove();
-    outcomeRowsCount--;
 }
 
 function setUsernameDetails(user){
@@ -231,7 +226,7 @@ function loadImage(event, outputElement) {
     }
 }
 
-async function uploadFile(file, scriptPath = "../api/upload.php"){
+async function uploadFile(file, scriptPath = "../include/upload.php"){
 
     if(!file){
         return false;
@@ -245,10 +240,10 @@ async function uploadFile(file, scriptPath = "../api/upload.php"){
         let http = new XMLHttpRequest();
         http.open("POST", scriptPath, true);
 
-        // http.upload.addEventListener("progress", (event) => {
-        //     let percent = (event.loaded / event.total ) * 100;
-        //     document.querySelector("progress").value = Math.round(percent);
-        // })
+        http.upload.addEventListener("progress", (event) => {
+            let percent = (event.loaded / event.total ) * 100;
+            document.querySelector("#global-progress-bar").style.width = Math.round(percent) + "%";
+        })
 
         http.onload = function(){
             if(this.status == 200){

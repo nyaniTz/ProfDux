@@ -20,8 +20,6 @@
         $result = mysqli_query($conn,$query);
         $courses = mysqli_fetch_all($result,MYSQLI_ASSOC);
 
-        // echo json_encode($courses);
-
         $finalResult = array();
 
         foreach($courses as $course) {
@@ -50,11 +48,34 @@
                 $subtopicResult = mysqli_query($conn,$subtopicQuery);
                 $subtopics = mysqli_fetch_all($subtopicResult,MYSQLI_ASSOC);
 
+                $subtopicArray = array();
+
+                foreach($subtopics as $subtopic){
+
+                    $subtopicID = $subtopic['id'];
+                    
+                    $resourceQuery = "
+                    SELECT *
+                    FROM `resources` WHERE subtopicID = '$subtopicID'
+                    ";
+    
+                    $resourcesResult = mysqli_query($conn,$resourceQuery);
+                    $resources = mysqli_fetch_all($resourcesResult,MYSQLI_ASSOC);
+
+                    $subtopicArray[] = array(
+                        "id" => $subtopicID,
+                        "title" => $subtopic['title'],
+                        "hierarchy" => $subtopic['hierarchy'],
+                        "resources" => $resources
+                    );
+                    
+                }
+
                 $lectureArray[] = array(
                     "id" => $lectureID,
                     "title" => $lecture['title'],
                     "hierarchy" => $lecture['hierarchy'],
-                    "subtopics" => $subtopics
+                    "subtopics" => $subtopicArray
                 );
 
             }

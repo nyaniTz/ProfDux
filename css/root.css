@@ -67,3 +67,16 @@ body {
     grid-template-columns: auto auto;
     grid-gap: 20px;
 }
+
+.loader {
+    --sk-color: var(--accent);
+    display: grid;
+    height: 100%;
+    place-items: center;
+}
+
+.button-group{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 20px;
+}

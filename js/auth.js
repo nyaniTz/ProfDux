@@ -142,7 +142,7 @@ async function signup(){
     }
 
     let imageInput = document.querySelector("#signupImageInput");
-    let { newFileName: photoName } = await uploadFile(imageInput.files[0], "api/upload.php");
+    let { newFileName: photoName } = await uploadFile(imageInput.files[0], "include/upload.php");
 
     if(!photoName){
         bubbleError("Upload Photo Failed");
@@ -159,7 +159,7 @@ async function signup(){
     }
 
     let call = {
-        phpFilePath: "api/signup.php",
+        phpFilePath: "include/signup.php",
         rejectMessage: "Signup Failed",
         params,
         type: "post",
