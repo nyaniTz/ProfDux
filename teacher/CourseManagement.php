@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,24 +20,16 @@
 
                 <div class="header-combo">
                     <h1 class="large-title">
-                        <text>Course Management</text>
+                        Course Management
                     </h1>
 
                     <div class="button" onclick="openCreateCourseOverlay()">
-                        <text>Create Course</text>    
+                        Create Course    
                     </div>
                 </div>
 
                 <div class="course-view-container">
-                    <div>
-                        <div class="large-message">
-                            <text>No courses yet.</text>
-                        </div>
-
-                        <div class="button" onclick="openCreateCourseOverlay()">
-                            <text>Create Course</text>    
-                        </div>
-                    </div>
+                    
                 </div>
                 
             </div>
@@ -53,7 +45,7 @@
                 let courseName = document.querySelector(".course-name").value;
                 let id = uniqueID(1);
 
-                let { id: creatorID } = getGlobalDetails();
+                let { id: creatorID } = await getGlobalDetails();
 
                 let params = `id=${id}&&courseCode=${courseCode}&&title=${courseName}&&creatorID=${creatorID}&&image=''`;
 
@@ -76,7 +68,10 @@
                     type: "post"
                 });
 
-                setTimeout(() => { closeCreateCourseOverlay() }, 2000)
+                setTimeout(() => { 
+                    closeCreateCourseOverlay();
+                    loadCourses(); 
+                }, 2000)
             }
 
             function openCreateCourseOverlay(){

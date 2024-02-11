@@ -1,3 +1,4 @@
 # TODO: add ignore files and folders
 
 *.mp4
+uploads/*

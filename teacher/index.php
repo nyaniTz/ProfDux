@@ -1,13 +1,3 @@
-<?php
-
-    session_start();
-    $username = isset($_SESSION['id']);
-    $role = isset($_SESSION['role']);
-
-    if(!$username && $role != 'teacher'){ header('location:../auth.php'); }
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>

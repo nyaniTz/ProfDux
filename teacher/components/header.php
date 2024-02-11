@@ -1,3 +1,13 @@
+<?php
+
+    session_start();
+    $username = isset($_SESSION['id']);
+    $role = isset($_SESSION['role']);
+
+    if(!$username && $role != 'teacher'){ header('location:../auth.php'); }
+
+?>
+
 <div class="header">
     <div class="header-logo">
         <img src="../assets/images/air-logo.png" alt="">

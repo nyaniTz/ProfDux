@@ -285,6 +285,20 @@ async function getUserDetails(){
 
 }
 
+async function getGlobalDetails(){
+
+    let result = await getUserDetails();
+
+    if(!result.id) logout();
+    else return result;
+}
+
+function createElement(type, className=""){
+    let element = document.createElement("div")
+    element.className = className;
+    return element;
+}
+
 async function logout() {
 
     let result = await AJAXCall({

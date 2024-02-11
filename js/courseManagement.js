@@ -1,6 +1,8 @@
 let globalImageObject;
 let globalPDFObject;
 
+loadCourses();
+
 function loadImageToPopupView(event, outputElement) {
 
     // const output = document.querySelector(outputElement);
@@ -142,4 +144,111 @@ function openUploadOverlay(id){
 function closeUploadOverlay(){
     let uploadOverlay = document.querySelector(".upload-overlay");
     uploadOverlay.style.display = "none";
+}
+
+async function loadCourses(){
+
+    let courseViewContainer = document.querySelector(".course-view-container");
+
+    let noCoursesYetText = createLocalizedTextElement("No courses yet");
+    let createCourseText = createLocalizedTextElement("Create Course");
+    let errorText = createLocalizedTextElement("Something Went Wrong");
+
+    let emptyView = createElement("div", "container-message");
+    let largeMessage = createElement("div", "large-message");
+    largeMessage.appendChild(noCoursesYetText);
+
+    let createCourseButton = createElement("div", "button");
+    createCourseButton.appendChild(createCourseText);
+
+    emptyView.appendChild(largeMessage);
+    emptyView.appendChild(createCourseButton);
+
+    let errorView = createElement("div", "container-message");
+    largeMessage.innerHTML = "";
+    largeMessage.appendChild(errorText);
+    errorView.appendChild(largeMessage);
+
+    let loader = 
+    `   <div class="container-message blank">
+            <div class="sk-chase">
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+                <div class="sk-chase-dot"></div>
+            </div>
+        </div>`;
+
+    courseViewContainer.innerHTML = loader;
+
+    let { id } = await getGlobalDetails();
+
+    try {
+
+        const params = `id=${id}`;
+
+        console.log(params);
+        
+        const result = await AJAXCall({
+            phpFilePath: "../include/course/getCourses.php",
+            rejectMessage: "Getting Courses Failed",
+            params,
+            type: "fetch"
+        });
+
+        setTimeout(() => {
+            if(result) {
+                loadCoursesUI(result);
+            }
+            else {
+                courseViewContainer.innerHTML = "";
+                courseViewContainer.appendChild(emptyView);
+            }
+        }, 2000);
+    }
+    catch(error){
+        courseViewContainer.innerHTML = "";
+        courseViewContainer.appendChild(errorView);
+    }
+
+    function loadCoursesUI(coursesObject){
+
+        courseViewContainer.innerHTML = "";
+
+        coursesObject.map( course => {
+
+            const { id, title, image, courseCode,  } = course;
+
+            let courseCard = createElement("div", "course-card");
+
+
+            let courseCardImage = createElement("div", "course-card-image");
+            let imageElement = document.createElement("img");
+
+            imageElement.src = image.length > 2 ? `../uploads/${image}` : `../assets/images/courseDefault.jpg` ;
+            courseCardImage.appendChild(imageElement);
+            
+            let cardText = createElement("div", "card-text");
+            let courseCardCode = createElement("div", "course-card-code");
+            let courseCardTitle = createElement("div", "course-card-title");
+            
+            courseCardCode.textContent = courseCode;
+            courseCardTitle.textContent = title;
+
+            cardText.appendChild(courseCardCode);
+            cardText.appendChild(courseCardTitle);
+
+            let cardOverlay = createElement("div", "card-overlay");
+
+            courseCard.appendChild(courseCardImage);
+            courseCard.appendChild(cardText);
+            courseCard.appendChild(cardOverlay);
+
+            courseViewContainer.appendChild( courseCard );
+        });
+
+    }
+
 }

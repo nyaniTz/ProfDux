@@ -1,10 +1,5 @@
 let globalUserDetails;
 
-function getGlobalDetails(){
-    if(!globalUserDetails) logout();
-    else return globalUserDetails;
-}
-
 ( async () => {
 
     let result = await getUserDetails();
@@ -27,7 +22,10 @@ function setHeaderInfo(userObject){
     console.log(role);
     let roleAsTextElement = createLocalizedTextElement(role);
     
+
     usernameFields.forEach( username => {
+
+        username.innerHTML = "";
         
         switch(role){
             case "teacher":
