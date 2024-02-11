@@ -1,5 +1,10 @@
 let globalUserDetails;
 
+function getGlobalDetails(){
+    if(!globalUserDetails) logout();
+    else return globalUserDetails;
+}
+
 ( async () => {
 
     let result = await getUserDetails();

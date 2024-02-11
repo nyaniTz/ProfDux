@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="../css/translation.css">
 <link rel="stylesheet" href="../css/popup.css">
 <link rel="stylesheet" href="../css/inputs.css">
+<link rel="stylesheet" href="../css/courseManagement.css">
 
 <script src="../js/sidebar.js" defer></script>
 <script src="../js/dialogs.js"></script>
