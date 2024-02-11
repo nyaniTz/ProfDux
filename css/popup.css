@@ -5,7 +5,7 @@
     grid-template-columns: 1fr;
     place-items: center;
     box-sizing: border-box;
-    border-radius: 20px;
+    border-radius: 10px;
     background: white;
     min-width: 450px;
     transition: 0.4s;
@@ -27,17 +27,23 @@
 
 .pop-up-title{
     font-size: 1.3em;
-    color: black;
+    color: var(--accent);
     font-weight: 400;
     justify-self: start;
     padding: 0.2em 0em;
+    line-height: 1.3em;
+}
+
+.popup .close-button {
+    right: 20px;
+    top: unset;
 }
 
 .popup-header, .popup-body, .popup-footer{
     position: relative;
-    padding: 1em 2em;
+    padding: 0.7em 2em;
     margin: 0px;
-    border-bottom: 3px solid var(--border-fade);
+    border-bottom: 2px solid var(--border-fade);
     width: 100%;
     display: grid;
     place-items: center;
@@ -51,23 +57,4 @@
     border-bottom: none;
     place-items: center;
     padding: 1em 2em 2em 2em;
-}
-
-.close-button{
-    position: absolute;
-    background: black;
-    border-radius: 50%;
-    height: 25px;
-    width: 25px;
-    display: grid;
-    place-items: center;
-    right: 1em;
-    cursor: pointer;
-    transition: 0.3s all;
-}
-
-.close-button:hover { transform: scale(1.15); }
-.close-button > img {
-    height: 10px;
-    transition: 0.3s all;
 }

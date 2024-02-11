@@ -23,6 +23,7 @@
     if(mysqli_num_rows($result) == 1){ 
 
         $_SESSION['id'] = $row[0];
+        $_SESSION['role'] = $row[2];
 
         echo json_encode(
             array("id" => $row[0],"email" => $row[1], "role" => $row[2], "state" => "success")

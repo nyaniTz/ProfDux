@@ -1,3 +1,19 @@
+<?php
+
+    session_start();
+    session_unset();
+    session_destroy();
+    session_start();
+
+    $username = isset($_SESSION['id']);
+    $role = isset($_SESSION['role']);
+
+    if($username && $role == "student"){ header('location: /student'); }
+    elseif($username && $role == "teacher"){ header('location: /teacher'); }
+    elseif($username && $role == "admin"){ header('location: /admin'); }
+    
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

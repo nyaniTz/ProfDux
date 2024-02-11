@@ -155,10 +155,6 @@
     width: 20px;
 }
 
-.upload-input{
-    display: none;
-}   
-
 .upload-progress-container{
     display: none;
     width: 100%;

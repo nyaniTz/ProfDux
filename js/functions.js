@@ -264,6 +264,27 @@ async function uploadFile(file, scriptPath = "../include/upload.php"){
     })
 }
 
+async function getUserDetails(){
+
+    try{
+        let result = await AJAXCall({
+            phpFilePath: "../include/getPersonalDetails.php",
+            rejectMessage: "Getting Personal Details Failed",
+            params: "",
+            type: "fetch"
+        });
+        
+        if(result){
+            return result[0];
+        }
+    }
+    catch(error){
+        console.log(error);
+        // TODO: Logout
+    }
+
+}
+
 async function logout() {
 
     let result = await AJAXCall({
@@ -273,5 +294,5 @@ async function logout() {
         type: ""
     });
     
-    window.location.href = "../auth.html";
+    window.location.href = "../auth.php";
 }

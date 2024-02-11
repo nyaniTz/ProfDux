@@ -9,12 +9,17 @@
 <link rel="stylesheet" href="../css/spinkit.css">
 <link rel="stylesheet" href="../css/tab.css">
 <link rel="stylesheet" href="../css/translation.css">
+<link rel="stylesheet" href="../css/popup.css">
+<link rel="stylesheet" href="../css/inputs.css">
 
 <script src="../js/sidebar.js" defer></script>
 <script src="../js/dialogs.js"></script>
 <script src="../js/functions.js"></script>
+<script src="../js/localize.js"></script>
 <script src="../js/dropdown.js" defer></script>
 <script src="../js/logoutDialogListener.js" defer></script>
 <script src="../js/openAIKey.js" defer></script>
 <script src="../js/pdf-viewer.js" defer></script>
 <script src="../js/tab.js" defer></script>
+
+<script src="../js/headerBar.js" defer></script>

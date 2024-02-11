@@ -4,17 +4,24 @@
     </div>
 
     <div class="header-action-bar">
-        <div class="switch-button">
-            <img src="../assets/icons/fi/fi-rr-arrows-repeat.svg" alt="" class="regular-icon"> 
-        </div>
+        <?php
+
+            if($_SESSION["role"] != "student"){
+                echo "
+                <a href='../student' class='switch-button'>
+                    <img class='icon' src='../assets/icons/fi/fi-rr-arrows-repeat.svg' alt='' class='regular-icon'> 
+                </a>";
+            }
+
+        ?>
+
         <div class="username">
-            Ibrahim Ame ( Teacher )
         </div>
         <div class="user-image">
-            <img src="../assets/images/dux-male.jpg" alt="">
+            <img src="" alt="">
         </div>
         <div class="logout-button" onclick="logoutDialog()">
-            <img src="../assets/icons/fi/fi-rr-arrow-right-to-bracket.svg" alt="" class="regular-icon">
+            <img class='icon' src="../assets/icons/fi/fi-rr-arrow-right-to-bracket.svg" alt="" class="regular-icon">
         </div>
     </div>
 </div>

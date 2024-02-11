@@ -15,8 +15,9 @@
     if($userID){
 
         $query = "
-        SELECT *
-        FROM `users` WHERE users.id = '$userID'
+            SELECT users.id, email, role, users.timestamp, name, address, image, phone, institutionID, department  FROM `users`
+            JOIN userDetails ON users.id = userDetails.id
+            WHERE users.id = '$userID'
         ";
 
         $result = mysqli_query($conn,$query);

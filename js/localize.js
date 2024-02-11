@@ -1,5 +1,3 @@
-localizeTextElements();
-
 function localizeTextElements(){
 
     let textElements = document.querySelectorAll("text");
@@ -27,13 +25,17 @@ function fetchLocalization(text){
 
     //TODO: make a external json file
     let localization = {
-        "Save": [
+        "save": [
             { "en": "Save" },
             { "tr" : "Kaydet" }
         ],
-        "Hello": [
+        "hello": [
             { "en": "Hello" },
             { "tr" : "Merhaba" }
+        ],
+        "teacher": [
+            { "en": "Teacher" },
+            { "tr" : "Öregtmen" }
         ],
 
     }
@@ -44,7 +46,7 @@ function fetchLocalization(text){
     ]
 
     try {
-        let result = localization[text];
+        let result = localization[text.toLowerCase()];
         if(result) return result;
         else {
             return escape;
@@ -70,6 +72,7 @@ function createLocalizedTextElement(text){
         let data = entries.map( ([key, val] = entry) => {
             textElement.setAttribute(`data-${key}`, val);
         });
+
         
     });
 

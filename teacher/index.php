@@ -1,5 +1,11 @@
 <?php
+
     session_start();
+    $username = isset($_SESSION['id']);
+    $role = isset($_SESSION['role']);
+
+    if(!$username && $role != 'teacher'){ header('location:../auth.php'); }
+
 ?>
 
 <!DOCTYPE html>
@@ -15,40 +21,6 @@
 
     </head>
     <body>
-
-        <script>
-
-            async function getUserDetails(){
-
-                try{
-                    let result = await AJAXCall({
-                        phpFilePath: "../include/getPersonalDetails.php",
-                        rejectMessage: "Getting Personal Details Failed",
-                        params: "",
-                        type: "fetch"
-                    });
-                    
-                    if(result){
-                        return result[0];
-                    }
-                }
-                catch(error){
-                    console.log(error);
-                    // TODO: Logout
-                }
-
-            }
-
-            ( async () => {
-
-              
-                let result = await getUserDetails();
-                console.log(result);
-
-  
-            })();
-
-        </script>
 
         <?php include 'components/header.php'; ?>
 
