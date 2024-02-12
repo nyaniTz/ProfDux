@@ -333,24 +333,7 @@ class Course {
 
 }
 
-// let myCourse = {
-//     id: "343",
-//     title: "Water Theory",
-//     courseCode: "C005",
-//     lectures: [
-//         {
-//             id: "256",
-//             title: "Introduction",
-//             subtopics: [
-//                 { id: "64d", title: "Me as a teacher", resources: ["a", "b", "c"] },
-//                 { id: "54d", title: "Me not as a teacher", resources: ["a", "b", "c"] },
-//                 { id: "77k", title: "Hooray", resources: ["a", "b", "c"] },
-//             ]
-//         }
-//     ]
-// }
-
-async function fetchCourses(){
+async function fetchCoursesWithID(givenID){
 
     let courseGridContainer = document.querySelector("#course-grid-container");
 
@@ -371,9 +354,12 @@ async function fetchCourses(){
     let courses = await AJAXCall({
         phpFilePath: "../include/course/getCourseDetails.php",
         rejectMessage: "Getting Details Failed",
-        params: "",
+        params: `id=${givenID}`,
         type: "fetch"
     });
+
+    console.log(courses[0]);
+    if(courses[0].status == "error") return;
 
     setTimeout(() => {
         let course = new Course(courses[0]);
@@ -413,8 +399,6 @@ async function fetchCourses(){
     }, 2000);
 
 }
-
-fetchCourses();
 
 async function updateLectureTitleToDatabase(lectureOject){
     let { id, title } = lectureOject;

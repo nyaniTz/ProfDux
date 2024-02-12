@@ -35,6 +35,7 @@ body {
     align-items: start;
     grid-template-rows: auto 1fr;
     grid-gap: 50px;
+    position: relative;
 }
 
 .medium-title {
@@ -126,4 +127,10 @@ body {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-gap: 20px;
+}
+
+.min-max-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 30px;
 }

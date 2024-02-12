@@ -8,7 +8,7 @@
         die("Connection failed: " . mysqli_connect_error());
     }
 
-    $courseID = "8v8utb2tb8c";
+    $courseID = $_POST["id"];
 
     if($courseID){
 
@@ -93,4 +93,7 @@
 
         echo json_encode($finalResult);
 
+    }
+    else{
+        echo json_encode(array("status" => "error"));
     }

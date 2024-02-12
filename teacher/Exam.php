@@ -9,6 +9,15 @@
         <?php include '../include/teacherImports.php'; ?>
 
     </head>
+
+    <style>
+
+        .full-width {
+            height: 100%;
+            width: 100%;
+
+        }
+    </style>
     <body>
 
         <?php include 'components/header.php'; ?>
@@ -16,7 +25,8 @@
         <div class="outer-container">
             <?php include 'components/sidebar.php'; ?>
             <div class="main-container">
-                <?php include 'components/dashboard.php'; ?>
+                <h1 class="large-title">Exam</h1>
+                <iframe class="full-width" src="http://dux.aiiot.website/modules/qs/index.html" frameborder="0"></iframe>
             </div>
         </div>
     </body>

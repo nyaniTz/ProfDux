@@ -246,9 +246,36 @@ async function loadCourses(){
             courseCard.appendChild(cardText);
             courseCard.appendChild(cardOverlay);
 
+            courseCard.addEventListener("click", () => {
+                editCourseWith(id);
+            });
+
             courseViewContainer.appendChild( courseCard );
         });
 
     }
+
+    function editCourseWith(id){
+
+        let mainContainer = document.querySelector(".main-container");
+        let editCourseContainer = document.querySelector(".edit-course-container");
+        editCourseContainer.style.display = "grid";
+
+        let titleElement = document.querySelector("#course-title");
+        titleElement.textContent = "";
+    
+        let courseCode = document.querySelector("#course-code");
+        courseCode.textContent = "";
+        
+        fetchCoursesWithID(id);
+
+    }
+
+}
+
+function closeEditCourseContainer(){
+
+    let editCourseContainer = document.querySelector(".edit-course-container");
+    editCourseContainer.style.display = "none";
 
 }
