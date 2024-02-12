@@ -1,0 +1,31 @@
+.edit-personal-details {
+    width: 500px;
+    place-self: center;
+    display: grid;
+    grid-gap: 20px;
+    padding-top: 40px;
+}
+
+.personal-upload-input{ justify-self: center; cursor: pointer;}
+
+.personal-image-view{
+    height: 200px;
+    width: 200px;
+    justify-items: center;
+}   
+
+.personal-image-view img{
+    height: 240px;
+    width: 400px;
+    margin-left: -25%;
+}
+
+.setting-values {
+    display: grid;
+    grid-gap: 20px;
+}
+
+.saveProfileButton{
+    margin-top: 10px;
+    justify-self: end;
+}

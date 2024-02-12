@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../css/pdf-viewer.css">
 <link rel="stylesheet" href="../css/dialogs.css">
 <link rel="stylesheet" href="../css/root.css">
-<link rel="stylesheet" href="../css/teacher.css">
+<link rel="stylesheet" href="../css/student.css">
 <link rel="stylesheet" href="../css/spinkit.css">
 <link rel="stylesheet" href="../css/tab.css">
 <link rel="stylesheet" href="../css/translation.css">

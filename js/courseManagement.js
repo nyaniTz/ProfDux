@@ -1,8 +1,6 @@
 let globalImageObject;
 let globalPDFObject;
 
-loadCourses();
-
 function loadImageToPopupView(event, outputElement) {
 
     // const output = document.querySelector(outputElement);
@@ -146,7 +144,7 @@ function closeUploadOverlay(){
     uploadOverlay.style.display = "none";
 }
 
-async function loadCourses(){
+async function loadCourses(options = "id"){
 
     let courseViewContainer = document.querySelector(".course-view-container");
 
@@ -169,6 +167,14 @@ async function loadCourses(){
     largeMessage.appendChild(errorText);
     errorView.appendChild(largeMessage);
 
+    /* STUDENT VIEW */
+    let studentEmptyView = createElement("div", "container-message");
+    let NoCoursesYet = createLocalizedTextElement("No Courses Yet");
+    let studentlargeMessage = createElement("div", "large-message");
+    studentlargeMessage.appendChild(NoCoursesYet);
+    studentEmptyView.appendChild(studentlargeMessage);
+
+
     let loader = 
     `   <div class="container-message blank">
             <div class="sk-chase">
@@ -190,30 +196,53 @@ async function loadCourses(){
         const params = `id=${id}`;
 
         console.log(params);
+
+        let phpFilePath;
+
+        switch(options){
+            case "id": 
+                phpFilePath = "../include/course/getCourses.php";
+            break;
+            case "all":
+                phpFilePath = "../include/course/getAllCourses.php";
+            break;
+        }
         
         const result = await AJAXCall({
-            phpFilePath: "../include/course/getCourses.php",
+            phpFilePath,
             rejectMessage: "Getting Courses Failed",
             params,
             type: "fetch"
         });
 
         setTimeout(() => {
-            if(result) {
-                loadCoursesUI(result);
+            console.log("result", result);
+
+            if(result && result.length > 0) {
+                console.log("so far so good.");
+                loadCoursesUI(result, options);
             }
             else {
+
+                //TODO: This part might cause bugs in future versions
                 courseViewContainer.innerHTML = "";
-                courseViewContainer.appendChild(emptyView);
+
+                switch(options){
+                    case "id": 
+                        courseViewContainer.appendChild(emptyView);
+                    break;
+                    case "all":
+                         courseViewContainer.appendChild(studentEmptyView);
+                        ;
+                }
             }
         }, 2000);
     }
     catch(error){
-        courseViewContainer.innerHTML = "";
-        courseViewContainer.appendChild(errorView);
+
     }
 
-    function loadCoursesUI(coursesObject){
+    function loadCoursesUI(coursesObject, options){
 
         courseViewContainer.innerHTML = "";
 
@@ -247,7 +276,13 @@ async function loadCourses(){
             courseCard.appendChild(cardOverlay);
 
             courseCard.addEventListener("click", () => {
-                editCourseWith(id);
+                switch(options){
+                    case "id": 
+                        editCourseWith(id);
+                    break;
+                    case "all":
+                        ;
+                }
             });
 
             courseViewContainer.appendChild( courseCard );

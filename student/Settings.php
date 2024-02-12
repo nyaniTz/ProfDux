@@ -3,10 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dux Teacher</title>
+        <title>Dux Student</title>
         <page data-id="Settings"></page> 
-        
-        <?php include '../include/teacherImports.php'; ?>
+
+        <?php include '../include/studentImports.php'; ?>
 
         <script src="../js/settings.js" defer></script>
 
@@ -17,7 +17,6 @@
 
         <div class="outer-container">
             <?php include 'components/sidebar.php'; ?>
-
             <div class="main-container">
                 <form class="edit-personal-details">
                     <label for="personalImageUpload" class="personal-upload-input">
@@ -60,7 +59,7 @@
                     </div>
 
                 </form>
-
+                
             </div>
         </div>
     </body>

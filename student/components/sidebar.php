@@ -1,5 +1,5 @@
 <div class="sidebar">
-    <h2 class="medium-title">Teacher Panel</h2>
+    <h2 class="medium-title">Student Panel</h2>
 
     <div class="two-column-grid">
           <a class="ad-link" target="_blank" href="https://www.bing.com/create">
@@ -15,42 +15,42 @@
 
     <div class="sidebar-menu">
         <a class="sidebar-link" data-id="Dashboard" href="index.php">
-            <img src="../assets/icons/fi/fi-rr-border-all.svg" alt="">
-            <p>Dashboard</p>
+            <img src="../assets/icons/fi/fi-rr-user.svg" alt="">
+            <p>Home</p>
         </a>
 
-        <a class="sidebar-link" data-id="Course Management" href="CourseManagement.php">
-            <img src="../assets/icons/fi/fi-rr-apps-add.svg" alt="">
-            <p>Course Management</p>
+        <a class="sidebar-link" data-id="Courses" href="Courses.php">
+            <img src="../assets/icons/fi/fi-rr-braille.svg" alt="">
+            <p>Courses</p>
         </a>
 
-        <a class="sidebar-link" data-id="Exam" href="Exam.php">
-            <img src="../assets/icons/fi/fi-rr-pen-circle.svg" alt="">
-            <p>Exam</p>
+        <a class="sidebar-link" data-id="Classroom" href="Classroom.php">
+            <img src="../assets/icons/fi/fi-rr-laptop.svg" alt="">
+            <p>Classroom</p>
         </a>
 
-        <a class="sidebar-link" data-id="Scheduling" href="Scheduling.php">
-            <img src="../assets/icons/fi/fi-rr-time-fast.svg" alt="">
-            <p>Scheduling</p>
+        <a class="sidebar-link" data-id="Grades" href="Grades.php">
+            <img src="../assets/icons/fi/fi-rr-chart-histogram.svg" alt="">
+            <p>Grades</p>
+        </a>
+
+        <a class="sidebar-link" data-id="Timetable" href="Timetable.php">
+            <img src="../assets/icons/fi/fi-rr-calendar.svg" alt="">
+            <text>Timetable</text>
         </a>
 
         <a class="sidebar-link" data-id="Messaging" href="Messaging.php">
-            <img src="../assets/icons/fi/fi-rr-mailbox.svg" alt="">
+            <img src="../assets/icons/fi/fi-rr-envelope.svg" alt="">
             <p>Messaging</p>
         </a>
 
-        <a class="sidebar-link" data-id="Weight Assignment" href="Weights.php">
-            <img src="../assets/icons/fi/fi-rr-chart-pie-alt.svg" alt="">
-            <p>Weight Assignment</p>
-        </a>
-
-        <a class="sidebar-link" data-id="Class Stats" href="Stats.php">
-            <img src="../assets/icons/fi/fi-rr-chart-line-up.svg" alt="">
-            <p>Class Grades</p>
+        <a class="sidebar-link" data-id="Documents" href="Documents.php">
+            <img src="../assets/icons/fi/fi-rr-document.svg" alt="">
+            <p>Documents</p>
         </a>
 
         <a class="sidebar-link" data-id="Settings" href="Settings.php">
-            <img src="../assets/icons/fi/fi-rr-settings.svg" alt="">
+            <img src="../assets/icons/fi/fi-rr-add.svg" alt="">
             <p>Settings</p>
         </a>
     </div>
