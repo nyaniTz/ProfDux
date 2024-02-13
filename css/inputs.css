@@ -144,29 +144,30 @@
 .form-input-container:has(.half-input-container):has(span[data-isRequired="true"]):has(input:valid:not(:focus))::after
 {
     content: "";
-    height: 9px;
-    width: 9px;
-    background-image: url("../images/asterisk.png");
+    height: 13px;
+    width: 13px;
+    background-image: url("../assets/icons/asterisk.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     position: absolute;
-    top: calc( 50% + 4.5px );
-    left: calc(100% - 20px - 5px);
+    top: calc( 50% + 4px );
+    left: calc(100% - 20px - 7px);
     z-index: 1;
+    filter: invert(17%) sepia(35%) saturate(2414%) hue-rotate(308deg) brightness(96%) contrast(96%);
 }
 
 .form-input-container:has(input[data-isRequired="true"])::after,
 .form-input-container:has(.half-input-container):has(span[data-isRequired="true"]):has(input:required)::after,
 .form-input-container:has(.half-input-container):has(span[data-isRequired="true"]):has(input:focus:not(:valid))::after
 {
-    background-image: url("../images/asterisk-red.png");
+    background-image: url("../assets/icons/asterisk-red.png");
 }
 
 .form-input-container:has(input:disabled)::after{
     content: "";
     height: 20px;
     width: 20px;
-    background: url("../images/forbidden.png");
+    background: url("../assets/icons/forbidden.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     position: absolute;

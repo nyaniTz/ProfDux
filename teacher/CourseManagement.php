@@ -32,7 +32,7 @@
                     
                 </div>
 
-                <div class="edit-course-container">
+                <div class="edit-course-container inner-overlay">
 
                     <div class="back-arrow" onclick="closeEditCourseContainer()">
                         <img class="icon" src="../assets/icons/fi/fi-rr-arrow-alt-left.svg" alt="">
@@ -46,35 +46,6 @@
         </div>
 
         <?php include 'components/courseCreationOverlay.php' ?>
-
-
-        <style>
-
-            .edit-course-container{
-                background: white;
-                height: 100%;
-                width: 100%;
-                z-index: 1;
-                position: absolute;
-                border: 1px solid red;
-                padding: 50px;
-
-                max-height: 100%;
-                overflow: scroll;
-                display: none;
-            }
-
-            .back-arrow {
-                height: 50px;
-                margin-bottom: 50px;
-            }
-
-            .back-arrow img {
-                height: inherit;
-            }
-
-
-        </style>
 
         <script>
 

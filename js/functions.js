@@ -299,6 +299,30 @@ function createElement(type, className=""){
     return element;
 }
 
+function findElement(selector){
+    return document.querySelector(selector);
+}
+
+function findElements(...args){
+
+    let result = { };
+
+    args.forEach( item => { 
+        result[camelCase(item)] = findElement(item); 
+    })
+
+    return result;
+}
+
+function camelCase(word){
+    return word
+    .replace(".","")
+    .replace("#","")
+    .replace(/-([a-z])/g, function(k){
+        return k[1].toUpperCase();
+    });
+}
+
 async function logout() {
 
     let result = await AJAXCall({

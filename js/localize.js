@@ -12,16 +12,13 @@ function localizeTextElements(){
             let textComparisons = fetchLocalization(text);
     
             // console.log(textComparisons);
+            
+            let entries = Object.entries(textComparisons);
     
-            textComparisons.forEach( comparison => {
-                let entries = Object.entries(comparison);
-    
-                let data = entries.map( ([key, val] = entry) => {
-                    __text__.setAttribute(`data-${key}`, val);
-                });
-                
+            entries.map( ([key, val] = entry) => {
+                __text__.setAttribute(`data-${key}`, val);
             });
-    
+                
             __text__.textContent = "";
         }
 
@@ -29,53 +26,45 @@ function localizeTextElements(){
     })
 }
 
+function localizeInputPlaceholders(){
+
+    let inputElements = document.querySelectorAll("input");
+
+    let currentLanguage = document.querySelector("html").getAttribute("lang");
+
+    inputElements.forEach( __input__ => {
+        if(__input__.getAttribute("data-created") != "true") {
+            let inputPlaceholderText = __input__.getAttribute("placeholder");
+            let textComparisons = fetchLocalization(inputPlaceholderText);
+
+
+            __input__.setAttribute("placeholder", textComparisons[currentLanguage]);
+            console.log(__input__.getAttribute("placeholder"))
+        }
+
+    })
+
+}
+
 function fetchLocalization(text){
 
     //TODO: make a external json file
     let localization = {
-        "save": [
-            { "en": "Save" },
-            { "tr" : "Kaydet" }
-        ],
-        "hello": [
-            { "en": "Hello" },
-            { "tr" : "Merhaba" }
-        ],
-        "teacher": [
-            { "en": "Teacher" },
-            { "tr" : "Öğretmen" }
-        ],
-        "no courses yet": [
-            { "en": "No Course Yet" },
-            { "tr" : "Kurs Yok" }
-        ],
-        "create course": [
-            { "en": "create course" },
-            { "tr" : "create kurs" }
-        ],
-        "something went wrong": [
-            { "en": "Something Went Wrong" },
-            { "tr" : "turkish translation missing" }
-        ]
+
+        "save": { "en": "Save", "tr" : "Kaydet" },
+        "teacher": { "en": "Teacher", "tr" : "Öğretmen"},
+        "hello": {"en" : "Hello", "tr" : "Oh Well"},
 
     }
 
-    let escape =  [
-        { "en" : text },
-        { "tr" : text },
-    ]
+    let escape =  { "en" : text, "tr" : text }
 
     try {
         let result = localization[text.toLowerCase()];
         if(result) return result;
-        else {
-            return escape;
-        }
+        else return escape;
     }
-    catch(error){
-        return escape;
-        
-    }
+    catch(error) { return escape; }
 }
 
 function createLocalizedTextElement(text){
@@ -85,16 +74,10 @@ function createLocalizedTextElement(text){
 
     let textComparisons = fetchLocalization(text);
 
-    console.log(textComparisons);
+    let entries = Object.entries(textComparisons);
 
-    textComparisons.forEach( comparison => {
-        let entries = Object.entries(comparison);
-
-        let data = entries.map( ([key, val] = entry) => {
-            textElement.setAttribute(`data-${key}`, val);
-        });
-
-        
+    entries.map( ([key, val] = entry) => {
+        textElement.setAttribute(`data-${key}`, val);
     });
 
     return textElement;

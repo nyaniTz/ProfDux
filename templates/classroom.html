@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom</title>
+    <link rel="stylesheet" href="../css/translation.css">
+    <link rel="stylesheet" href="../css/root.css">
+
+    <script src="../js/functions.js"></script>
+    <script src="../js/localize.js" defer></script>
+    <script src="../js/Course.js" defer></script>
+
+    <link rel="stylesheet" href="../css/spinkit.css">
+    <link rel="stylesheet" href="../css/popup.css">
+</head>
+<body>
+
+    <!-- <?php include 'editCourse.php' ?> -->
+
+    <div class="outer-main-classroom-container">
+
+        <div class="main-classroom-lecture-container">
+
+            <div class="main-classroom-lecture-header">Lecture 1</div>
+    
+            <div class="main-classroom-lecture-inner-container">
+    
+                <div class="main-classroom-subtopic-container">
+                    <div class="main-classroom-subtopic-header">
+                        Introduction to Robotics
+                    </div>
+    
+                    <div class="main-classroom-subtopic-item">
+                        <div class="row-item-icon">
+                            <img src="../assets/icons/pdf.png" alt="">
+                        </div>
+                        <div class="row-item-text">Introduction Notes</div>
+                        <div class="row-item-action">view</div>
+                    </div>
+    
+                    <div class="main-classroom-subtopic-item">
+                        <div class="row-item-icon">
+                            <img src="../assets/icons/play.png" alt="">
+                        </div>
+                        <div class="row-item-text">Introduction Video</div>
+                        <div class="row-item-action">play</div>
+                    </div>
+    
+                    <div class="main-classroom-subtopic-item">
+                        <div class="row-item-icon">
+                            <img src="../assets/icons/globe.png" alt="">
+                        </div>
+                        <div class="row-item-text">More about lecture 1</div>
+                        <div class="row-item-action">open</div>
+                    </div>
+                </div>
+
+                <div class="main-classroom-subtopic-container">
+                    <div class="main-classroom-subtopic-header">
+                        What are Robots
+                    </div>
+    
+                    <div class="main-classroom-subtopic-item">
+                        <div class="row-item-icon">
+                            <img src="../assets/icons/pdf.png" alt="">
+                        </div>
+                        <div class="row-item-text">Robot Notes</div>
+                        <div class="row-item-action">view</div>
+                    </div>
+
+                    <div class="main-classroom-subtopic-item">
+                        <div class="row-item-icon">
+                            <img src="../assets/icons/image.png" alt="">
+                        </div>
+                        <div class="row-item-text">Robot Image</div>
+                        <div class="row-item-action">view</div>
+                    </div>
+    
+                    <div class="main-classroom-subtopic-item">
+                        <div class="row-item-icon">
+                            <img src="../assets/icons/play.png" alt="">
+                        </div>
+                        <div class="row-item-text">Robot Video</div>
+                        <div class="row-item-action">play</div>
+                    </div>
+    
+                    <div class="main-classroom-subtopic-item">
+                        <div class="row-item-icon">
+                            <img src="../assets/icons/globe.png" alt="">
+                        </div>
+                        <div class="row-item-text">More about Robots</div>
+                        <div class="row-item-action">open</div>
+                    </div>
+                </div>
+    
+                <!-- TODO: rename class to main-classroom-quiz-container -->
+                <div class="main-classroom-subtopic-container">
+                    <div class="main-classroom-subtopic-item">
+                        <div class="row-item-icon">
+                            <img src="../assets/icons/quiz.png" alt="">
+                        </div>
+                        <div class="row-item-text">Quiz</div>
+                        <div class="row-item-action quiz-action">start</div>
+                    </div>
+                </div>            
+            </div>
+        </div>
+
+        <div class="main-classroom-lecture-container">
+
+            <div class="main-classroom-lecture-header">Lecture 2</div>
+    
+            <div class="main-classroom-lecture-inner-container">
+    
+                <div class="main-classroom-subtopic-container">
+                    <div class="main-classroom-subtopic-header">
+                        Introduction to Robotics
+                    </div>
+    
+                    <div class="main-classroom-subtopic-item">
+                        <div class="row-item-icon">
+                            <img src="../assets/icons/pdf.png" alt="">
+                        </div>
+                        <div class="row-item-text">Introduction Notes</div>
+                        <div class="row-item-action">view</div>
+                    </div>
+    
+                    <div class="main-classroom-subtopic-item">
+                        <div class="row-item-icon">
+                            <img src="../assets/icons/play.png" alt="">
+                        </div>
+                        <div class="row-item-text">Introduction Video</div>
+                        <div class="row-item-action">play</div>
+                    </div>
+    
+                    <div class="main-classroom-subtopic-item">
+                        <div class="row-item-icon">
+                            <img src="../assets/icons/globe.png" alt="">
+                        </div>
+                        <div class="row-item-text">More about lecture 1</div>
+                        <div class="row-item-action">open</div>
+                    </div>
+                </div>
+    
+                <div class="main-classroom-subtopic-container">
+                    <div class="main-classroom-subtopic-item">
+                        <div class="row-item-icon">
+                            <img src="../assets/icons/quiz.png" alt="">
+                        </div>
+                        <div class="row-item-text">Quiz</div>
+                        <div class="row-item-action quiz-action">start</div>
+                    </div>
+                </div>            
+            </div>
+        </div>
+    </div>
+
+    <style>
+
+        body {
+            padding: 100px 50px 40px 300px;
+        }
+
+        .outer-main-classroom-container {
+            display: grid;
+            grid-gap: 40px;
+        }
+
+        .main-classroom-lecture-container{
+            display: grid;
+            width: 100%;
+            grid-gap: 26px;
+            grid-template-rows: auto 1fr;
+            color: var(--dark-gray);
+        }
+
+        .main-classroom-lecture-header,
+        .main-classroom-subtopic-header{
+            border: 1px solid var(--medium-gray);
+            border-radius: 7.5px;
+            padding: 10px 13px;
+            font-size: 0.9em;
+            color: var(--dark-gray);
+            font-weight: 500;
+            background: var(--off-white);
+        }
+
+        .main-classroom-lecture-inner-container{
+            display: grid;
+            width: 100%;
+            padding: 0px 0px 30px 30px;
+            grid-gap: 26px;
+            border: 1.3px dashed var(--medium-gray);
+            border-right: none;
+            border-top: none;
+            border-bottom-left-radius: 10px;
+
+        }
+
+        .main-classroom-subtopic-container{
+            display: grid;
+            border-radius: 7.5px;
+            overflow: hidden;
+            border: 1px solid var(--medium-gray);            
+        }
+
+        .main-classroom-subtopic-header{
+            border: none;
+            border-radius: 0px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .main-classroom-subtopic-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            grid-gap: 20px;
+            padding: 10px;
+            border-bottom: 1px solid var(--medium-gray);
+            align-items: center;
+        }
+
+        .main-classroom-subtopic-item:last-child{
+            border-bottom: none;
+        }
+
+        .row-item-icon {
+            width: 26px;
+            height: 100%;
+            display: grid;
+            align-items: center;
+        }
+
+        .row-item-icon img {
+            width: inherit;
+        }
+
+        .row-item-text{
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .row-item-action {
+            background: var(--pop);
+            color: white;
+            padding: 6px;
+            text-align: center;
+            border-radius: 7.5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            width: 85px;
+            border: 1.5px solid #A02748;
+        }
+
+        .quiz-action {
+            background-color: #1E883E;
+            border-color: #1E883E ;
+        }
+
+
+
+
+
+
+
+    </style>
+
+    <script>
+
+        // await AJAXCall({
+        //     phpFilePath: "../include/course/getCourseDetails.php",
+        //     rejectMessage: "Getting Details Failed",
+        //     params: `id=${givenID}`,
+        //     type: "fetch"
+        // });
+
+    </script>
+
+    <!-- <?php include 'components/courseCreationOverlay.php' ?> -->
+
+</body>
+</html>

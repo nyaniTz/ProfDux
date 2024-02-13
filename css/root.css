@@ -6,6 +6,11 @@
 
     --light-accent: #FFF7F9;
     --dark-accent: rgb(211, 183, 190);
+
+    --dark-gray: #646D76;
+    --medium-gray: #D0D7DE;
+    --light-gray: #F4F4F4;
+    --off-white: #F6F8FA;
 }
 
 *,

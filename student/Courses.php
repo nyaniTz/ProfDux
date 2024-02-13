@@ -18,7 +18,7 @@
             <div class="main-container">
                 
                 <h1 class="large-title">
-                    Course Management
+                    Course List
                 </h1>
 
                 <div class="course-view-container">

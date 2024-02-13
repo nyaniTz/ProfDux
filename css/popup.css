@@ -25,6 +25,28 @@
     z-index: 10;
 }
 
+.inner-overlay{
+    background: white;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    position: absolute;
+    padding: 50px;
+
+    max-height: 100%;
+    overflow: scroll;
+    display: none;
+}
+
+.back-arrow {
+    height: 50px;
+    margin-bottom: 50px;
+}
+
+.back-arrow img {
+    height: inherit;
+}
+
 .pop-up-title{
     font-size: 1.3em;
     color: var(--accent);

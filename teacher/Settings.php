@@ -31,28 +31,31 @@
                     <div class="setting-values">
                         <div class="form-input-container">
                             <span class="form-input-label">Name</span>
-                            <input class="form-input person-name" placeholder="Name" type="text" disabled>
+                            <input class="form-input person-name" placeholder="Name" type="text" required>
                         </div>
 
-                        <div class="form-input-container">
-                            <span class="form-input-label">Phone</span>
-                            <input class="form-input person-phone" placeholder="Phone" type="text" disabled>
-                        </div>
+                        <div class="two-column-grid">
+                            <div class="form-input-container">
+                                <span class="form-input-label">Phone</span>
+                                <input class="form-input person-phone" placeholder="Phone" type="text">
+                            </div>
 
-                        <div class="form-input-container">
-                            <span class="form-input-label">ID</span>
-                            <input class="form-input person-institutionID" placeholder="Name" type="text" disabled>
+                            <div class="form-input-container">
+                                <span class="form-input-label">ID</span>
+                                <input class="form-input person-institutionID" placeholder="ID" type="text" disabled>
+                            </div>
                         </div>
 
                         <div class="form-input-container">
                             <span class="form-input-label">Email</span>
-                            <input class="form-input person-email" placeholder="Name" type="text" disabled>
+                            <input class="form-input person-email" placeholder="Email" type="text" disabled>
                         </div>
 
                         <div class="form-input-container">
                             <span class="form-input-label">Address</span>
-                            <input class="form-input person-address" placeholder="Name" type="text" disabled>
+                            <input class="form-input person-address" placeholder="Address" type="text">
                         </div>
+
                     </div>
 
                     <div class="button saveProfileButton" onclick="saveProfileSettings()">
@@ -63,5 +66,9 @@
 
             </div>
         </div>
+
+        <script>
+            localizeInputPlaceholders();
+        </script>
     </body>
 </html>

@@ -333,6 +333,7 @@ class Course {
 
 }
 
+//TODO: Refactor to fetchCourseWithID
 async function fetchCoursesWithID(givenID){
 
     let courseGridContainer = document.querySelector("#course-grid-container");
@@ -351,6 +352,7 @@ async function fetchCoursesWithID(givenID){
 
     courseGridContainer.innerHTML = loader;
 
+    //TODO: Might be in multiple places, refactor
     let courses = await AJAXCall({
         phpFilePath: "../include/course/getCourseDetails.php",
         rejectMessage: "Getting Details Failed",

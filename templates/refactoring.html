@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="collective"></div>
+    <div id="box-one"></div>
+
+    <script>
+
+        function findElement(selector){
+            return document.querySelector(selector);
+        }
+
+        function findElements(...args){
+
+            let result = { };
+
+            args.forEach( item => { 
+                result[camelCase(item)] = findElement(item); 
+            })
+
+            return result;
+        }
+
+        function camelCase(word){
+            return word
+            .replace(".","")
+            .replace("#","")
+            .replace(/-([a-z])/g, function(k){
+                return k[1].toUpperCase();
+            });
+        }
+
+        let { boxOne, colletive } = findElements("body", "html", ".collective", "#box-one");
+
+        console.log(boxOne);
+
+    </script>
+    
+</body>
+</html>
