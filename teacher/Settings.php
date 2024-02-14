@@ -56,6 +56,12 @@
                             <input class="form-input person-address" placeholder="Address" type="text">
                         </div>
 
+
+                        <div class="form-input-container">
+                            <span class="form-input-label">Test</span>
+                            <input class="form-input person-test" placeholder="save" type="text">
+                        </div>
+
                     </div>
 
                     <div class="button saveProfileButton" onclick="saveProfileSettings()">

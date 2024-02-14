@@ -241,8 +241,9 @@
     }
 
     .course-upload-input {
-        height: 100%;
-        aspect-ratio: 1/1;
+        height: 100%; /*Fix for Edge*/
+        width: 61px; /* Fix for some browsers */
+        aspect-ratio: 1/1; /*Fix for some browsers*/
         border: 2px dashed var(--accent);
         border-radius: 5px;
 

@@ -174,6 +174,12 @@ async function loadCourses(options = "id"){
     studentlargeMessage.appendChild(NoCoursesYet);
     studentEmptyView.appendChild(studentlargeMessage);
 
+    let myEmptyView = createElement("div", "container-message");
+    let NoSelectedCoursesYet = createLocalizedTextElement("You haven't chosen any courses yet");
+    let myLargeMessage = createElement("div", "large-message");
+    myLargeMessage.appendChild(NoSelectedCoursesYet);
+    myEmptyView.appendChild(myLargeMessage);
+
 
     let loader = 
     `   <div class="container-message blank">
@@ -206,6 +212,9 @@ async function loadCourses(options = "id"){
             case "all":
                 phpFilePath = "../include/course/getAllCourses.php";
             break;
+            case "mine":
+                phpFilePath = "../include/course/getMyCourses.php";
+            break;
         }
         
         const result = await AJAXCall({
@@ -232,7 +241,10 @@ async function loadCourses(options = "id"){
                         courseViewContainer.appendChild(emptyView);
                     break;
                     case "all":
-                         courseViewContainer.appendChild(studentEmptyView);
+                        courseViewContainer.appendChild(studentEmptyView);
+                        ;
+                    case "mine":
+                        courseViewContainer.appendChild(myEmptyView);
                         ;
                 }
             }
@@ -251,7 +263,6 @@ async function loadCourses(options = "id"){
             const { id, title, image, courseCode,  } = course;
 
             let courseCard = createElement("div", "course-card");
-
 
             let courseCardImage = createElement("div", "course-card-image");
             let imageElement = document.createElement("img");
@@ -281,7 +292,11 @@ async function loadCourses(options = "id"){
                         editCourseWith(id);
                     break;
                     case "all":
-                        ;
+                        // TODO: Using Subscriptions, toggle different popups.
+                        break;
+                    case "mine":
+                        goToCourse(id);
+                        break;
                 }
             });
 
@@ -290,11 +305,16 @@ async function loadCourses(options = "id"){
 
     }
 
+    function goToCourse(id){
+
+        openPopup(".classroom-inner-overlay");
+
+    }
+
     function editCourseWith(id){
 
         let mainContainer = document.querySelector(".main-container");
-        let editCourseContainer = document.querySelector(".edit-course-container");
-        editCourseContainer.style.display = "grid";
+        openPopup(".edit-course-container");
 
         let titleElement = document.querySelector("#course-title");
         titleElement.textContent = "";

@@ -285,6 +285,16 @@ async function getUserDetails(){
 
 }
 
+function openPopup(selector){
+    let popup = document.querySelector(selector);
+    popup.style.display = "grid";
+}
+
+function closePopup(selector){
+    let popup = document.querySelector(selector);
+    popup.style.display = "none";
+}
+
 async function getGlobalDetails(){
 
     let result = await getUserDetails();

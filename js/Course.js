@@ -41,14 +41,14 @@ class Course {
     }
 
     renderTitle(){
-        let titleElement = document.querySelector("#course-title");
+        let titleElement = findElement("#course-title");
         let textElement = createLocalizedTextElement(this.title);
         titleElement.innerHTML = "";
         titleElement.appendChild(textElement);
     }
 
     renderCourseCode(){
-        let titleElement = document.querySelector("#course-code");
+        let titleElement = findElement("#course-code");
         let textElement = createLocalizedTextElement(this.courseCode);        
         titleElement.innerHTML = "";
         titleElement.appendChild(textElement);
@@ -57,7 +57,7 @@ class Course {
 
     renderLectureSection(){
 
-        let courseGridContainer = document.querySelector("#course-grid-container");
+        let courseGridContainer = findElement("#course-grid-container");
 
         courseGridContainer.innerHTML = "";
 
@@ -127,7 +127,7 @@ class Course {
 
         let lectureID = uniqueID(1);
 
-        let courseGridContainer = document.querySelector("#course-grid-container");
+        let courseGridContainer = findElement("#course-grid-container");
 
         let lectureSection = document.createElement("div");
         lectureSection.className = "lecture-section";
@@ -336,7 +336,7 @@ class Course {
 //TODO: Refactor to fetchCourseWithID
 async function fetchCoursesWithID(givenID){
 
-    let courseGridContainer = document.querySelector("#course-grid-container");
+    let courseGridContainer = findElement("#course-grid-container");
 
     let loader = `
     <div class="loader">
@@ -353,6 +353,7 @@ async function fetchCoursesWithID(givenID){
     courseGridContainer.innerHTML = loader;
 
     //TODO: Might be in multiple places, refactor
+    // Is also in Classroom.php ...
     let courses = await AJAXCall({
         phpFilePath: "../include/course/getCourseDetails.php",
         rejectMessage: "Getting Details Failed",
@@ -369,11 +370,11 @@ async function fetchCoursesWithID(givenID){
         course.renderCourseCode();
         course.renderLectureSection();
 
-        document.querySelector("#addNewLecture").addEventListener("click", () => {
+        findElement("#addNewLecture").addEventListener("click", () => {
             course.addLectureElement();
         })
 
-        document.querySelector("#saveCourseDetails").addEventListener("click", async () => {
+        findElement("#saveCourseDetails").addEventListener("click", async () => {
             await loopThroughObjectForAsync(course.lectureUpdates, updateLectureTitleToDatabase);
             await loopThroughObjectForAsync(course.newLectures, addLectureTitleToDatabase);
             await loopThroughObjectForAsync(course.subtopicUpdates, updateSubtopicTitleToDatabase);

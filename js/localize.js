@@ -28,6 +28,7 @@ function localizeTextElements(){
 
 function localizeInputPlaceholders(){
 
+    // TODO: CSS Bug
     let inputElements = document.querySelectorAll("input");
 
     let currentLanguage = document.querySelector("html").getAttribute("lang");
@@ -35,11 +36,10 @@ function localizeInputPlaceholders(){
     inputElements.forEach( __input__ => {
         if(__input__.getAttribute("data-created") != "true") {
             let inputPlaceholderText = __input__.getAttribute("placeholder");
+
             let textComparisons = fetchLocalization(inputPlaceholderText);
 
-
             __input__.setAttribute("placeholder", textComparisons[currentLanguage]);
-            console.log(__input__.getAttribute("placeholder"))
         }
 
     })

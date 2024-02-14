@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../css/popup.css">
+    <link rel="stylesheet" href="../css/root.css">
+
+</head>
+<body>
+
+    <button onclick="openPopup('.course-enroll-overlay')">Open Popup</button>
+
+    <div class="overlay course-enroll-overlay">
+        <div class="popup">
+            <div class="popup-header">
+                <div class="close-button" onclick="closePopup('.course-enroll-overlay')">
+                    <img src="../assets/icons/close.png" alt="">
+                </div>
+                <h1 class="pop-up-title">
+                    <text>Enroll in Course</text>
+                </h1> 
+            </div>
+    
+            <div class="popup-body">
+
+                <h1 class="medium-title">Water Theory</h1>
+
+                <div class="description">
+                    Water theory is a about .. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla molestias pariatur cupiditate dignissimos voluptatibus voluptates excepturi necessitatibus at omnis a distinctio minus eos repudiandae, non sequi accusamus impedit eius ipsam.
+                </div>
+   
+            </div>
+    
+            <div class="popup-footer">
+
+                <div class="button">
+                    <text>Enroll</text>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <style>
+
+        .description {
+            max-width: 500px;
+        }
+    </style>
+
+    <script>
+
+        function openPopup(selector){
+            let popup = document.querySelector(selector);
+            popup.style.display = "grid";
+        }
+
+        function closePopup(selector){
+            let popup = document.querySelector(selector);
+            popup.style.display = "none";
+        }
+
+
+    </script>
+    
+</body>
+</html>
