@@ -301,7 +301,7 @@ async function loadCourses(options = "id"){
                     break;
                     case "all":
                         // TODO: Using Subscriptions, toggle different popups.
-                        subscriptionEvent()();
+                        subscriptionEvent(subscriptionResult, {id, userID})();
                         break;
                     case "mine":
                         goToCourse(id);
@@ -328,15 +328,37 @@ async function loadCourses(options = "id"){
             courseViewContainer.appendChild( courseCard );
         });
 
-        function subscriptionEvent(type){
+        function subscriptionEvent(subscriptionArray, {id, userID}){
 
-            switch(type){
-                case "true":
-                    return showDeRegisterPopup();
-                case "false":
-                    return showRegisterPopup();
+            try{
+
+                if(subscriptionArray.length > 0){
+                    let status = subscriptionArray[0];
+                    console.log("status: ", status);
+                    if(status.status == "true") return () => showDeRegisterPopup(id, userID);
+                    // else return showDeRegisterPopup;     
+                } else return () => showRegisterPopup(id, userID);
+                
+            }
+            catch(error){
+
             }
         
+        }
+
+        function showDeRegisterPopup(courseID, userID){
+            console.log("Course has been registered, click will bring up de registration option");
+        }
+
+        function showRegisterPopup(courseID, userID){
+
+            let enrollButton = document.querySelector(".enroll-course-button");
+            enrollButton.setAttribute("data-courseID", courseID);
+            enrollButton.setAttribute("data-userID", userID);
+
+            openPopup(".register-to-course");
+
+            console.log("Course has not been registered");
         }
 
     }
@@ -374,6 +396,32 @@ async function loadCourses(options = "id"){
         fetchCoursesWithID(id);
 
     }
+
+}
+
+async function enrollToCourse(buttonElement){
+
+    let courseID = buttonElement.getAttribute("data-courseID");
+    let userID = buttonElement.getAttribute("data-userID");
+
+    let id = uniqueID(1);
+
+            try {
+                let result = await AJAXCall({
+                    phpFilePath: "../include/course/addSubscriptionToCourse.php",
+                    params: `id=${id}&&courseID=${courseID}&&userID=${userID}`,
+                    rejectMessage: "Error Subscribing To Course",
+                    type: "post"
+                });
+
+                console.log(result);
+
+                //TODO: close popup
+                //TODO: refresh container
+
+            }catch(error){
+                console.log(error);
+            }
 
 }
 

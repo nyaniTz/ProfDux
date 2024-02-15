@@ -33,6 +33,7 @@ class Classroom {
     renderCourseOutline(){
 
         let outerMainClassroomContainer = findElement(".outer-main-classroom-container");
+        outerMainClassroomContainer.innerHTML = "";
 
         this.lectures.forEach( lecture => {
 
