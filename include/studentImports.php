@@ -1,36 +1,61 @@
-<link rel="stylesheet" href="../css/sidebar.css">
-<link rel="stylesheet" href="../css/header.css">
-<link rel="stylesheet" href="../css/dialogs.css">
-<link rel="stylesheet" href="../css/dropdown.css">
-<link rel="stylesheet" href="../css/dialogs.css">
-<link rel="stylesheet" href="../css/root.css">
-<link rel="stylesheet" href="../css/student.css">
-<link rel="stylesheet" href="../css/spinkit.css">
-<link rel="stylesheet" href="../css/tab.css">
-<link rel="stylesheet" href="../css/translation.css">
-<link rel="stylesheet" href="../css/popup.css">
-<link rel="stylesheet" href="../css/inputs.css">
-<link rel="stylesheet" href="../css/courseManagement.css">
-<link rel="stylesheet" href="../css/card.css">
-<link rel="stylesheet" href="../css/popup.css">
-<link rel="stylesheet" href="../css/settings.css">
+<?php
+    
+    include 'cachebust.php';
 
-<link rel="stylesheet" href="../css/pdf-viewer.css">
-<link rel="stylesheet" href="../css/image-viewer.css">
+    // These are for css files
+    $cssPaths = array(
+        "../css/sidebar.css",
+        "../css/header.css",
+        "../css/dialogs.css",
+        "../css/dropdown.css",
+        "../css/dialogs.css",
+        "../css/root.css",
+        "../css/student.css",
+        "../css/spinkit.css",
+        "../css/tab.css",
+        "../css/translation.css",
+        "../css/popup.css",
+        "../css/inputs.css",
+        "../css/courseManagement.css",
+        "../css/card.css",
+        "../css/popup.css",
+        "../css/settings.css",
+        "../css/pdf-viewer.css",
+        "../css/image-viewer.css"
+    );
 
+    // These are for javascript files that you want
+    // to run immediately before the page loads
+    $jsPaths = array(
+        "../js/dialogs.js",
+        "../js/functions.js",
+        "../js/localize.js"
+    );
 
-<script src="../js/sidebar.js" defer></script>
-<script src="../js/dialogs.js"></script>
-<script src="../js/functions.js"></script>
-<script src="../js/localize.js"></script>
-<script src="../js/dropdown.js" defer></script>
-<script src="../js/logoutDialogListener.js" defer></script>
-<script src="../js/openAIKey.js" defer></script>
-<script src="../js/tab.js" defer></script>
-<script src="../js/headerBar.js" defer></script>
+    // These are for javascript files that you want
+    // to run when the page completes loading.
+    $jsPaths_Defer = array(
+        "../js/sidebar.js",
+        "../js/dropdown.js",
+        "../js/logoutDialogListener.js",
+        "../js/openAIKey.js",
+        "../js/tab.js",
+        "../js/headerBar.js",
 
-<script src="../js/pdf-viewer.js" defer></script>
-<script src="../js/image-viewer.js" defer></script>
+        "../js/pdf-viewer.js",
+        "../js/image-viewer.js",
+        "../js/courseManagement.js",
+        "../js/Course.js"
+    );
 
-<script src="../js/courseManagement.js" defer></script>
-<script src="../js/Course.js" defer></script>
+    foreach ($cssPaths as $path) {
+        echo "<link rel='stylesheet' href='" .$path. "?" .cachebust($path). "'>";
+    }
+
+    foreach ($jsPaths as $path) {
+        echo "<script src='" .$path. "?" .cachebust($path). "'></script>";
+    }
+
+    foreach ($jsPaths_Defer as $path) {
+        echo "<script src='" .$path. "?" .cachebust($path). "' defer></script>";
+    }
