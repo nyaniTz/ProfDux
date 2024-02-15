@@ -16,8 +16,7 @@ function setHeaderInfo(userObject){
 
     let usernameFields = document.querySelectorAll(".username");
     let imageFields = document.querySelectorAll(".user-image img");
-    let usernameInnerContainer = document.createElement("div");
-    usernameInnerContainer.textContent = name;
+    let usernameInnerContainer = createLocalizedTextElement(name);
 
     console.log(role);
     let roleAsTextElement = createLocalizedTextElement(role);

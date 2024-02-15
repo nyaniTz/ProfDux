@@ -2,7 +2,6 @@
 <link rel="stylesheet" href="../css/header.css">
 <link rel="stylesheet" href="../css/dialogs.css">
 <link rel="stylesheet" href="../css/dropdown.css">
-<link rel="stylesheet" href="../css/pdf-viewer.css">
 <link rel="stylesheet" href="../css/dialogs.css">
 <link rel="stylesheet" href="../css/root.css">
 <link rel="stylesheet" href="../css/student.css">
@@ -16,6 +15,9 @@
 <link rel="stylesheet" href="../css/popup.css">
 <link rel="stylesheet" href="../css/settings.css">
 
+<link rel="stylesheet" href="../css/pdf-viewer.css">
+<link rel="stylesheet" href="../css/image-viewer.css">
+
 
 <script src="../js/sidebar.js" defer></script>
 <script src="../js/dialogs.js"></script>
@@ -24,9 +26,11 @@
 <script src="../js/dropdown.js" defer></script>
 <script src="../js/logoutDialogListener.js" defer></script>
 <script src="../js/openAIKey.js" defer></script>
-<script src="../js/pdf-viewer.js" defer></script>
 <script src="../js/tab.js" defer></script>
 <script src="../js/headerBar.js" defer></script>
+
+<script src="../js/pdf-viewer.js" defer></script>
+<script src="../js/image-viewer.js" defer></script>
 
 <script src="../js/courseManagement.js" defer></script>
 <script src="../js/Course.js" defer></script>

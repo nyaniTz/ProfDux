@@ -53,8 +53,8 @@ function fetchLocalization(text){
 
         "save": { "en": "Save", "tr" : "Kaydet" },
         "teacher": { "en": "Teacher", "tr" : "Öğretmen"},
-        "hello": {"en" : "Hello", "tr" : "Oh Well"},
-
+        "weight assignments": {"en" : "Weight Assignments", "tr" : "Ağırlıkları Ata"},
+        "timetable": {"en": "Timetable", "tr": "Ders Programı"},
     }
 
     let escape =  { "en" : text, "tr" : text }

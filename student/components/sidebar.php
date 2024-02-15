@@ -46,7 +46,7 @@
 
         <a class="sidebar-link" data-id="Documents" href="Documents.php">
             <img src="../assets/icons/fi/fi-rr-document.svg" alt="">
-            <p>Documents</p>
+            <p>E-book</p>
         </a>
 
         <a class="sidebar-link" data-id="Settings" href="Settings.php">

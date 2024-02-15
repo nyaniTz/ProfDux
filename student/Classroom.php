@@ -8,6 +8,10 @@
 
         <?php include '../include/studentImports.php'; ?>
 
+        <link rel="stylesheet" href="../css/classroom.css">
+        <script src="../js/Classroom.js" defer></script>
+
+
     </head>
     <body>
 
@@ -19,7 +23,7 @@
                 
                 <div class="centered-container">
 
-                    <h1>Select a course</h1>
+                    <h1 class="medium-title">Select a course</h1>
 
                     <div class="course-view-container mini-container">
 
@@ -33,11 +37,13 @@
                     </div>
 
                     <div class="classroom-outer-container">
-                        <div class="classroom-course-title">Water Theory</div>
-                        <div class="classroom-course-code">C005</div>
+                        <div class="classroom-header-elements-container">
+                            <h1 class="classroom-course-title"></h1>
+                            <h3 class="classroom-course-code"></h3>
+                        </div>
 
                         <!-- TODO: Refactor this element's class to outer-main-classroom-container -->
-                        <div class="classroom-outline-container"></div>
+                        <div class="outer-main-classroom-container"></div>
                     </div>
         
                </div>
@@ -50,6 +56,28 @@
             .classroom-inner-overlay {
                 grid-template-rows: auto 1fr;
             }
+
+            .classroom-header-elements-container{
+                margin-bottom: 20px;
+                display: grid;
+                grid-gap: 10px;
+            }
+
+            .classroom-course-title{
+                color: var(--accent);
+            }
+
+            .classroom-course-code{
+                color: var(--dark-gray);
+            }
+
+            .course-view-container .mini-container {
+                grid-template-columns: 1fr;
+            }
+
+            .course-view-container .mini-container {
+                
+            }
         </style>
 
         <script>
@@ -58,6 +86,7 @@
                 // TODO: Use a different function to call this one
                 loadCourses("mine");
             })
+
         </script>
     </body>
 </html>

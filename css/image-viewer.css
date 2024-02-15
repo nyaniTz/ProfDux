@@ -1,0 +1,31 @@
+.image-viewer-overlay{
+  display: none;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(63, 63, 63, 0.8);
+  z-index: 100;
+}
+
+.image-viewer {
+  position: relative;
+  display: grid;
+  background-color: rgb(141, 141, 141);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0,0.06) 0px 0px 0px 1px; 
+  border-radius: 10px;
+  overflow: hidden;
+  place-self: center;
+}
+
+.image-viewer-overlay .close-button {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.clickable {
+  cursor: pointer;
+  text-decoration: underline;
+}

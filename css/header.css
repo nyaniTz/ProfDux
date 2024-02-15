@@ -1,8 +1,10 @@
 .header {
-    position: relative;
+    position: fixed;
+    top: 0px;
     width: 100vw;
     border-bottom: 1.5px solid var(--border-fade);
     background: white;
+    z-index: 1;
     display: grid;
     grid-gap: 20px;
     grid-template-columns: 1fr auto;

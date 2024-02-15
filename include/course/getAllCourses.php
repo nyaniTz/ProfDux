@@ -4,14 +4,13 @@
 
     $conn = OpenConnection();
 
-    $id = $_POST['id'];
-
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
     }
 
     $query = "
         SELECT * FROM `courses`
+        ORDER BY courses.id
     ";
 
     $coursesResult = mysqli_query($conn,$query);

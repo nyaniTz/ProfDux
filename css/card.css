@@ -35,11 +35,11 @@
 
 .course-card-title{
     font-weight: 200;
-    font-size: 1.7em;
-    /* hyphens: auto;
-    word-wrap: auto; */
-    word-break: break-all;
+    font-size: 1.3em;
     letter-spacing: 1px;
+    hyphens: auto;
+    word-break: break-word;
+    word-wrap: break-word;
 }
 
 .course-card-image {
@@ -64,4 +64,40 @@
     position: absolute;
     height: 100%;
     width: 100%;
+}
+
+/* CHANGES FOR CARD LOOKS FOR STUDENT SELECTION */
+
+.mini-container {
+    width: 600px;
+}
+
+.mini-container .course-card {
+    height: unset;
+    width: 100%;
+    padding: 20px;
+    grid-column: 1/-1;
+}
+
+.mini-container .course-card img {
+    height: auto;
+    width: 100%;
+}
+
+.subscription-icon {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+}
+
+.subscription-icon img {
+    height: 13px;
 }

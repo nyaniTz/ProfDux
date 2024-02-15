@@ -9,7 +9,7 @@
             <text>Save</text>
         </div>
         <div class="button" id="addNewLecture">
-            <text>Add New Lecture</text>
+            <p>Add New Lecture</p>
         </div>
     </div>
 </div>

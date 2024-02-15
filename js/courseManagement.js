@@ -195,11 +195,13 @@ async function loadCourses(options = "id"){
 
     courseViewContainer.innerHTML = loader;
 
-    let { id } = await getGlobalDetails();
+    let { id:userID } = await getGlobalDetails();
+
+    console.log("userID: ", userID);
 
     try {
 
-        const params = `id=${id}`;
+        const params = `id=${userID}`;
 
         console.log(params);
 
@@ -229,7 +231,7 @@ async function loadCourses(options = "id"){
 
             if(result && result.length > 0) {
                 console.log("so far so good.");
-                loadCoursesUI(result, options);
+                loadCoursesUI(result, options, userID);
             }
             else {
 
@@ -237,13 +239,13 @@ async function loadCourses(options = "id"){
                 courseViewContainer.innerHTML = "";
 
                 switch(options){
-                    case "id": 
+                    case "id":  // Refactor this to be "teacher"
                         courseViewContainer.appendChild(emptyView);
                     break;
-                    case "all":
+                    case "all": // Refactor this to be "student subscriptions"
                         courseViewContainer.appendChild(studentEmptyView);
                         ;
-                    case "mine":
+                    case "mine": // Refactor this to be "mine -- or -- classview"
                         courseViewContainer.appendChild(myEmptyView);
                         ;
                 }
@@ -254,13 +256,17 @@ async function loadCourses(options = "id"){
 
     }
 
-    function loadCoursesUI(coursesObject, options){
+    function loadCoursesUI(coursesObject, options, userID){
+
+        console.log("userID: ", userID);
 
         courseViewContainer.innerHTML = "";
 
-        coursesObject.map( course => {
+        coursesObject.map( async (course) => {
 
-            const { id, title, image, courseCode,  } = course;
+            console.log("this course: ", course);
+
+            const { id, title, image, courseCode } = course;
 
             let courseCard = createElement("div", "course-card");
 
@@ -286,6 +292,8 @@ async function loadCourses(options = "id"){
             courseCard.appendChild(cardText);
             courseCard.appendChild(cardOverlay);
 
+            let subscriptionResult = await getCourseSubscriptionStatus(id, userID);
+
             courseCard.addEventListener("click", () => {
                 switch(options){
                     case "id": 
@@ -293,6 +301,7 @@ async function loadCourses(options = "id"){
                     break;
                     case "all":
                         // TODO: Using Subscriptions, toggle different popups.
+                        subscriptionEvent()();
                         break;
                     case "mine":
                         goToCourse(id);
@@ -300,14 +309,54 @@ async function loadCourses(options = "id"){
                 }
             });
 
+            // This is the subscription part for the student view.
+            let subscriptionIcon = document.createElement("div");
+            subscriptionIcon.className = "subscription-icon";
+            let tickImageElement = document.createElement("img");
+            tickImageElement.src = "../assets/icons/check.png";
+            subscriptionIcon.appendChild(tickImageElement);
+
+            try {
+                if(subscriptionResult[0].status == "true"){
+                    courseCard.appendChild(subscriptionIcon);
+                }
+            }catch(error){
+
+            }         
+            // ENDS HERE
+
             courseViewContainer.appendChild( courseCard );
+        });
+
+        function subscriptionEvent(type){
+
+            switch(type){
+                case "true":
+                    return showDeRegisterPopup();
+                case "false":
+                    return showRegisterPopup();
+            }
+        
+        }
+
+    }
+
+    async function getCourseSubscriptionStatus(id, userID){
+
+        return await AJAXCall({
+            phpFilePath: "../include/course/getSubscriptionStatus.php",
+            rejectMessage: "Getting Status Failed",
+            params: `id=${id}&&userID=${userID}`,
+            type: "fetch"
         });
 
     }
 
     function goToCourse(id){
 
+        console.log("curent id:", id);
         openPopup(".classroom-inner-overlay");
+        renderCourseOutline(id);
 
     }
 

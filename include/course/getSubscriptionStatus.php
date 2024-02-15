@@ -5,16 +5,16 @@
     $conn = OpenConnection();
 
     $id = $_POST['id'];
+    $userID = $_POST['userID'];
 
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
     }
 
     $query = "
-    SELECT courses.id, courses.courseCode, courses.title, courses.semester, courses.creatorID, courses.image, subscriptions.status
-    FROM `courses` 
-    INNER JOIN subscriptions ON subscriptions.courseID = courses.id
-    WHERE subscriptions.userID = '$id'
+        SELECT status FROM `subscriptions`
+        INNER JOIN courses ON courses.id = subscriptions.courseID
+        WHERE subscriptions.userID = '$userID' AND subscriptions.courseID = '$id'
     ";
 
     $coursesResult = mysqli_query($conn,$query);

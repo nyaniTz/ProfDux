@@ -42,7 +42,8 @@ class Course {
 
     renderTitle(){
         let titleElement = findElement("#course-title");
-        let textElement = createLocalizedTextElement(this.title);
+        let textElement = document.createElement("p");
+        textElement.textContent = this.title;
         titleElement.innerHTML = "";
         titleElement.appendChild(textElement);
     }
@@ -308,7 +309,7 @@ class Course {
 
         let attachButton = document.createElement("div");
         attachButton.className = "attachments-button";
-        attachButton.innerHTML = `<img src="../assets/icons/fi/fi-rr-paperclip-vertical.svg" alt="">`;
+        attachButton.innerHTML = `<img class="icon" src="../assets/icons/fi/fi-rr-paperclip-vertical.svg" alt="">`;
         attachButton.addEventListener("click", () => {
             openUploadOverlay(id);
         });
