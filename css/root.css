@@ -70,6 +70,18 @@ body {
     place-items: center;
     text-align: center;
     font-size: 0.8em;
+    transition: 0.3s;
+    border: none;
+}.button:hover {
+    transform: scale(1.07);
+}
+
+.button.disabled, button[disabled]{
+    background-color: var(--light-gray);
+    color: var(--medium-gray);
+    cursor: not-allowed;
+} button[disabled]:hover {
+    transform: scale(1);
 }
 
 .inner-header {

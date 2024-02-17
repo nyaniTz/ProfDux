@@ -45,7 +45,8 @@
         "../js/pdf-viewer.js",
         "../js/image-viewer.js",
         "../js/courseManagement.js",
-        "../js/Course.js"
+        "../js/Course.js",
+        "../js/Quiz.js"
     );
 
     foreach ($cssPaths as $path) {
