@@ -71,11 +71,20 @@
                     
                 }
 
+                $quizQuery = "
+                SELECT *
+                FROM `quiz` WHERE lectureID = '$lectureID'
+                ";
+
+                $quizResult = mysqli_query($conn,$quizQuery);
+                $quizzes = mysqli_fetch_all($quizResult,MYSQLI_ASSOC);
+
                 $lectureArray[] = array(
                     "id" => $lectureID,
                     "title" => $lecture['title'],
                     "hierarchy" => $lecture['hierarchy'],
-                    "subtopics" => $subtopicArray
+                    "subtopics" => $subtopicArray,
+                    "quizzes" => $quizzes
                 );
 
             }

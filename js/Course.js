@@ -97,6 +97,8 @@ class Course {
             addSubtopicButton.className = "add-subtopic-button";
             addSubtopicButton.innerHTML = `<img src="../assets/icons/fi/fi-rr-plus.svg" alt="">`;
 
+            //TODO: add/show addQuiz/editQuiz button if subtopicCount is larger than 1;
+
             let subtopicsContainer = document.createElement("div");
             subtopicsContainer.className = "subtopics-container";
 
@@ -114,6 +116,13 @@ class Course {
                 subtopicsContainer.appendChild(subtopicInputElement);
             })
 
+            lecture.quizzes.forEach( quiz => {
+
+                const quizRow = this.createQuizRow(quiz);
+                subtopicsContainer.appendChild(quizRow);
+
+            })
+
             lectureInnerContainer.appendChild(subtopicsContainer);
             lectureSection.appendChild(addSubtopicButton);
             lectureSection.appendChild(itemizationElement);
@@ -121,6 +130,40 @@ class Course {
             courseGridContainer.appendChild(lectureSection);
 
         });
+
+    }
+
+    createQuizRow(quizObject){
+
+        let {
+            courseID,
+            dateGenerated,
+            filename,
+            id,
+            lectureID,
+            name,
+            totalMarks,
+            hierarchy
+        } = quizObject;
+
+        let quizRowContainer = document.createElement("div");
+        quizRowContainer.className = "quiz-row-container";
+
+        let quizFilename = document.createElement("div");
+        quizFilename.className = "quiz-row-name";
+        quizFilename.textContent = name;
+
+        let editButton = document.createElement("div");
+        editButton.className = "button quiz-edit-button";
+        editButton.textContent = "edit quiz";
+
+        editButton.addEventListener("click", () => {
+            startEditingQuiz(filename);
+        })
+
+        quizRowContainer.appendChild(quizFilename);
+        quizRowContainer.appendChild(editButton);
+        return quizRowContainer;
 
     }
 
@@ -361,7 +404,7 @@ async function fetchCourseWithID(givenID){
         type: "fetch"
     });
 
-    console.log(courses[0]);
+    console.log("Main Course Object: ",courses[0]);
     if(courses[0].status == "error") return;
 
     setTimeout(() => {

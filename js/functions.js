@@ -410,7 +410,7 @@ async function saveQuizAsJSON(filename, ArrayContainingObjects, type){
 
     try{
         let result = await AJAXCall({
-            phpFilePath: "saveJSONData.php",
+            phpFilePath: "../include/saveJSONData.php",
             rejectMessage: "saving json file failed",
             params: `filepath=${correctPath}&&jsonString=${JSONString}`,
             type: "post"

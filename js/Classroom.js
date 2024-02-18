@@ -13,6 +13,9 @@ class Classroom {
         this.lectures = lectures;
         this.courseObject = courseObject;
         this.id = id
+
+        // console.log("lecture Object", lectures)
+        // console.log("course Object", courseObject)
     }
 
     renderTitle(){
@@ -61,6 +64,50 @@ class Classroom {
                 mainClassroomLectureInnerContainer.appendChild(mainClassroomSubtopicContainer);
 
             });
+
+
+            lecture.quizzes.forEach( quiz => {
+
+                let { filename } = quiz;
+                
+                const quizClassroomSubtopicContainer = document.createElement("div");
+                quizClassroomSubtopicContainer.className = "main-classroom-subtopic-container";
+
+                const quizSubtopicItem = document.createElement("div");
+                quizSubtopicItem.className = "main-classroom-subtopic-item";
+
+                const quizRowItemIcon = document.createElement("div");
+                quizRowItemIcon.className = "row-item-icon";
+
+                const quizRowItemIconImage = document.createElement("img");
+                quizRowItemIconImage.src = "../assets/icons/quiz.png";
+
+                quizRowItemIcon.appendChild(quizRowItemIconImage);
+
+                const quizRowItemText = document.createElement("div");
+                quizRowItemText.className = "row-item-text";
+                quizRowItemText.textContent = "Quiz";
+
+                //TODO: fetch quiz grades if quiz has been done for resumability
+                // and review.
+
+                const quizRowItemButton = document.createElement("div");
+                quizRowItemButton.className = "row-item-action quiz-action";
+                quizRowItemButton.textContent = "start";
+
+                quizRowItemButton.addEventListener('click', () => {
+                    startQuiz(filename);
+                });
+
+                quizSubtopicItem.appendChild(quizRowItemIcon)
+                quizSubtopicItem.appendChild(quizRowItemText)
+                quizSubtopicItem.appendChild(quizRowItemButton)
+
+                quizClassroomSubtopicContainer.appendChild(quizSubtopicItem);
+
+                mainClassroomLectureInnerContainer.appendChild(quizClassroomSubtopicContainer);
+
+            })
 
             mainClassroomLectureContainer.appendChild(mainClassroomLectureHeader);
             mainClassroomLectureContainer.appendChild(mainClassroomLectureInnerContainer);
@@ -137,14 +184,12 @@ async function renderCourseOutline(givenID){
         type: "fetch"
     });
 
-    console.log(courses);
+    console.log("courses 0 :", courses[0]);
 
     let classroom = new Classroom(courses[0]);
 
     classroom.renderTitle();
     classroom.renderCourseCode();
     classroom.renderCourseOutline();
-
-    console.log(courses);
 
 }

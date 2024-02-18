@@ -289,7 +289,7 @@ async function startQuiz(filename, type="new"){
             break;
     }
 
-    let quizFileResponse = await fetch(correctPath);
+    let quizFileResponse = await fetch(correctPath, {cache: "reload"});
     let questions = await quizFileResponse.json();
 
     let questionsArray = questions.map( question => {

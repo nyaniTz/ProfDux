@@ -238,7 +238,7 @@ async function startEditingQuiz(filename, type="teacher"){
 
     let correctPath = `../quiz/generated/${filename}`;
 
-    let quizFileResponse = await fetch(correctPath);
+    let quizFileResponse = await fetch(correctPath, {cache: "reload"});
     let questions = await quizFileResponse.json();
 
     let questionsArray = questions.map( question => {
@@ -259,7 +259,7 @@ async function startEditingQuiz(filename, type="teacher"){
         }
     });
 
-    console.log("qa: ", questionsArray);
+    // console.log("qa: ", questionsArray);
 
     let quiz = new EditQuiz(questionsArray, type, filename);
 
@@ -267,10 +267,6 @@ async function startEditingQuiz(filename, type="teacher"){
     let previousButton = editQuizOverlay.querySelector(".previous-question");
     let nextButton = editQuizOverlay.querySelector(".next-question");
     let saveButton = editQuizOverlay.querySelector(".save-button");
-    // let finishQuizButton = editQuizOverlay.querySelector(".finish-quiz-button");
-
-
-    console.log(nextButton, previousButton);
 
     quiz.setNextButton(nextButton);
     quiz.setPreviousButton(previousButton);

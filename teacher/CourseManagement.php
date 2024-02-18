@@ -118,5 +118,8 @@
         </script>
 
         <?php include 'components/uploadCourseMaterialOverlay.php'; ?>
+
+        <?php include 'components/editQuizOverlay.php'; ?>
+
     </body>
 </html>

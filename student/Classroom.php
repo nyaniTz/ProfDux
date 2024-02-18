@@ -50,6 +50,9 @@
             </div>
         </div>
 
+        <?php include 'components/quizOverlay.php'; ?>
+
+
         <style>
 
             .classroom-inner-overlay {
