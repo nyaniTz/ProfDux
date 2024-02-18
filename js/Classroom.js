@@ -118,7 +118,7 @@ class Classroom {
 function extractType(type){
     
     switch(type){
-        //TODO: refactor so that any image types cna be accepted
+        //TODO: refactor so that any image types can be accepted
         case "image/png":
         case "image/jpg":
         case "image/jpeg":    

@@ -1,4 +1,4 @@
-class Quiz {
+class EditQuiz {
 
     filename
     minimumQuizNumber = 0;
@@ -7,7 +7,7 @@ class Quiz {
     questions = []
     nextButton
     previousButton
-    finishQuizButton
+    saveButton
     type
 
     renderQuestionNumber(questionNumber){
@@ -22,10 +22,10 @@ class Quiz {
 
     }
 
-    constructor(questions, type, filename = `Quiz-${uniqueID(2)}.json`){
+    constructor(questions, type, filename ){
 
         this.filename = filename;
-        this.questions = questions; // randomize(questions);
+        this.questions = questions;
         this.maximumQuizNumber = questions.length - 1;
         this.type = type
 
@@ -33,33 +33,19 @@ class Quiz {
         
     }
 
-    startQuiz(){
+    startEdittingQuiz(){
         this.renderQuestion();
     }
 
-    autoSave(){
+    // autoSave(){
 
-        //TODO: Consider saving as sessionStorage?
-        // or having a timer to save every 60 seconds
+    //     //TODO: Consider saving as sessionStorage?
+    //     // or having a timer to save every 60 seconds
+    //     this.saveQuiz();
+    // }
+
+    saveQuiz(){
         saveQuizAsJSON(this.filename, this.questions, this.type);
-    }
-
-    endQuiz(){
-
-        console.log("[2] filename: ", this.filename);
-
-        handleEndQuiz({
-            filename: this.filename,
-            questions: this.questions,
-            type: this.type
-        });
-    }
-
-    setFinishQuizButton(button){
-        this.finishQuizButton = button;
-        this.finishQuizButton.addEventListener("click", () => {
-            this.endQuiz();
-        })
     }
     
     renderQuestion(){
@@ -93,9 +79,16 @@ class Quiz {
         })
     }
 
+    setSaveButton(button){
+        this.saveButton = button;
+        this.saveButton.addEventListener("click", () => {
+            this.saveQuiz();
+        })
+    }
+
     handleButtons(){
 
-        this.autoSave();
+        // this.autoSave();
 
         if(this.currentQuizNumber == 0){
             this.nextButton.removeAttribute("disabled");
@@ -109,13 +102,12 @@ class Quiz {
         
         if(this.currentQuizNumber == this.maximumQuizNumber ){
             this.nextButton.setAttribute("disabled","true");
-            this.finishQuizButton.parentElement.style.display = "grid";
         } 
     }
-
+    
 }
 
-class MultipleChoice extends Question {
+class EditMultipleChoice extends Question {
 
     constructor(questionObject, marksWorth = 1){
         // randomize answer options
@@ -126,8 +118,13 @@ class MultipleChoice extends Question {
     render(){
 
         let question = document.createElement("div");
-        question.className = "question";
+        question.setAttribute("contentEditable","true");
+        question.className = "question editable";
         question.textContent = this.question;
+
+        question.addEventListener("input", event => {
+            this.question = event.target.textContent;
+        })
 
         let answerOptionsList = document.createElement("div");
         answerOptionsList.className = "answer-options-list";
@@ -147,8 +144,13 @@ class MultipleChoice extends Question {
             letterOption.textContent = letters[index];
     
             let answerOption = document.createElement("div");
-            answerOption.className = "answer-option";
+            answerOption.setAttribute("contentEditable","true");
+            answerOption.className = "answer-option editable";
             answerOption.textContent = option;
+
+            answerOption.addEventListener("input", event => {
+                this.answerOptions[index] = event.target.textContent;
+            })
 
             answerOptionContainer.addEventListener("click", () => {
 
@@ -174,7 +176,7 @@ class MultipleChoice extends Question {
     }
 }
 
-class TrueAndFalse extends Question {
+class EditTrueAndFalse extends Question {
 
     constructor(questionObject, marksWorth = 1){
         super(questionObject);
@@ -232,62 +234,9 @@ class TrueAndFalse extends Question {
     }
 }
 
-async function handleEndQuiz(quizObject){
+async function startEditingQuiz(filename, type="teacher"){
 
-    let {
-        filename,
-        questions,
-        type
-    } = quizObject;
-
-    saveQuizAsJSON(filename, questions, type);
-
-    let { result, totalMarks } = mark(questions);
-
-    let quizBody = document.querySelector(".quiz-popup-body");
-    let resultsBody = document.querySelector(".quiz-results-body");
-    let footers = quizBody.parentElement.querySelectorAll(".popup-footer");
-
-    let resultArea = document.querySelector(".quiz-result-area");
-    resultArea.textContent = `${result}/${totalMarks}`;
-
-    footers.forEach( footer => footer.style.display = "none");
-    quizBody.style.display = "none";
-
-    //TODO: save results to database
-    //TODO: show saving animation
-    // then ...
-    resultsBody.style.display = "grid";
-
-}
-
-function mark(questions){
-
-    let result = 0;
-    let totalMarks = 0;
-
-    questions.forEach( question => {
-        if(question.answer == question.inputAnswer)
-            result += question.marksWorth;
-        totalMarks += question.marksWorth;
-    })
-
-    return { result, totalMarks };
-
-}
-
-async function startQuiz(filename, type="new"){
-
-    let correctPath;
-
-    switch(type){
-        case "resume":
-            correctPath = `../quiz/taken/${filename}`;
-            break;
-        case "new":
-            correctPath = `../quiz/generated/${filename}`;
-            break;
-    }
+    let correctPath = `../quiz/generated/${filename}`;
 
     let quizFileResponse = await fetch(correctPath);
     let questions = await quizFileResponse.json();
@@ -297,12 +246,12 @@ async function startQuiz(filename, type="new"){
             case "mcq":
             case "multiple choice":
             case "multiple choice question":
-                return new MultipleChoice(question);
+                return new EditMultipleChoice(question);
             case "true and false":
             case "t and f":
             case "t/f":
             case "true/false":
-                return new TrueAndFalse(question);
+                return new EditTrueAndFalse(question);
             case "fill in the blank":
                 // return new FillInTheBlank(question);
             default:
@@ -310,34 +259,24 @@ async function startQuiz(filename, type="new"){
         }
     });
 
-    let quiz;
+    console.log("qa: ", questionsArray);
 
-    switch(type){
-        case "resume":
-            quiz = new Quiz(questionsArray, type, filename)
-            break;
-        case "new":
-            quiz = new Quiz(questionsArray, type)
-            break;
-    }
+    let quiz = new EditQuiz(questionsArray, type, filename);
 
-    let previousButton = document.querySelector(".previous-question");
-    let nextButton = document.querySelector(".next-question");
-    let finishQuizButton = document.querySelector(".finish-quiz-button");
+    let editQuizOverlay = document.querySelector(".edit-quiz-overlay");
+    let previousButton = editQuizOverlay.querySelector(".previous-question");
+    let nextButton = editQuizOverlay.querySelector(".next-question");
+    let saveButton = editQuizOverlay.querySelector(".save-button");
+    // let finishQuizButton = editQuizOverlay.querySelector(".finish-quiz-button");
+
+
+    console.log(nextButton, previousButton);
 
     quiz.setNextButton(nextButton);
     quiz.setPreviousButton(previousButton);
-    quiz.setFinishQuizButton(finishQuizButton);
+    quiz.setSaveButton(saveButton);
 
-    let quizBody = document.querySelector(".quiz-popup-body");
-    let resultsBody = document.querySelector(".quiz-results-body");
-    let buttonGroupFooter = document.querySelector(".button-group-footer");
-
-    quizBody.style.display = "grid"
-    buttonGroupFooter.style.display = "grid"
-    resultsBody.style.display = "none"
-
-    quiz.startQuiz();
-    openPopup('.take-quiz-overlay');
+    quiz.startEdittingQuiz();
+    openPopup('.edit-quiz-overlay');
 
 }

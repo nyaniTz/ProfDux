@@ -42,7 +42,6 @@
                             <h3 class="classroom-course-code"></h3>
                         </div>
 
-                        <!-- TODO: Refactor this element's class to outer-main-classroom-container -->
                         <div class="outer-main-classroom-container"></div>
                     </div>
         

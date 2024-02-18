@@ -1,3 +1,5 @@
+const letters = "abcdefghijklmnopqrstuvwxyz".split("");
+
 function truncateString(string, limit = 30) {
     return string.substring(0, limit) + "...";
 }
@@ -331,6 +333,96 @@ function camelCase(word){
     .replace(/-([a-z])/g, function(k){
         return k[1].toUpperCase();
     });
+}
+
+async function fetchOpenAIKey(phpFilePath = "../include/openAIKey.php"){
+
+    return await AJAXCall({
+        phpFilePath,
+        rejectMessage: "Key Not Fetched",
+        params: '',
+        type: "fetch"
+    });
+
+}
+
+async function generateGPTResponseFor(prompt) {
+
+    const response = await fetchOpenAIKey();
+    let apiKey = response[0].value;
+
+    const endpoint = 'https://api.openai.com/v1/chat/completions';
+
+    try {
+
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                model: 'gpt-3.5-turbo',
+                messages: [
+                    {
+                    role: 'system',
+                    content: 'You are a helpful assistant.'
+                    },
+                    {
+                    role: 'user',
+                    content: prompt
+                    }
+                ],
+                response_format: {"type": "json_object"}
+            })
+        });
+
+        const data = await response.json();
+        console.log('HERE IS DATA FROM GPT: ', data);
+        return data.choices[0].message.content;
+
+    } catch (error) {
+        console.error('Error fetching response:', error);
+        return null;
+    }
+}
+
+async function saveQuizAsJSON(filename, ArrayContainingObjects, type){
+
+    let JSONString = JSON.stringify(ArrayContainingObjects);
+
+    let correctPath;
+
+    switch(type){
+        case "student":
+        case "new":
+        case "resume":
+            correctPath = `../quiz/taken/${filename}`;
+            break;
+        case "teacher":
+        case "generated":
+            correctPath = `../quiz/generated/${filename}`;
+            break;
+    }
+
+    console.log("[3] correctPath: ", correctPath);
+    console.log("[4] jsonString: ", JSONString);
+
+    try{
+        let result = await AJAXCall({
+            phpFilePath: "saveJSONData.php",
+            rejectMessage: "saving json file failed",
+            params: `filepath=${correctPath}&&jsonString=${JSONString}`,
+            type: "post"
+        });
+
+        console.log("[5] async Result: ", result);
+
+    }catch(error){
+        //TODO: bubbleUpError()
+        console.log(error);
+    }
+
 }
 
 async function logout() {

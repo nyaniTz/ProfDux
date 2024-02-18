@@ -21,7 +21,8 @@
         "../css/popup.css",
         "../css/settings.css",
         "../css/pdf-viewer.css",
-        "../css/image-viewer.css"
+        "../css/image-viewer.css",
+        "../css/quiz.css",
     );
 
     // These are for javascript files that you want
@@ -46,6 +47,7 @@
         "../js/image-viewer.js",
         "../js/courseManagement.js",
         "../js/Course.js",
+        "../js/Question.js",
         "../js/Quiz.js"
     );
 

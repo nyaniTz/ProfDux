@@ -172,3 +172,26 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-gap: 30px;
 }
+
+.editable {
+    border: 2px solid transparent;
+    border-radius: 5px;
+    background-color: transparent;
+    cursor: text;
+    outline: none;
+    display: grid;
+    align-content: center;
+    color: var(--accent);
+    padding: 13px;
+}
+
+.editable:hover{
+    border-color: var(--accent);
+    cursor: pointer;
+    border-style: dashed;
+}
+
+.editable:focus {
+    border-color: var(--accent);
+    border-style: solid;
+}

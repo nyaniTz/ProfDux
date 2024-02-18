@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dux Teacher</title>
         <page data-id="Dashboard"></page> 
-        <!-- TODO: Make sure you change the data-id for every page -->
 
         <?php include '../include/teacherImports.php'; ?>
 

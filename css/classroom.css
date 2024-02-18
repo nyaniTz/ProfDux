@@ -34,7 +34,8 @@
 
 }
 
-.main-classroom-subtopic-container{
+.main-classroom-subtopic-container, 
+.main-classroom-quiz-container{
     display: grid;
     border-radius: 7.5px;
     overflow: hidden;

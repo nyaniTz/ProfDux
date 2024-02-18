@@ -334,8 +334,7 @@ class Course {
 
 }
 
-//TODO: Refactor to fetchCourseWithID
-async function fetchCoursesWithID(givenID){
+async function fetchCourseWithID(givenID){
 
     let courseGridContainer = findElement("#course-grid-container");
 
@@ -467,8 +466,3 @@ async function addSubtopicTitleToDatabase(subtopicObject){
     console.log(result);
 
 }
-
-
-
-// TODO:  create a function that fetches all the data and
-// compiles it into the object we need

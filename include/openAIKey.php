@@ -1,12 +1,14 @@
 <?php
     
-    include ("conn.php");
+    include "databaseConnection.php";
+
+    $conn = OpenConnection();
 
     $query = "SELECT * FROM `secrets` WHERE id = '5555'";
     $result = $conn->query($query);
 
     if($result){
-        $userDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        echo json_encode($userDetails);
+        $secretDetails = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        echo json_encode($secretDetails);
     }
 

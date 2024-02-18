@@ -393,7 +393,7 @@ async function loadCourses(options = "id"){
         let courseCode = document.querySelector("#course-code");
         courseCode.textContent = "";
         
-        fetchCoursesWithID(id);
+        fetchCourseWithID(id);
 
     }
 
