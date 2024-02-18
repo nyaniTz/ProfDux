@@ -10,6 +10,7 @@ class Quiz {
     nextButton
     previousButton
     finishQuizButton
+    type
 
     renderQuestionNumber(questionNumber){
         
@@ -23,11 +24,14 @@ class Quiz {
 
     }
 
-    constructor(questions, filename = `Quiz-${uniqueID(2)}.json`){
+    constructor(questions, type, filename = `Quiz-${uniqueID(2)}.json`){
 
         this.filename = filename;
         this.questions = questions; // randomize(questions);
         this.maximumQuizNumber = questions.length - 1;
+        this.type = type
+
+        console.log("[1] filename: ", filename);
         
     }
 
@@ -35,9 +39,22 @@ class Quiz {
         this.renderQuestion();
     }
 
+    autoSave(){
+
+        //TODO: Consider saving as sessionStorage?
+        // or having a timer to save every 60 seconds
+        saveQuizAsJSON(this.filename, this.questions, this.type);
+    }
+
     endQuiz(){
-        saveQuizAsJSON(this.filename, this.questions);
-        closePopup('.take-quiz-overlay');
+
+        console.log("[2] filename: ", this.filename);
+
+        handleEndQuiz({
+            filename: this.filename,
+            questions: this.questions,
+            type: this.type
+        });
     }
 
     setFinishQuizButton(button){
@@ -80,6 +97,8 @@ class Quiz {
 
     handleButtons(){
 
+        this.autoSave();
+
         if(this.currentQuizNumber == 0){
             this.nextButton.removeAttribute("disabled");
             this.previousButton.setAttribute("disabled", "true");
@@ -108,7 +127,6 @@ class Question {
     inputAnswer
     hardness
     marksWorth
-    marksGotten
 
     constructor(questionObject){
 
@@ -259,72 +277,148 @@ class TrueAndFalse extends Question {
     }
 }
 
+async function handleEndQuiz(quizObject){
+    let {
+        filename,
+        questions,
+        type
+    } = quizObject;
 
-async function saveQuizAsJSON(filename, ArrayContainingObjects){
+    saveQuizAsJSON(filename, questions, type);
+    let { result, totalMarks } = mark(questions);
+
+    let quizBody = document.querySelector(".quiz-popup-body");
+    let resultsBody = document.querySelector(".quiz-results-body");
+    let footers = document.querySelectorAll(".popup-footer");
+
+    let resultArea = document.querySelector(".quiz-result-area");
+    resultArea.textContent = `${result}/${totalMarks}`;
+
+    footers.forEach( footer => footer.style.display = "none");
+    quizBody.style.display = "none";
+
+    //TODO: save results
+    //TODO: show saving animation
+    // then ...
+    resultsBody.style.display = "grid";
+
+}
+
+function mark(questions){
+
+    let result = 0;
+    let totalMarks = 0;
+
+    questions.forEach( question => {
+        if(question.answer == question.inputAnswer)
+            result += question.marksWorth
+
+        totalMarks += question.marksWorth;
+    })
+
+    return { result, totalMarks };
+
+}
+
+async function saveQuizAsJSON(filename, ArrayContainingObjects, type){
 
     let JSONString = JSON.stringify(ArrayContainingObjects);
 
+    let correctPath;
+
+    switch(type){
+        case "student":
+        case "new":
+        case "resume":
+            correctPath = `../quiz/taken/${filename}`;
+            break;
+        case "teacher":
+            correctPath = `../quiz/generated/${filename}`;
+            break;
+    }
+
+    console.log("[3] correctPath: ", correctPath);
+    console.log("[4] jsonString: ", JSONString);
+
     try{
-        await AJAXCall({
+        let result = await AJAXCall({
             phpFilePath: "saveJSONData.php",
             rejectMessage: "saving json file failed",
-            params: `filename=${filename}&&jsonString=${JSONString}`,
+            params: `filepath=${correctPath}&&jsonString=${JSONString}`,
             type: "post"
         });
+
+        console.log("[5] async Result: ", result);
+
     }catch(error){
+        //TODO: bubbleUpError()
         console.log(error);
     }
 
 }
 
-let questions = [
-    {
-        question: "What is the capital of Turkey?", 
-        answerOptions: ["Istanbul", "Washington DC", "Beijing", "London"], 
-        answer: "Istanbul", 
-        type: "MCQ", 
-        hardness: "easy",
-        inputAnswer: ""
-    },
-    {
-        question: "What is the capital of Tanzania?", 
-        answerOptions: ["Beirut", "Dar es Salaam", "Moscow", "LA"], 
-        answer: "Dar es Salaam", 
-        type: "MCQ", 
-        hardness: "easy"
-    },
-    {
-        question: "What is the capital of Russia?", 
-        answerOptions: ["Canbera", "Monaco", "Moscow", "Norway"], 
-        answer: "Moscow", 
-        type: "MCQ", 
-        hardness: "easy"
-    }
-
-]
-
 //TODO: Load JSONFile from files
 //TODO: Parse JSONFile and Attempt to create a quiz map
 //TODO: This is for resumability
 
-let questionsArray = questions.map( question => {
-    switch(question.type){
-        case "MCQ":
-            return new MultipleChoice(question);
-        case "True and False":
-            return new TrueAndFalse(question);
+async function startQuiz(filename, type="new"){
+
+    //TODO: get quiz from correct quizFilePath
+
+    let correctPath;
+
+    switch(type){
+        case "resume":
+            correctPath = `../quiz/taken/${filename}`;
+            break;
+        case "new":
+            correctPath = `../quiz/generated/${filename}`;
+            break;
     }
-});
 
-let quiz = new Quiz(questionsArray, "Quiz-1n0jomwaflsqfnj8o.json");
+    let quizFileResponse = await fetch(correctPath);
+    let questions = await quizFileResponse.json();
+    
+    //TODO: loop through this map
+    let questionsArray = questions.map( question => {
+        switch(question.type){
+            case "MCQ":
+                return new MultipleChoice(question);
+            case "True and False":
+                return new TrueAndFalse(question);
+        }
+    });
 
-let previousButton = document.querySelector(".previous-question");
-let nextButton = document.querySelector(".next-question");
-let finishQuizButton = document.querySelector(".finish-quiz-button");
+    let quiz;
 
-quiz.setNextButton(nextButton);
-quiz.setPreviousButton(previousButton);
-quiz.setFinishQuizButton(finishQuizButton);
+    switch(type){
+        case "resume":
+            quiz = new Quiz(questionsArray, type, filename)
+            break;
+        case "new":
+            quiz = new Quiz(questionsArray, type)
+            break;
+    }
+
+    let previousButton = document.querySelector(".previous-question");
+    let nextButton = document.querySelector(".next-question");
+    let finishQuizButton = document.querySelector(".finish-quiz-button");
+
+    quiz.setNextButton(nextButton);
+    quiz.setPreviousButton(previousButton);
+    quiz.setFinishQuizButton(finishQuizButton);
+
+    let quizBody = document.querySelector(".quiz-popup-body");
+    let resultsBody = document.querySelector(".quiz-results-body");
+    let buttonGroupFooter = document.querySelector(".button-group-footer");
+
+    quizBody.style.display = "grid"
+    buttonGroupFooter.style.display = "grid"
+    resultsBody.style.display = "none"
+
+    quiz.startQuiz();
+    openPopup('.take-quiz-overlay');
+
+}
 
 
-quiz.startQuiz();

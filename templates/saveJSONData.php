@@ -1,10 +1,9 @@
 <?php
 
-$filename = $_POST['filename'];
-$path = 'json/'.$filename;
+$filepath = $_POST['filepath'];
 $jsonString = $_POST['jsonString'];
 
-$fp = fopen($path, 'w');
+$fp = fopen($filepath, 'w');
 fwrite($fp, $jsonString);
 fclose($fp);
 
