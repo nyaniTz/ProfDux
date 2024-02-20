@@ -83,6 +83,7 @@ class EditQuiz {
         this.saveButton = button;
         this.saveButton.addEventListener("click", () => {
             this.saveQuiz();
+            closePopup(".edit-quiz-overlay");
         })
     }
 
@@ -157,9 +158,10 @@ class EditMultipleChoice extends Question {
                 disableOtherOptions();
                 answerOptionContainer.className = "answer-option-container active";
 
-                this.inputAnswer = option;
-
             });
+
+            //TODO: have an option to select the correct answer, or show the
+            // correct answer
 
             answerOptionContainer.appendChild(letterOption);
             answerOptionContainer.appendChild(answerOption);

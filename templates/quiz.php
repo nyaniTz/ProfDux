@@ -45,6 +45,8 @@
             total: "10"
         }
 
+
+        // TODO: NOTE:startQuiz now has 3 parameters including a quizGradeID
         switch(quizStatus.status){
             case "not done":
                 quizButton.textContent = "Start Quiz"; // TODO: Localize

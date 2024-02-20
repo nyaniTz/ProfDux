@@ -8,10 +8,6 @@
 
         <?php include '../include/studentImports.php'; ?>
 
-        <link rel="stylesheet" href="../css/classroom.css">
-        <script src="../js/Classroom.js" defer></script>
-
-
     </head>
     <body>
 

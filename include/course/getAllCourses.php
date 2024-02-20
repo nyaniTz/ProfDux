@@ -10,7 +10,6 @@
 
     $query = "
         SELECT * FROM `courses`
-        ORDER BY courses.id
     ";
 
     $coursesResult = mysqli_query($conn,$query);

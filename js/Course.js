@@ -93,11 +93,28 @@ class Course {
             const badgeButton = this.createBadgeButton(lecture.id, resourcesCount);
             lectureInputElement.appendChild(badgeButton);
 
+            let floatingContainer = document.createElement("div");
+            floatingContainer.className = "lecture-floating-container";
+
             let addSubtopicButton = document.createElement("div");
             addSubtopicButton.className = "add-subtopic-button";
             addSubtopicButton.innerHTML = `<img src="../assets/icons/fi/fi-rr-plus.svg" alt="">`;
 
+            floatingContainer.appendChild(addSubtopicButton);
+
+            let generateQuizButton = document.createElement("div");
+            generateQuizButton.className = "button green-button generate-quiz-button";
+            generateQuizButton.textContent = "generate quiz";
+            // generateQuizButton.innerHTML = `<img src="../assets/icons/fi/fi-rr-plus.svg" alt="">`;
+            generateQuizButton.addEventListener("click", () => {
+                generateQuiz(lecture);
+            });
+
             //TODO: add/show addQuiz/editQuiz button if subtopicCount is larger than 1;
+
+            if(lecture.subtopics.length > 0 && lecture.quizzes.length == 0){
+                floatingContainer.appendChild(generateQuizButton);
+            }
 
             let subtopicsContainer = document.createElement("div");
             subtopicsContainer.className = "subtopics-container";
@@ -116,15 +133,19 @@ class Course {
                 subtopicsContainer.appendChild(subtopicInputElement);
             })
 
+            let quizContainer = document.createElement("div");
+            quizContainer.className = "subtopics-container quiz-container";
+
             lecture.quizzes.forEach( quiz => {
 
                 const quizRow = this.createQuizRow(quiz);
-                subtopicsContainer.appendChild(quizRow);
+                quizContainer.appendChild(quizRow);
 
             })
 
             lectureInnerContainer.appendChild(subtopicsContainer);
-            lectureSection.appendChild(addSubtopicButton);
+            lectureInnerContainer.appendChild(quizContainer);
+            lectureSection.appendChild(floatingContainer);
             lectureSection.appendChild(itemizationElement);
             lectureSection.appendChild(lectureInnerContainer);
             courseGridContainer.appendChild(lectureSection);
@@ -154,7 +175,7 @@ class Course {
         quizFilename.textContent = name;
 
         let editButton = document.createElement("div");
-        editButton.className = "button quiz-edit-button";
+        editButton.className = "button green-button quiz-edit-button";
         editButton.textContent = "edit quiz";
 
         editButton.addEventListener("click", () => {
@@ -189,6 +210,9 @@ class Course {
         const badgeButton = this.createBadgeButton(lectureID, 0);
         lectureInputElement.appendChild(badgeButton);
 
+        let floatingContainer = document.createElement("div");
+        floatingContainer.className = "lecture-floating-container";
+
         let addSubtopicButton = document.createElement("div");
         addSubtopicButton.className = "add-subtopic-button";
         addSubtopicButton.innerHTML = `<img src="../assets/icons/fi/fi-rr-plus.svg" alt="">`;
@@ -200,9 +224,11 @@ class Course {
             this.addSubtopicElement(lectureID, subtopicsContainer);
         });
 
+        floatingContainer.appendChild(addSubtopicButton);
+
         lectureInnerContainer.appendChild(lectureInputElement);
         lectureInnerContainer.appendChild(subtopicsContainer);
-        lectureSection.appendChild(addSubtopicButton);
+        lectureSection.appendChild(floatingContainer);
         lectureSection.appendChild(itemizationElement);
         lectureSection.appendChild(lectureInnerContainer);
         courseGridContainer.appendChild(lectureSection);
@@ -375,6 +401,75 @@ class Course {
         return badgeButton;
     }
 
+}
+
+async function generateQuiz(lectureObject){
+
+
+    let lectureID = lectureObject.id;
+    let lectureTitle = lectureObject.title;
+    let subtopicTitles = lectureObject.subtopics.map( 
+        subtopic => subtopic.title).join(", ");
+
+    console.log("subtopic Titles: ", subtopicTitles);
+
+
+    let language = "english"; //TODO: Toggle option.
+    let topic = subtopicTitles;
+    let educationEnvironment = "college students";
+
+    let multipleChoiceCount = 5; //10
+    let fillInTheBlankCount = 0; //2
+    let trueAndFalseCount = 0; //5
+
+    //TODO: figure out logic
+    let hardQuestionsCount = 2;
+    let mediumQuestionsCount = 2;
+    let easyQuestionsCount = 1;
+
+    let query = 
+    `create for me in json format a series of new questions 
+    in the ${language} language as well as their answers 
+    in the ${language} language in the topics of ${topic} 
+    for ${educationEnvironment}. 
+    There should be ${multipleChoiceCount} choice questions
+    with a minimum of 4 answer options that do not include letters
+    at the beginning of themselves. There should be  
+    ${fillInTheBlankCount} fill in the blank questions and 
+    ${trueAndFalseCount} true and false questions. 
+    ${hardQuestionsCount} of those questions should be hard, 
+    ${mediumQuestionsCount} should be medium and 
+    ${easyQuestionsCount} should be easy. 
+    The json format should have the following keys, 
+    "question, answerOptions, answer, type, hardness". 
+    The answerOptions should only be available if the 
+    question type is multiple choice.`;
+
+    let unparsedJSONResponse = await generateGPTResponseFor(query);
+    let questions = await JSON.parse(unparsedJSONResponse);
+    console.log(questions);
+
+    let filename = `Quiz-${uniqueID(2)}.json`;
+    saveQuizAsJSON(filename, questions.questions, "generated");
+
+    let quizID = uniqueID(1);
+    let courseID = "lshj44zm";
+    let name = "Quiz"; // ...
+    let dateGenerated = "Today"; // TODO: ...
+    let heirarchy = ""; // ...
+    let totalMarks = ""; // ...
+
+    let params = `id=${quizID}&&courseID=${courseID}&&lectureID=${lectureID}&&name=${name}&&dateGenerated=${dateGenerated}&&filename=${filename}`;
+
+    let response = AJAXCall({
+        phpFilePath: "../include/quiz/addNewQuiz.php",
+        rejectMessage: "New Quiz Failed To Add",
+        params,
+        type: "post"
+    });
+
+    console.log("quiz generation response: ", response);
+    
 }
 
 async function fetchCourseWithID(givenID){

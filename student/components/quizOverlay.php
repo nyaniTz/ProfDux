@@ -1,9 +1,11 @@
 <div class="overlay take-quiz-overlay">
     <div class="popup quiz-popup">
         <div class="popup-header">
-            <div class="close-button" onclick="closePopup('.take-quiz-overlay')">
+            <!-- <div class="close-button" onclick="
+            closePopup('.take-quiz-overlay');
+            ">
                 <img src="../assets/icons/close.png" alt="">
-            </div>
+            </div> -->
             <h1 class="pop-up-title">
                 <div class="quiz-details">Quiz</div>
             </h1> 
@@ -25,7 +27,10 @@
 
             <div class="quiz-result-area"></div>
 
-            <div class="button" onclick="closePopup('.take-quiz-overlay')">Done</div>
+            <div class="button" onclick="
+            closePopup('.take-quiz-overlay');
+            refreshCourseOutline();
+            ">Done</div>
         </div>
 
         <div class="popup-footer button-group-footer">
@@ -38,5 +43,19 @@
         <div class="popup-footer submit-footer">
             <button class="button finish-quiz-button">Submit Quiz</button>
         </div>
+
+
+        <div class="loader-view take-quiz-loader">
+            <div>
+                <div class="sk-fold">
+                    <div class="sk-fold-cube"></div>
+                    <div class="sk-fold-cube"></div>
+                    <div class="sk-fold-cube"></div>
+                    <div class="sk-fold-cube"></div>
+                </div>
+                <p>...</p>
+            </div>
+        </div>
+
     </div>
 </div>

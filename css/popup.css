@@ -8,7 +8,9 @@
     border-radius: 10px;
     background: white;
     width: 600px;
+    min-height: 500px;
     transition: 0.4s;
+    overflow: hidden;
 }
 
 .overlay{
@@ -71,6 +73,7 @@
     place-items: center;
     grid-gap: 50px;
     box-sizing: border-box;
+    align-self: start;
 }
 
 .popup-body { border-bottom: none; padding: 2em; }

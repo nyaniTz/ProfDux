@@ -9,6 +9,7 @@ class Quiz {
     previousButton
     finishQuizButton
     type
+    quizGradeObject
 
     renderQuestionNumber(questionNumber){
         
@@ -22,25 +23,23 @@ class Quiz {
 
     }
 
-    constructor(questions, type, filename = `Quiz-${uniqueID(2)}.json`){
+    constructor(questions, quizGradeObject, type){
 
-        this.filename = filename;
+        this.filename = quizGradeObject.fileToSave; // ... TODO: write some documentation
         this.questions = questions; // randomize(questions);
         this.maximumQuizNumber = questions.length - 1;
-        this.type = type
-
-        console.log("[1] filename: ", filename);
+        this.type = type;
+        this.currentQuizNumber = 0;
+        this.quizGradeObject = quizGradeObject;
         
     }
 
     startQuiz(){
         this.renderQuestion();
+        this.handleButtons();
     }
 
     autoSave(){
-
-        //TODO: Consider saving as sessionStorage?
-        // or having a timer to save every 60 seconds
         saveQuizAsJSON(this.filename, this.questions, this.type);
     }
 
@@ -51,7 +50,8 @@ class Quiz {
         handleEndQuiz({
             filename: this.filename,
             questions: this.questions,
-            type: this.type
+            type: this.type,
+            quizGradeObject: this.quizGradeObject
         });
     }
 
@@ -65,6 +65,8 @@ class Quiz {
     renderQuestion(){
         this.renderQuestionNumber(this.currentQuizNumber);
         this.questions[this.currentQuizNumber].render();
+
+        console.log("current question index: ", this.currentQuizNumber);
     }
 
     nextQuestion(){
@@ -95,11 +97,10 @@ class Quiz {
 
     handleButtons(){
 
-        this.autoSave();
-
         if(this.currentQuizNumber == 0){
             this.nextButton.removeAttribute("disabled");
             this.previousButton.setAttribute("disabled", "true");
+            this.finishQuizButton.parentElement.style.display = "none";
         }
         
         if(this.currentQuizNumber > 0 && this.currentQuizNumber <= this.maximumQuizNumber ){
@@ -111,6 +112,10 @@ class Quiz {
             this.nextButton.setAttribute("disabled","true");
             this.finishQuizButton.parentElement.style.display = "grid";
         } 
+
+        if(this.currentQuizNumber % 3 == 0){
+            this.autoSave();
+        }
     }
 
 }
@@ -234,10 +239,13 @@ class TrueAndFalse extends Question {
 
 async function handleEndQuiz(quizObject){
 
+    openPopup('.take-quiz-loader');
+
     let {
         filename,
         questions,
-        type
+        type,
+        quizGradeObject
     } = quizObject;
 
     saveQuizAsJSON(filename, questions, type);
@@ -254,10 +262,72 @@ async function handleEndQuiz(quizObject){
     footers.forEach( footer => footer.style.display = "none");
     quizBody.style.display = "none";
 
-    //TODO: save results to database
-    //TODO: show saving animation
-    // then ...
-    resultsBody.style.display = "grid";
+    switch(type) {
+        case "new":
+            await updateNewQuizGrade(quizGradeObject, result);
+            break;
+        case "resume":
+            await updateOldQuizGrade(quizGradeObject, result);
+            break;
+    }
+
+    async function updateNewQuizGrade(quizGradeObject, marks){
+
+        let value = marks;
+
+        let {
+            id,
+            userID,	
+            quizID,	
+            fileToSave,
+        } = quizGradeObject;
+
+        let timeEnded = getCurrentTimeInJSONFormat();
+
+        let status = "done";
+
+        let params = `id=${id}&&userID=${userID}&&quizID=${quizID}`+
+        `&&filename=${fileToSave}&&status=${status}&&value=${value}`+
+        `&&timeEnded${timeEnded}`;
+
+        console.log("params to save: ", params);
+
+        let response = await AJAXCall({
+            phpFilePath: "../include/quiz/updateNewQuizGrade.php",
+            rejectMessage: "Failed to update new quiz grade",
+            type: "post",
+            params
+        });
+
+        console.log("adding marks response: ", response);
+
+    }
+
+    async function updateOldQuizGrade(quizGradeObject, marks){
+
+        let value = marks;
+        let { id } = quizGradeObject;
+        let timeEnded = getCurrentTimeInJSONFormat();
+
+        let params = `id=${id}&&value=${value}&&timeEnded=${timeEnded}`;
+
+        let response = await AJAXCall({
+            phpFilePath: "../include/quiz/updateOldQuizGrade.php",
+            rejectMessage: "Failed to update quiz grade",
+            type: "post",
+            params
+        });
+
+        console.log("adding marks response: ", response);
+
+    }
+
+    //TODO: then ... on close refresh page!!!
+    
+    setTimeout(() => {
+        resultsBody.style.display = "grid";
+        closePopup(".take-quiz-loader");
+    },2000)
 
 }
 
@@ -276,16 +346,24 @@ function mark(questions){
 
 }
 
-async function startQuiz(filename, type="new"){
+async function startQuiz(quizGradeObject, type="new"){
+
+    openPopup('.take-quiz-overlay');
+    openPopup(".take-quiz-loader");
+
+    let { fileToLoad, fileToSave } = quizGradeObject;
+
+    console.log("fileToLoad: ", fileToLoad);
+    console.log("fileToSave: ", fileToSave);
 
     let correctPath;
 
     switch(type){
         case "resume":
-            correctPath = `../quiz/taken/${filename}`;
+            correctPath = `../quiz/taken/${fileToLoad}`;
             break;
         case "new":
-            correctPath = `../quiz/generated/${filename}`;
+            correctPath = `../quiz/generated/${fileToLoad}`;
             break;
     }
 
@@ -310,14 +388,18 @@ async function startQuiz(filename, type="new"){
         }
     });
 
+    //TODO: start by saving the filename with the id of the quizGradeObject
+    // if the type is new
+
     let quiz;
 
     switch(type){
         case "resume":
-            quiz = new Quiz(questionsArray, type, filename)
+            quiz = new Quiz(questionsArray, quizGradeObject, type)
             break;
         case "new":
-            quiz = new Quiz(questionsArray, type)
+            quiz = new Quiz(questionsArray, quizGradeObject, type)
+            await addNewQuizGradeRowInDatabase(quizGradeObject);
             break;
     }
 
@@ -337,7 +419,37 @@ async function startQuiz(filename, type="new"){
     buttonGroupFooter.style.display = "grid"
     resultsBody.style.display = "none"
 
-    quiz.startQuiz();
-    openPopup('.take-quiz-overlay');
+    setTimeout(() => {    
+        quiz.startQuiz();
+        closePopup('.take-quiz-loader');
+    }, 2000);
+
+
+    // return quiz;
+
+}
+
+async function addNewQuizGradeRowInDatabase(quizGradeObject){
+
+    let {
+        id,
+        userID,	
+        quizID,	
+        fileToSave,
+    } = quizGradeObject;
+
+    let timeStarted = getCurrentTimeInJSONFormat();
+
+    let params = `id=${id}&&userID=${userID}&&quizID=${quizID}`+
+    `&&filename=${fileToSave}&&timeStarted=${timeStarted}&&status=started`;
+
+    let response = await AJAXCall({
+        phpFilePath: "../include/quiz/addNewQuizGradeRow.php",
+        rejectMessage: "Failed to create new quiz grade row",
+        type: "post",
+        params
+    });
+
+    console.log(response);
 
 }

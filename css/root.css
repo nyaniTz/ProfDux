@@ -84,6 +84,10 @@ body {
     transform: scale(1);
 }
 
+.green-button{
+    background: #1E883E;
+}
+
 .inner-header {
     display: grid;
     grid-template-columns: 1fr auto;
@@ -194,4 +198,25 @@ body {
 .editable:focus {
     border-color: var(--accent);
     border-style: solid;
+}
+
+.loader-view {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    --sk-color: var(--accent);
+    --sk-size: 50px;
+    background: var(--light-accent);
+    z-index: 10;
+    display: grid;
+    place-items: center;
+}
+.loader-view > * {
+    display: grid;
+    place-items: center;
+    grid-gap: 40px;
+}
+
+.loader-view p {
+    color: var(--accent);
 }

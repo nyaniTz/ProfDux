@@ -15,6 +15,7 @@
 .itemization {
     color: var(--accent);
     font-size: 2em;
+    grid-column: 1;
 }
 
 .lecture-inner-container {
@@ -52,6 +53,17 @@
     position: relative;
 }
 
+.lecture-floating-container{
+    position: absolute;
+    top: 100%;
+    margin-top: 20px;
+    background: transparent;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 1fr 1fr;
+    justify-self: center;
+}
+
 .add-subtopic-button, .delete-button{
     background: var(--accent);
     height: 40px;
@@ -60,14 +72,9 @@
     display: grid;
     place-items: center;
     margin-left: 50px;
-    justify-self: center;
 }
 
 .add-subtopic-button {
-    position: absolute;
-    top: 100%;
-    margin-top: 20px;
-    background: transparent;
     border: 3px solid var(--accent);
     opacity: 0.4;
     transition: 0.3s all;
@@ -75,6 +82,8 @@
     background: var(--accent); 
     opacity: 1;
 }
+
+/* generate-quiz-button */
 
 .delete-button {
     margin-left: 0px;

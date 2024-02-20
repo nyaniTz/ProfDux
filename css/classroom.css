@@ -92,4 +92,7 @@
 .quiz-action {
     background-color: #1E883E;
     border-color: #1E883E ;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
 }

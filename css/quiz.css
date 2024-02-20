@@ -203,6 +203,6 @@ h3 {
 
 .save-button{
     position: absolute;
-    top: 13px;
-    right: 13px;
+    right: 10px;
+    align-self: center;
 }

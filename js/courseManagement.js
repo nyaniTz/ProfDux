@@ -378,6 +378,8 @@ async function loadCourses(options = "id"){
 
         console.log("curent id:", id);
         openPopup(".classroom-inner-overlay");
+        let classRoomOverlay = document.querySelector(".classroom-inner-overlay");
+        classRoomOverlay.setAttribute("id", id);
         renderCourseOutline(id);
 
     }

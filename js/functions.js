@@ -436,3 +436,8 @@ async function logout() {
     
     window.location.href = "../auth.php";
 }
+
+function getCurrentTimeInJSONFormat(){
+    let now = new Date();
+    return now.toJSON();
+}

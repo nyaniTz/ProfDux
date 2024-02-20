@@ -216,6 +216,7 @@ function startTranslation() {
         zu: "Zulu",
     };
     
+    //TODO:
     var default_language = gt.default_language || "auto";
     var languages = gt.languages || Object.keys(lang_array_english);
     var alt_flags = gt.alt_flags || {};
