@@ -411,6 +411,8 @@ async function enrollToCourse(buttonElement){
 
                 console.log(result);
 
+                window.location.href = "Classroom.php"
+
                 //TODO: close popup
                 //TODO: refresh container
 

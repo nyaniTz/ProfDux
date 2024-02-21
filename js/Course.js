@@ -458,6 +458,7 @@ async function generateQuiz(lectureObject){
     let topic = subtopicTitles;
     let educationEnvironment = "college students";
 
+    //TODO: question count is going to 9 and not the intended maximum
     let multipleChoiceCount = 10; //10
     let fillInTheBlankCount = 2; //2
     let trueAndFalseCount = 5; //5
