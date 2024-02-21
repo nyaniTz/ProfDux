@@ -441,3 +441,45 @@ function getCurrentTimeInJSONFormat(){
     let now = new Date();
     return now.toJSON();
 }
+
+function clearEventListenersFor(old_element){
+    var new_element = old_element.cloneNode(true);
+    old_element.parentNode.replaceChild(new_element, old_element);
+}
+
+function loadLoader(message){
+
+    let loader = document.createElement("div");
+    loader.className = "loading-overlay user-select-none";
+    let body = document.querySelector("body");
+
+    let loaderInnerHTML = 
+    `   <div class="overlay-inner-container">
+
+            <div class="sk-fold">
+                <div class="sk-fold-cube"></div>
+                <div class="sk-fold-cube"></div>
+                <div class="sk-fold-cube"></div>
+                <div class="sk-fold-cube"></div>
+            </div>
+
+            <div class="loading-message">
+                ${message}
+            </div>
+        </div>
+    `;
+
+    loader.innerHTML = loaderInnerHTML;
+    body.appendChild(loader);
+
+    return loader;
+}
+
+function removeLoader(loader){
+    loader.style.opacity = "0"
+    setTimeout(() => loader.remove(), 1000);
+}
+
+function scrollBottom(element) {
+    element.scroll({ top: element.scrollHeight, behavior: "smooth"})
+}

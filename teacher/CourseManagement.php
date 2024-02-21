@@ -28,7 +28,14 @@
                 </div>
 
                 <div class="course-view-container">
-                    
+                    <div class="container-message blank course-view-container-loader">
+                        <div class="sk-fold">
+                            <div class="sk-fold-cube"></div>
+                            <div class="sk-fold-cube"></div>
+                            <div class="sk-fold-cube"></div>
+                            <div class="sk-fold-cube"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="edit-course-container inner-overlay">

@@ -23,6 +23,15 @@
 
                     <div class="course-view-container mini-container">
 
+                        <div class="container-message blank">
+                            <div class="sk-fold">
+                                <div class="sk-fold-cube"></div>
+                                <div class="sk-fold-cube"></div>
+                                <div class="sk-fold-cube"></div>
+                                <div class="sk-fold-cube"></div>
+                            </div>
+                        </div>
+
                     </div>
 
                </div>

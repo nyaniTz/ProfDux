@@ -55,6 +55,8 @@
     padding: 10px;
     border-bottom: 1px solid var(--medium-gray);
     align-items: center;
+}.quiz-subtopic-item {
+    grid-template-columns: auto 1fr auto auto;
 }
 
 .main-classroom-subtopic-item:last-child{
@@ -75,6 +77,10 @@
 .row-item-text{
     font-size: 0.9em;
     font-weight: 600;
+}
+.row-small-text{
+    font-weight: 400;
+    font-size: 0.9em;
 }
 
 .row-item-action {

@@ -187,59 +187,125 @@ class EditTrueAndFalse extends Question {
 
     render(){
 
-        // let question = document.createElement("div");
-        // question.className = "question";
-        // question.textContent = this.question;
+        let question = document.createElement("div");
+        question.setAttribute("contentEditable","true");
+        question.className = "question editable";
+        question.textContent = this.question;
 
-        // let answerOptionsList = document.createElement("div");
-        // answerOptionsList.className = "answer-options-list";
+        question.addEventListener("input", event => {
+            this.question = event.target.textContent;
+        })
 
-        // let answerOptionMap = this.answerOptions.map( ( option, index ) => {
+        let answerOptions = this.answerOptions || [];
+
+        // There are bugs here. What if the teacher wants to edit???
+        if(this.answerOptions.length == 0){
+            switch(this.answer){
+                case "Yes":
+                    answerOptions = ["Yes", "No"] //TODO: Match for other languages
+                    break;
+                case "True":
+                    answerOptions = ["True", "False"]
+                    break;
+                case "False":
+                    answerOptions = ["True", "False"]
+                    break;
+                case "No":
+                answerOptions = ["Yes", "No"]
+                break;
+            }
+        }
+
+        let answerOptionsList = document.createElement("div");
+        answerOptionsList.className = "tf-options-list";
+
+        let answerOptionMap = answerOptions.map( ( option, index ) => {
             
-        //     let answerOptionContainer = document.createElement("div");
+            let answerOptionContainer = document.createElement("div");
+            answerOptionContainer.className = "tf-answer-option-container";
 
-        //     if(this.inputAnswer == this.answerOptions[index]){
-        //         answerOptionContainer.className = "answer-option-container active";
-        //     }else{
-        //         answerOptionContainer.className = "answer-option-container";
-        //     }
 
-        //     let letterOption = document.createElement("div");
-        //     letterOption.className = "letter-option";
-        //     letterOption.textContent = letters[index];
+            let answerOption = document.createElement("div");
+            answerOption.textContent = option;
+
+            if(this.answer == answerOptions[index]){
+                answerOption.className = "button tf-answer-option active";
+            }else{
+                answerOption.className = "button tf-answer-option";
+            }
     
-        //     let answerOption = document.createElement("div");
-        //     answerOption.className = "answer-option";
-        //     answerOption.textContent = option;
 
-        //     answerOptionContainer.addEventListener("click", () => {
+            answerOption.addEventListener("click", () => {
 
-        //         disableOtherOptions();
-        //         answerOptionContainer.className = "answer-option-container active";
+                disableOtherOptions();
+                answerOption.className = "button tf-answer-option active";
 
-        //         this.inputAnswer = option;
+                this.answer = option;
 
-        //     });
+            });
 
-        //     answerOptionContainer.appendChild(letterOption);
-        //     answerOptionContainer.appendChild(answerOption);
-        //     answerOptionsList.appendChild(answerOptionContainer);
-        //     return answerOptionContainer;
+            answerOptionContainer.appendChild(answerOption);
+            answerOptionsList.appendChild(answerOptionContainer);
+            return answerOption;
 
-        // });
+        });
 
-        // function disableOtherOptions(){
-        //     answerOptionMap.forEach( option => option.className = "answer-option-container")
-        // }
+        function disableOtherOptions(){
+            answerOptionMap.forEach( option => option.className = "button tf-answer-option")
+        }
 
         super.renderQuizArea(question, answerOptionsList);
     }
 }
 
+class EditFillInTheBlank extends Question {
+
+    constructor(questionObject, marksWorth = 1){
+        super(questionObject);
+        this.marksWorth = marksWorth;
+    }
+
+    render(){
+
+        let question = document.createElement("div");
+        question.setAttribute("contentEditable","true");
+        question.className = "question editable";
+        question.textContent = this.question;
+
+        question.addEventListener("input", event => {
+            this.question = event.target.textContent;
+        })
+    
+        let blankTextContainer = document.createElement("div");
+        blankTextContainer.className = "fitb-answer-option-container";
+
+
+        let blankTextEditableField = document.createElement("input");
+        blankTextEditableField.className = "fitb-answer-input";
+        blankTextEditableField.placeholder = "Enter You Answer Here";
+
+        if(this.answer){
+            blankTextEditableField.className = "fitb-answer-input active";
+            blankTextEditableField.value = this.answer;
+        }
+    
+        blankTextEditableField.addEventListener("input", () => {
+
+            blankTextEditableField.className = "fitb-answer-input active";
+            this.answer = blankTextEditableField.value ;
+
+        });
+
+        blankTextContainer.appendChild(blankTextEditableField);
+
+        super.renderQuizArea(question, blankTextContainer);
+    }
+}
+
+
 async function startEditingQuiz(filename, type="teacher"){
 
     let correctPath = `../quiz/generated/${filename}`;
-
     let quizFileResponse = await fetch(correctPath, {cache: "reload"});
     let questions = await quizFileResponse.json();
 
@@ -253,9 +319,11 @@ async function startEditingQuiz(filename, type="teacher"){
             case "t and f":
             case "t/f":
             case "true/false":
+            case "true-false":
+            case "t-f":
                 return new EditTrueAndFalse(question);
             case "fill in the blank":
-                // return new FillInTheBlank(question);
+                return new EditFillInTheBlank(question);
             default:
                 throw new Error("Not Made Yet");
         }

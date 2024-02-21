@@ -47,6 +47,10 @@ class Quiz {
 
         console.log("[2] filename: ", this.filename);
 
+        clearEventListenersFor(this.nextButton)
+        clearEventListenersFor(this.previousButton)
+        clearEventListenersFor(this.finishQuizButton)
+
         handleEndQuiz({
             filename: this.filename,
             questions: this.questions,
@@ -188,52 +192,111 @@ class TrueAndFalse extends Question {
 
     render(){
 
-        // let question = document.createElement("div");
-        // question.className = "question";
-        // question.textContent = this.question;
+        let question = document.createElement("div");
+        question.className = "question";
+        question.textContent = this.question;
 
-        // let answerOptionsList = document.createElement("div");
-        // answerOptionsList.className = "answer-options-list";
+        let answerOptions = this.answerOptions || [];
 
-        // let answerOptionMap = this.answerOptions.map( ( option, index ) => {
+        if(this.answerOptions.length == 0){
+            switch(this.answer){
+                case "Yes":
+                    answerOptions = ["Yes", "No"] //TODO: Match for other languages
+                    break;
+                case "True":
+                    answerOptions = ["True", "False"]
+                    break;
+                case "False":
+                    answerOptions = ["True", "False"]
+                    break;
+                case "No":
+                answerOptions = ["Yes", "No"]
+                break;
+            }
+        }
+
+        let answerOptionsList = document.createElement("div");
+        answerOptionsList.className = "tf-options-list";
+
+        let answerOptionMap = answerOptions.map( ( option, index ) => {
             
-        //     let answerOptionContainer = document.createElement("div");
+            let answerOptionContainer = document.createElement("div");
+            answerOptionContainer.className = "tf-answer-option-container";
 
-        //     if(this.inputAnswer == this.answerOptions[index]){
-        //         answerOptionContainer.className = "answer-option-container active";
-        //     }else{
-        //         answerOptionContainer.className = "answer-option-container";
-        //     }
 
-        //     let letterOption = document.createElement("div");
-        //     letterOption.className = "letter-option";
-        //     letterOption.textContent = letters[index];
+            let answerOption = document.createElement("div");
+            answerOption.textContent = option;
+
+            if(this.inputAnswer == answerOptions[index]){
+                answerOption.className = "button tf-answer-option active";
+            }else{
+                answerOption.className = "button tf-answer-option";
+            }
     
-        //     let answerOption = document.createElement("div");
-        //     answerOption.className = "answer-option";
-        //     answerOption.textContent = option;
 
-        //     answerOptionContainer.addEventListener("click", () => {
+            answerOption.addEventListener("click", () => {
 
-        //         disableOtherOptions();
-        //         answerOptionContainer.className = "answer-option-container active";
+                disableOtherOptions();
+                answerOption.className = "button tf-answer-option active";
 
-        //         this.inputAnswer = option;
+                this.inputAnswer = option;
 
-        //     });
+            });
 
-        //     answerOptionContainer.appendChild(letterOption);
-        //     answerOptionContainer.appendChild(answerOption);
-        //     answerOptionsList.appendChild(answerOptionContainer);
-        //     return answerOptionContainer;
+            answerOptionContainer.appendChild(answerOption);
+            answerOptionsList.appendChild(answerOptionContainer);
+            return answerOption;
 
-        // });
+        });
 
-        // function disableOtherOptions(){
-        //     answerOptionMap.forEach( option => option.className = "answer-option-container")
-        // }
+        function disableOtherOptions(){
+            answerOptionMap.forEach( option => option.className = "button tf-answer-option")
+        }
 
         super.renderQuizArea(question, answerOptionsList);
+    }
+}
+
+class FillInTheBlank extends Question {
+
+    constructor(questionObject, marksWorth = 1){
+        super(questionObject);
+        this.marksWorth = marksWorth;
+    }
+
+    render(){
+
+        let question = document.createElement("div");
+        question.className = "question";
+        question.textContent = this.question;
+        
+ 
+            
+            let blankTextContainer = document.createElement("div");
+            blankTextContainer.className = "fitb-answer-option-container";
+
+            // blankTextEditableField.setAttribute("contentEditable","true");
+
+
+            let blankTextEditableField = document.createElement("input");
+            blankTextEditableField.className = "fitb-answer-input";
+            blankTextEditableField.placeholder = "Enter You Answer Here";
+
+            if(this.inputAnswer){
+                blankTextEditableField.className = "fitb-answer-input active";
+                blankTextEditableField.value = this.inputAnswer;
+            }
+        
+            blankTextEditableField.addEventListener("input", () => {
+
+                blankTextEditableField.className = "fitb-answer-input active";
+                this.inputAnswer = blankTextEditableField.value ;
+
+            });
+
+            blankTextContainer.appendChild(blankTextEditableField);
+
+        super.renderQuizArea(question, blankTextContainer);
     }
 }
 
@@ -288,7 +351,7 @@ async function handleEndQuiz(quizObject){
 
         let params = `id=${id}&&userID=${userID}&&quizID=${quizID}`+
         `&&filename=${fileToSave}&&status=${status}&&value=${value}`+
-        `&&timeEnded${timeEnded}`;
+        `&&timeEnded=${timeEnded}`;
 
         console.log("params to save: ", params);
 
@@ -307,7 +370,10 @@ async function handleEndQuiz(quizObject){
 
         let value = marks;
         let { id } = quizGradeObject;
+
         let timeEnded = getCurrentTimeInJSONFormat();
+
+        console.log("finalTime: ", timeEnded);
 
         let params = `id=${id}&&value=${value}&&timeEnded=${timeEnded}`;
 
@@ -321,8 +387,6 @@ async function handleEndQuiz(quizObject){
         console.log("adding marks response: ", response);
 
     }
-
-    //TODO: then ... on close refresh page!!!
     
     setTimeout(() => {
         resultsBody.style.display = "grid";
@@ -380,9 +444,11 @@ async function startQuiz(quizGradeObject, type="new"){
             case "t and f":
             case "t/f":
             case "true/false":
+            case "true-false":
+            case "t-f":
                 return new TrueAndFalse(question);
             case "fill in the blank":
-                // return new FillInTheBlank(question);
+                return new FillInTheBlank(question);
             default:
                 throw new Error("Not Made Yet");
         }

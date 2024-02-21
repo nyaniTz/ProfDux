@@ -16,7 +16,7 @@ class Course {
     newResources = {}
 
     deleteLectures = {}
-    deleteSubtopic = {}
+    deleteSubtopics = {}
     deleteResource = {}
 
     constructor(courseObject){
@@ -35,7 +35,6 @@ class Course {
     }
 
     setTitle(title, _this){
-        console.log(_this);
         _this.title = title;
         _this.renderTitle();
     }
@@ -59,7 +58,6 @@ class Course {
     renderLectureSection(){
 
         let courseGridContainer = findElement("#course-grid-container");
-
         courseGridContainer.innerHTML = "";
 
         this.lectures.forEach( (lecture, index) => {
@@ -139,7 +137,18 @@ class Course {
             lecture.quizzes.forEach( quiz => {
 
                 const quizRow = this.createQuizRow(quiz);
+
+                let quizDeleteButton = document.createElement("div");
+                quizDeleteButton.className = "quiz-delete-button";
+                let quizDeleteIcon = document.createElement("img");
+                quizDeleteIcon.src = "../assets/icons/delete.png";
+                quizDeleteButton.appendChild(quizDeleteIcon);
+
+                quizDeleteButton.addEventListener("click", () => deleteQuiz(quiz.id))
+
+                quizContainer.className = "subtopics-container quiz-container";
                 quizContainer.appendChild(quizRow);
+                quizContainer.appendChild(quizDeleteButton);
 
             })
 
@@ -151,6 +160,18 @@ class Course {
             courseGridContainer.appendChild(lectureSection);
 
         });
+
+        if(this.lectures.length == 0){
+
+            let myEmptyView = createElement("div", "container-message");
+            let NoSelectedCoursesYet = createLocalizedTextElement("No Lectures Yet, Add a New Lecture");
+            let myLargeMessage = createElement("div", "large-message");
+            myLargeMessage.appendChild(NoSelectedCoursesYet);
+            myEmptyView.appendChild(myLargeMessage);
+
+            courseGridContainer.innerHTML = "";
+            courseGridContainer.appendChild(myEmptyView);
+        }
 
     }
 
@@ -193,6 +214,8 @@ class Course {
         let lectureID = uniqueID(1);
 
         let courseGridContainer = findElement("#course-grid-container");
+        let emptyView = document.querySelector(".container-message");
+        if(emptyView) courseGridContainer.innerHTML = "";
 
         let lectureSection = document.createElement("div");
         lectureSection.className = "lecture-section";
@@ -233,7 +256,8 @@ class Course {
         lectureSection.appendChild(lectureInnerContainer);
         courseGridContainer.appendChild(lectureSection);
 
-        console.log("Done adding lecture element")
+        let editCourseContainer = document.querySelector(".edit-course-container");
+        scrollBottom(editCourseContainer);
     }
 
     addSubtopicElement(lectureID, parentElement){
@@ -252,27 +276,45 @@ class Course {
     updateLectureTitle(id, title, _this){
         console.log(_this);
         _this.lectureUpdates[id] = { id, title };
-        console.log("lecture Updates: ", _this.lectureUpdates);
     }
 
     updateSubtopicTitle([id, lectureID], title, _this){
         _this.subtopicUpdates[id] = { id, lectureID, title };
-        console.log("subtopic Updates: ", _this.subtopicUpdates);
     }
 
     newLectureTitle([id, courseID], title, _this){
         _this.newLectures[id] = { id, title, courseID };
-        console.log("new lecture: ", _this.newLectures);
     }
 
     newSubtopicTitle([id, lectureID], title, _this){
         _this.newSubtopics[id] = { id, lectureID, title };
-        console.log("new subtopics: ", _this.newSubtopics);
     }
 
     deleteLectureTitle(id, title, _this){
-        _this.deleteLectures[id] = { id, title };
-        console.log("delete lecture: ", _this.deleteLectures);
+
+        let lectureIndex = null;
+        
+        this.lectures.forEach((lecture,index) => {
+            if(lecture.id == id){
+                lectureIndex = index;
+                return;
+            }
+        })
+
+        let quizID = "neverGonnaGiveYouUpNeverGonnaLetYouDownNeverGonnaRunAroundAndDesertYou";
+
+        if(this.lectures[lectureIndex].quizzes.length > 0){
+            quizID = this.lectures[lectureIndex].quizzes[0].id;
+        }
+
+        _this.deleteLectures[id] = { id, title, quizID };
+
+        if(lectureIndex != null){
+            this.lectures[lectureIndex].subtopics.forEach((subtopic) => {
+                _this.deleteSubtopics[subtopic.id] = { id: subtopic.id };
+            })
+        }
+    
 
         // The function that will bind to the deleteLectures object
         // will need to cascade by SQL to delete all subtopics
@@ -282,8 +324,7 @@ class Course {
     }
 
     deleteSubtopicTitle([id, lectureID], title, _this){
-        _this.deleteSubtopic[id] = { id, title };
-        console.log("delete subtopic: ", _this.deleteSubtopic);
+        _this.deleteSubtopics[id] = { id };
     }
 
     searchAndDeleteLecture(id){
@@ -344,13 +385,12 @@ class Course {
         inputElement.setAttribute("data-id", id);
         
         inputElement.onchange = () => {
-            console.log(inputElement.value);
             inputChangeCallback(id, inputElement.value, this);
         }
 
         let deleteButton = document.createElement("div");
         deleteButton.className = "delete-button";
-        deleteButton.innerHTML = `<img src="../assets/icons/fi/fi-rr-delete.svg" alt="">`;
+        deleteButton.innerHTML = `<img src="../assets/icons/delete.png" alt="">`;
 
         deleteButton.addEventListener("click", () => {
 
@@ -405,22 +445,22 @@ class Course {
 
 async function generateQuiz(lectureObject){
 
+    let loader = loadLoader("Generating Quiz");
 
     let lectureID = lectureObject.id;
     let lectureTitle = lectureObject.title;
-    let subtopicTitles = lectureObject.subtopics.map( 
-        subtopic => subtopic.title).join(", ");
+    let courseID = lectureObject.courseID;
+    let subtopicTitles = lectureObject.subtopics
+    .map( subtopic => subtopic.title ).join(", ");
 
-    console.log("subtopic Titles: ", subtopicTitles);
 
-
-    let language = "english"; //TODO: Toggle option.
+    let language = "turkish"; //TODO: Toggle option.
     let topic = subtopicTitles;
     let educationEnvironment = "college students";
 
-    let multipleChoiceCount = 5; //10
-    let fillInTheBlankCount = 0; //2
-    let trueAndFalseCount = 0; //5
+    let multipleChoiceCount = 10; //10
+    let fillInTheBlankCount = 2; //2
+    let trueAndFalseCount = 5; //5
 
     //TODO: figure out logic
     let hardQuestionsCount = 2;
@@ -433,35 +473,35 @@ async function generateQuiz(lectureObject){
     in the ${language} language in the topics of ${topic} 
     for ${educationEnvironment}. 
     There should be ${multipleChoiceCount} choice questions
-    with a minimum of 4 answer options that do not include letters
-    at the beginning of themselves. There should be  
+    with a minimum of 4 answers that do not include letters
+    at the beginning. There should be  
     ${fillInTheBlankCount} fill in the blank questions and 
-    ${trueAndFalseCount} true and false questions. 
+    ${trueAndFalseCount} true and false questions with their answer options. 
     ${hardQuestionsCount} of those questions should be hard, 
     ${mediumQuestionsCount} should be medium and 
     ${easyQuestionsCount} should be easy. 
     The json format should have the following keys, 
     "question, answerOptions, answer, type, hardness". 
     The answerOptions should only be available if the 
-    question type is multiple choice.`;
+    question type is multiple choice or true and false.`;
 
     let unparsedJSONResponse = await generateGPTResponseFor(query);
     let questions = await JSON.parse(unparsedJSONResponse);
-    console.log(questions);
+    console.log("questions amount: ", questions.questions.length);
 
     let filename = `Quiz-${uniqueID(2)}.json`;
     saveQuizAsJSON(filename, questions.questions, "generated");
 
     let quizID = uniqueID(1);
-    let courseID = "lshj44zm";
-    let name = "Quiz"; // ...
-    let dateGenerated = "Today"; // TODO: ...
+    let name = `Quiz on ${subtopicTitles}`; // ...
+    let dateGenerated = getCurrentTimeInJSONFormat();
     let heirarchy = ""; // ...
-    let totalMarks = ""; // ...
+    let totalMarks = questions.questions.length; //TODO: figure out the marks properly...
 
-    let params = `id=${quizID}&&courseID=${courseID}&&lectureID=${lectureID}&&name=${name}&&dateGenerated=${dateGenerated}&&filename=${filename}`;
+    let params = `id=${quizID}&&courseID=${courseID}&&lectureID=${lectureID}&&name=${name}`+
+    `&&dateGenerated=${dateGenerated}&&filename=${filename}&&totalMarks=${totalMarks}`;
 
-    let response = AJAXCall({
+    let response = await AJAXCall({
         phpFilePath: "../include/quiz/addNewQuiz.php",
         rejectMessage: "New Quiz Failed To Add",
         params,
@@ -469,6 +509,11 @@ async function generateQuiz(lectureObject){
     });
 
     console.log("quiz generation response: ", response);
+
+    setTimeout(() => {
+        refreshTeacherCourseOutline(); //Bugs???
+        removeLoader(loader);
+    }, 2000);
     
 }
 
@@ -499,7 +544,6 @@ async function fetchCourseWithID(givenID){
         type: "fetch"
     });
 
-    console.log("Main Course Object: ",courses[0]);
     if(courses[0].status == "error") return;
 
     setTimeout(() => {
@@ -513,10 +557,20 @@ async function fetchCourseWithID(givenID){
         })
 
         findElement("#saveCourseDetails").addEventListener("click", async () => {
+
+            let loader = loadLoader("Saving Course Outline");
+
             await loopThroughObjectForAsync(course.lectureUpdates, updateLectureTitleToDatabase);
             await loopThroughObjectForAsync(course.newLectures, addLectureTitleToDatabase);
             await loopThroughObjectForAsync(course.subtopicUpdates, updateSubtopicTitleToDatabase);
             await loopThroughObjectForAsync(course.newSubtopics, addSubtopicTitleToDatabase);
+            await loopThroughObjectForAsync(course.deleteSubtopics, deleteSubtopicsFromDatabase);
+            await loopThroughObjectForAsync(course.deleteLectures, deleteLecturesFromDatabase);
+
+            setTimeout(async() => {
+                await refreshTeacherCourseOutline(); //Bugs???
+                removeLoader(loader);
+            }, 5000);
         })
 
         async function loopThroughObjectForAsync(courseObject, asyncCallback){
@@ -541,66 +595,145 @@ async function fetchCourseWithID(givenID){
 
 }
 
+
+async function deleteLecturesFromDatabase(lectureObject){
+
+    let { id, quizID } = lectureObject;
+
+    if(id.length > 2){
+        let params = `id=${id}`;
+
+        await AJAXCall({
+            phpFilePath: "../include/delete/deleteLecture.php",
+            rejectMessage: "Deleting lecture failed",
+            params,
+            type: "post"
+        });
+
+        if(quizID != 'neverGonnaGiveYouUpNeverGonnaLetYouDownNeverGonnaRunAroundAndDesertYou'){
+            await deleteQuiz(quizID);
+        }
+    }
+
+
+}
+
+
+async function deleteSubtopicsFromDatabase(subtopicsObject){
+
+    let { id } = subtopicsObject;
+
+    if(id.length > 2){
+        let params = `id=${id}`;
+
+        //TODO: The file called deleteSubtopics.php also
+        // deletes associated resources.
+
+        await AJAXCall({
+            phpFilePath: "../include/delete/deleteSubtopic.php",
+            rejectMessage: "Deleting subtopics failed",
+            params,
+            type: "post"
+        });
+    }
+
+
+}
+
+
 async function updateLectureTitleToDatabase(lectureOject){
+
     let { id, title } = lectureOject;
 
-    let params = `lectureID=${id}&&title=${title}`;
+    if(id.length > 2){
+        let params = `lectureID=${id}&&title=${title}`;
 
-    let courses = await AJAXCall({
-        phpFilePath: "../include/course/editLectureDetails.php",
-        rejectMessage: "Getting Details Failed",
-        params,
-        type: "post"
-    });
-
-    console.log(courses);
+        await AJAXCall({
+            phpFilePath: "../include/course/editLectureDetails.php",
+            rejectMessage: "Getting Details Failed",
+            params,
+            type: "post"
+        });
+    }
 
 }
 
 async function updateSubtopicTitleToDatabase(subtopicObject){
+
     let { id, title } = subtopicObject;
 
-    let params = `id=${id}&&title=${title}`;
+    if(id.length > 2){
+        let params = `id=${id}&&title=${title}`;
 
-    let courses = await AJAXCall({
-        phpFilePath: "../include/course/editSubtopicDetails.php",
-        rejectMessage: "Setting Details Failed",
-        params,
-        type: "post"
-    });
-
-    console.log(courses);
+        await AJAXCall({
+            phpFilePath: "../include/course/editSubtopicDetails.php",
+            rejectMessage: "Setting Details Failed",
+            params,
+            type: "post"
+        });
+    }
 
 }
 
 async function addLectureTitleToDatabase(lectureOject){
+
     let { id, title, courseID } = lectureOject;
 
-    let params = `id=${id}&&title=${title}&&courseID=${courseID}`;
+    if(id.length > 2){
+        let params = `id=${id}&&title=${title}&&courseID=${courseID}`;
 
-    let lecture = await AJAXCall({
-        phpFilePath: "../include/course/addNewLecture.php",
-        rejectMessage: "Setting Details Failed",
-        params,
-        type: "post"
-    });
-
-    console.log(lecture);
+        await AJAXCall({
+            phpFilePath: "../include/course/addNewLecture.php",
+            rejectMessage: "Setting Details Failed",
+            params,
+            type: "post"
+        });
+    }
 
 }
 
 async function addSubtopicTitleToDatabase(subtopicObject){
+
     let { id, lectureID, title } = subtopicObject;
 
-    let params = `id=${id}&&title=${title}&&lectureID=${lectureID}`;
+    if(id.length > 2){
+        let params = `id=${id}&&title=${title}&&lectureID=${lectureID}`;
 
-    let result = await AJAXCall({
-        phpFilePath: "../include/course/addNewSubtopic.php",
-        rejectMessage: "Adding New Subtopic Failed",
-        params,
-        type: "post"
-    });
+        await AJAXCall({
+            phpFilePath: "../include/course/addNewSubtopic.php",
+            rejectMessage: "Adding New Subtopic Failed",
+            params,
+            type: "post"
+        });
+    }
 
-    console.log(result);
+}
 
+async function deleteQuiz(id){
+
+    let loader = loadLoader("Deleting Quiz");
+
+    try{
+        await AJAXCall({
+            phpFilePath: "../include/delete/deleteQuiz.php",
+            rejectMessage: "Quiz not deleted",
+            type: "post",
+            params: `id=${id}`
+        });
+    }
+    catch(error){
+
+    }
+
+    setTimeout(() => {
+        refreshTeacherCourseOutline(); //Bugs???
+        removeLoader(loader);
+    }, 2000);
+
+}
+
+function refreshTeacherCourseOutline(){
+    let mainContainer = document.querySelector(".main-container");
+    let id = mainContainer.getAttribute("data-id");
+    editCourseWith(id);
 }

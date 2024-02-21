@@ -147,6 +147,7 @@ function closeUploadOverlay(){
 async function loadCourses(options = "id"){
 
     let courseViewContainer = document.querySelector(".course-view-container");
+    let loader = courseViewContainer.querySelector(".course-view-container-loader");
 
     let noCoursesYetText = createLocalizedTextElement("No courses yet");
     let createCourseText = createLocalizedTextElement("Create Course");
@@ -180,20 +181,7 @@ async function loadCourses(options = "id"){
     myLargeMessage.appendChild(NoSelectedCoursesYet);
     myEmptyView.appendChild(myLargeMessage);
 
-
-    let loader = 
-    `   <div class="container-message blank">
-            <div class="sk-chase">
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-                <div class="sk-chase-dot"></div>
-            </div>
-        </div>`;
-
-    courseViewContainer.innerHTML = loader;
+    return new Promise(async (resolve, reject) => {
 
     let { id:userID } = await getGlobalDetails();
 
@@ -232,6 +220,7 @@ async function loadCourses(options = "id"){
             if(result && result.length > 0) {
                 console.log("so far so good.");
                 loadCoursesUI(result, options, userID);
+                resolve();
             }
             else {
 
@@ -255,6 +244,8 @@ async function loadCourses(options = "id"){
     catch(error){
 
     }
+
+    });
 
     function loadCoursesUI(coursesObject, options, userID){
 
@@ -384,20 +375,22 @@ async function loadCourses(options = "id"){
 
     }
 
-    function editCourseWith(id){
+}
 
-        let mainContainer = document.querySelector(".main-container");
-        openPopup(".edit-course-container");
+function editCourseWith(id){
 
-        let titleElement = document.querySelector("#course-title");
-        titleElement.textContent = "";
+    let mainContainer = document.querySelector(".main-container");
+    mainContainer.setAttribute("data-id", id);
+
+    openPopup(".edit-course-container");
+
+    let titleElement = document.querySelector("#course-title");
+    titleElement.textContent = "";
+
+    let courseCode = document.querySelector("#course-code");
+    courseCode.textContent = "";
     
-        let courseCode = document.querySelector("#course-code");
-        courseCode.textContent = "";
-        
-        fetchCourseWithID(id);
-
-    }
+    fetchCourseWithID(id);
 
 }
 

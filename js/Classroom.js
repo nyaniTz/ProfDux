@@ -160,11 +160,14 @@ class Classroom {
                 quizRowItemText.className = "row-item-text";
                 quizRowItemText.textContent = "Quiz";
 
-                //TODO: fetch quiz grades if quiz has been done for resumability
-                // and review.
+                // const quizRowItemDetails = document.createElement("div");
+                // quizRowItemDetails.className = "row-small-text";
+                // TODO: fromTeacherQuizFilename;
+                // quizRowItemDetails.textContent = "8 questions - ( 10 marks )";.
 
                 quizSubtopicItem.appendChild(quizRowItemIcon)
                 quizSubtopicItem.appendChild(quizRowItemText)
+                // quizSubtopicItem.appendChild(quizRowItemDetails)
                 quizSubtopicItem.appendChild(quizRowItemButton)
 
                 quizClassroomSubtopicContainer.appendChild(quizSubtopicItem);
@@ -250,7 +253,7 @@ async function renderCourseOutline(givenID){
 
     console.log("courses 0 :", courses[0], givenID);
 
-    let classroom = new Classroom(courses[0], givenID);
+    const classroom = new Classroom(courses[0], givenID);
 
     classroom.renderTitle();
     classroom.renderCourseCode();

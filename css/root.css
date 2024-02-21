@@ -24,6 +24,14 @@
     padding: 0 0;
     box-sizing: border-box;
 }
+
+.user-select-none {
+    user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -webkit-user-select: none;
+}
+
 .attachments-button:hover > .icon {
     filter: invert(100%);
 }
@@ -219,4 +227,33 @@ body {
 
 .loader-view p {
     color: var(--accent);
+}
+
+.loading-overlay {
+    --sk-size: 50px;
+    --sk-color: var(--accent);
+    --pop: #C70037;
+
+    position: fixed;
+    top: 0px;
+    background-color: white;
+    display: grid;
+    height: 100vh;
+    width: 100vw;
+    place-items: center;
+    z-index: 9999 !important;
+    transition: 1s;
+}
+
+.loading-message{
+    color: var(--pop);
+    cursor: default;
+    max-width: 300px;
+    text-align: center;
+}
+
+.overlay-inner-container{
+    display: grid;
+    grid-gap: 40px;
+    place-items: center;
 }

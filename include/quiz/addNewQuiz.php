@@ -10,6 +10,7 @@
     $name = $_POST['name'];
     $dateGenerated = $_POST['dateGenerated'];
     $filename = $_POST['filename'];
+    $totalMarks = $_POST['totalMarks'];
 
 
     if (!$conn) {
@@ -17,8 +18,8 @@
     }
 
     $query = "
-        INSERT INTO quiz (id, name, courseID, lectureID, dateGenerated, filename)
-        VALUES ('$id', '$name', '$courseID', '$lectureID', '$dateGenerated', '$filename')
+        INSERT INTO quiz (id, name, courseID, lectureID, dateGenerated, filename, totalMarks)
+        VALUES ('$id', '$name', '$courseID', '$lectureID', '$dateGenerated', '$filename', '$totalMarks')
     ";
 
     $result = mysqli_query($conn,$query);
