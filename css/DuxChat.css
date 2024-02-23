@@ -68,8 +68,9 @@
     overflow: scroll;
     height: 100%;
     align-items: end;
-
     /* TODO: Remove Scrollbars */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 .messages-container > li {
