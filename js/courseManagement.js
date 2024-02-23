@@ -264,7 +264,8 @@ async function loadCourses(options = "id"){
             let courseCardImage = createElement("div", "course-card-image");
             let imageElement = document.createElement("img");
 
-            imageElement.src = image.length > 2 ? `../uploads/${image}` : `../assets/images/courseDefault.jpg` ;
+            imageElement.src = image.length > 2 ? await checkImage(`../uploads/${image}`) : `../assets/images/courseDefault.jpg`;
+
             courseCardImage.appendChild(imageElement);
             
             let cardText = createElement("div", "card-text");
@@ -427,4 +428,20 @@ function closeEditCourseContainer(){
     let editCourseContainer = document.querySelector(".edit-course-container");
     editCourseContainer.style.display = "none";
 
+}
+
+
+async function checkImage(imagePath){
+
+    // This function checks for broken image paths
+    // and replaces it with a default image
+
+    try{
+        let result = await fetch(imagePath);
+        if(result.status != 404) return imagePath;
+        throw new Error();
+    }
+    catch(error){
+        return `../assets/images/courseDefault.jpg`;
+    }
 }

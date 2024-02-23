@@ -114,6 +114,7 @@ body {
     display: grid;
     grid-template-columns: auto auto;
     grid-gap: 20px;
+    align-items: start;
 }
 
 .centered-container{

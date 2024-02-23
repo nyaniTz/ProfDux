@@ -1,7 +1,10 @@
 <div class="inner-header">
-    <div>
+    <div style="display:grid; grid-gap: 10px;">
         <h1 class="medium-title" id="course-title"></h1>
         <p class="small-title" id="course-code"></p>
+        <div class="button" id="deleteCourseButton" style="justify-self:start;">
+            Delete Course  
+        </div>
     </div>
 
     <div class="two-column-grid">

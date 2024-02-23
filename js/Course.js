@@ -54,6 +54,14 @@ class Course {
         titleElement.appendChild(textElement);
     }
 
+    renderDeleteButton(){
+        let deleteButton = findElement("#deleteCourseButton");
+        // let textElement = createLocalizedTextElement(this.courseCode);        
+        // titleElement.innerHTML = "";
+        // titleElement.appendChild(textElement);
+        deleteButton.addEventListener('click', () => this.deleteCourse(this.id));
+    }
+
 
     renderLectureSection(){
 
@@ -288,6 +296,61 @@ class Course {
 
     newSubtopicTitle([id, lectureID], title, _this){
         _this.newSubtopics[id] = { id, lectureID, title };
+    }
+
+    deleteCourse(id){
+
+        console.log('idToDelete: ', id);
+
+        let options = {
+            title: 'Are You Sure You Want To Delete This Course?',
+            denyTitle: 'No',
+            acceptTitle: 'Yes'
+        }
+        
+        return showOptionsDialog(options, async () => {
+
+            //TODO: set all of the deleteLectures, deleteSubtopics,
+            // deleteResources elements;
+
+            this.lectureUpdates = {}
+            this.subtopicUpdates = {}
+        
+            this.newLectures = {}
+            this.newSubtopics = {}
+            this.newResources = {}
+
+            let quizzesToDelete = {}
+        
+            this.lectures.map( lecture => { 
+                this.deleteLectures[lecture.id] = { id: lecture.id, title: lecture.title }
+
+                if(lecture.quizzes.length > 0){
+                    lecture.quizzes.map( quiz => {
+                        this.deleteLectures[lecture.id]["quizID"] = quiz.id;
+                    })
+                }
+
+                lecture.subtopics.map( subtopic => {
+                    this.deleteSubtopics[subtopic.id] = { id: subtopic.id }
+                    
+                    subtopic.resources.map( resource => {
+                        this.deleteResource[resource.id] = { id: resource.id }
+                        
+                    })
+                })
+            })
+
+            console.log(
+                this.deleteLectures,
+                this.deleteSubtopics,
+                this.deleteResource,
+            )
+
+
+            await courseItemObjectLooper(this, "delete course");
+            await deleteCourseFromDatabase(this.id);
+        });
     }
 
     deleteLectureTitle(id, title, _this){
@@ -545,12 +608,14 @@ async function fetchCourseWithID(givenID){
         type: "fetch"
     });
 
+    if(courses.length > 0) 
     if(courses[0].status == "error") return;
 
     setTimeout(() => {
         let course = new Course(courses[0]);
         course.renderTitle();
         course.renderCourseCode();
+        course.renderDeleteButton();
         course.renderLectureSection();
 
         findElement("#addNewLecture").addEventListener("click", () => {
@@ -558,44 +623,75 @@ async function fetchCourseWithID(givenID){
         })
 
         findElement("#saveCourseDetails").addEventListener("click", async () => {
-
-            let loader = loadLoader("Saving Course Outline");
-
-            await loopThroughObjectForAsync(course.lectureUpdates, updateLectureTitleToDatabase);
-            await loopThroughObjectForAsync(course.newLectures, addLectureTitleToDatabase);
-            await loopThroughObjectForAsync(course.subtopicUpdates, updateSubtopicTitleToDatabase);
-            await loopThroughObjectForAsync(course.newSubtopics, addSubtopicTitleToDatabase);
-            await loopThroughObjectForAsync(course.deleteSubtopics, deleteSubtopicsFromDatabase);
-            await loopThroughObjectForAsync(course.deleteLectures, deleteLecturesFromDatabase);
-
-            setTimeout(async() => {
-                await refreshTeacherCourseOutline(); //Bugs???
-                removeLoader(loader);
-            }, 5000);
+            courseItemObjectLooper(course);
         })
 
-        async function loopThroughObjectForAsync(courseObject, asyncCallback){
-            
-            if(courseObject){
-
-                let __courseObjectEntries = Object.entries(courseObject);
-
-                __courseObjectEntries.map( async([key, details] = entry) => {
-                    try {
-                        let result = await asyncCallback(details);
-                        console.log(result);
-                    }
-                    catch(error){
-                        console.log(error);
-                    }
-                });
-                
-            }
-        }
     }, 2000);
 
 }
 
+async function loopThroughObjectForAsync(courseObject, asyncCallback){
+            
+    if(courseObject){
+
+        let __courseObjectEntries = Object.entries(courseObject);
+
+        __courseObjectEntries.map( async([key, details] = entry) => {
+            try {
+                let result = await asyncCallback(details);
+                console.log(result);
+            }
+            catch(error){
+                console.log(error);
+            }
+        });
+        
+    }
+}
+
+async function courseItemObjectLooper(course, type = ""){
+
+    let loader = type != "delete course"? 
+    loadLoader("Saving Course Outline"):
+    loadLoader("Deleting Course");
+
+    await loopThroughObjectForAsync(course.lectureUpdates, updateLectureTitleToDatabase);
+    await loopThroughObjectForAsync(course.newLectures, addLectureTitleToDatabase);
+    await loopThroughObjectForAsync(course.subtopicUpdates, updateSubtopicTitleToDatabase);
+    await loopThroughObjectForAsync(course.newSubtopics, addSubtopicTitleToDatabase);
+    await loopThroughObjectForAsync(course.deleteSubtopics, deleteSubtopicsFromDatabase);
+    await loopThroughObjectForAsync(course.deleteLectures, deleteLecturesFromDatabase);
+
+    setTimeout(async() => {
+        if(type == "delete course"){
+            console.log("course deleted");
+            closePopup(".edit-course-container");
+            removeLoader(loader);
+            await loadCourses("id"); // YES
+        }else {
+            await refreshTeacherCourseOutline(); //Bugs???
+            removeLoader(loader);
+        }
+    }, 5000);
+}
+
+async function deleteCourseFromDatabase(courseID){
+
+    if(courseID.length > 2){
+        let params = `id=${courseID}`;
+
+        const response = await AJAXCall({
+            phpFilePath: "../include/delete/deleteCourse.php",
+            rejectMessage: "Deleting Course Failed",
+            params,
+            type: "post"
+        });
+
+        console.log("delete Response: ", response);
+    }
+
+
+}
 
 async function deleteLecturesFromDatabase(lectureObject){
 
