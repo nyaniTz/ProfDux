@@ -95,10 +95,28 @@
 }
 
 .quiz-result-area{
-    font-size: 3em;
+    display: grid;
+    grid-gap: 20px;
+}
+
+.text-divider {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 13px;
+}
+
+.total-quiz-mark, .earned-quiz-mark{
+    font-size: 1.3em;
     font-weight: 200;
-    letter-spacing: 13px;
     color: var(--accent);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 13px;
+    justify-items: start;
+}
+
+.total-quiz-mark-placeholder, .earned-quiz-mark-placeholder {
+    font-weight: 600;
 }
 
 .quiz-container {

@@ -17,6 +17,11 @@
     place-items: center;
 }
 
+.top-text {
+    color: #6F2036;
+    font-weight: 500;
+}
+
 .bordered{
     background: transparent !important;
     border-color: var(--dark-color) !important;

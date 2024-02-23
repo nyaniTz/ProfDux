@@ -35,3 +35,35 @@
         </div>
     </div>
 </div>
+
+    <div class="circle dux-overlay">
+        <div class="close-button" onclick="
+        closeDuxChat();
+        " style="display: none;">
+            <img src="../assets/icons/close.png" alt="">
+        </div>
+
+        <div class="chat-container" style="display: none;">
+
+            <div class="chat-view">
+    
+                <ul class="messages-container">
+                </ul>
+    
+                <div class="message-footer">
+                    <div class="typing-area">
+                        <input type="text" placeholder="Type a message ..." class="message-typing-input">
+                        <div class="send-message">
+                            <img src="../assets/icons/send.png" alt="">
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+    
+        </div>
+    </div>
+    
+    <div class="circle dux-icon" onclick="startDuxChat()">
+        <img src="../assets/images/dux-male.jpg" alt="">
+    </div>

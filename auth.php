@@ -29,10 +29,10 @@
 </head>
 <body>
 
-
     <div class="wrapper">
         <div class="logo-container">
             <img src="assets/images/air-logo.png" alt="">
+            <div class="top-text">College Dux</div>
         </div>
     
         <div class="outer-container">
@@ -129,6 +129,10 @@
     <div class="weather-container">
         <div class="weather"></div>
     </div>
+
+    <div style="position:absolute;" class="gtranslate_wrapper"></div>
+    <script>window.gtranslateSettings = {"default_language": "en", "languages": ["en", "tr", "fr", "de", "it", "es"], "wrapper_selector": ".gtranslate_wrapper", "switcher_horizontal_position": "left", "switcher_vertical_position": "bottom", "float_switcher_open_direction": "bottom", "flag_style": "3d" }</script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
 
 </body>
 </html>

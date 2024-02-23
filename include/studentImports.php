@@ -23,7 +23,8 @@
         "../css/pdf-viewer.css",
         "../css/image-viewer.css",
         "../css/quiz.css",
-        "../css/classroom.css"
+        "../css/classroom.css",
+        "../css/DuxChat.css"
     );
 
     // These are for javascript files that you want
@@ -50,7 +51,8 @@
         "../js/Course.js",
         "../js/Question.js",
         "../js/Quiz.js",
-        "../js/Classroom.js"
+        "../js/Classroom.js",
+        "../js/DuxChat.js",
     );
 
     foreach ($cssPaths as $path) {

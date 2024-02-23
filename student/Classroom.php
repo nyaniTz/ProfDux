@@ -56,6 +56,7 @@
         </div>
 
         <?php include 'components/quizOverlay.php'; ?>
+        <?php include 'components/quizResultOverlay.php'; ?>
 
 
         <style>

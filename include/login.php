@@ -13,7 +13,12 @@
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $query = "SELECT id, email, users.role FROM users WHERE email = '$email' AND password = '$password'";
+    $query = "
+    SELECT users.id, users.email, users.role 
+    FROM users 
+    JOIN userDetails ON userDetails.id = users.id
+    WHERE email = '$email' OR userDetails.institutionID = '$email' AND password = '$password'
+    ";
 
     $result = mysqli_query($conn,$query);
     $row = mysqli_fetch_array($result);

@@ -320,7 +320,11 @@ async function handleEndQuiz(quizObject){
     let footers = quizBody.parentElement.querySelectorAll(".popup-footer");
 
     let resultArea = document.querySelector(".quiz-result-area");
-    resultArea.textContent = `${result}/${totalMarks}`;
+    let totalResultPlaceholder = resultArea.querySelector(".total-quiz-mark-placeholder");
+    let scoreResultPlaceholder = resultArea.querySelector(".earned-quiz-mark-placeholder");
+
+    totalResultPlaceholder.textContent = totalMarks;
+    scoreResultPlaceholder.textContent = result;
 
     footers.forEach( footer => footer.style.display = "none");
     quizBody.style.display = "none";
@@ -432,7 +436,9 @@ async function startQuiz(quizGradeObject, type="new"){
     }
 
     let quizFileResponse = await fetch(correctPath, {cache: "reload"});
+    console.log("correctPath: ", correctPath);
     let questions = await quizFileResponse.json();
+    console.log("quizResponseNow: ", quizFileResponse.json());
 
     let questionsArray = questions.map( question => {
         switch(question.type.toLowerCase()){

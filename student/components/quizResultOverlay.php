@@ -1,28 +1,17 @@
-<div class="overlay take-quiz-overlay">
+<div class="overlay review-quiz-overlay">
     <div class="popup quiz-popup">
         <div class="popup-header">
-            <!-- <div class="close-button" onclick="
-            closePopup('.take-quiz-overlay');
+            <div class="close-button" onclick="
+            closePopup('.review-quiz-overlay');
             ">
                 <img src="../assets/icons/close.png" alt="">
-            </div> -->
+            </div>
             <h1 class="pop-up-title">
-                <div class="quiz-details">Quiz</div>
+                <div class="quiz-details">Quiz Results</div>
             </h1> 
         </div>
 
-        <div class="popup-body quiz-popup-body">
-
-            <div class="question-header">
-                
-            </div>
-
-            <div class="question-area">
-                
-            </div>
-        </div>
-
-        <div class="popup-body quiz-results-body">
+        <div class="popup-body quiz-results-body" style="display:none">
             <h1>Your Results</h1>
 
             <div class="quiz-result-area">
@@ -42,26 +31,9 @@
                     <p class="earned-quiz-mark-placeholder">0</p>
                 </div>
             </div>
-
-            <div class="button" onclick="
-            closePopup('.take-quiz-overlay');
-            refreshCourseOutline();
-            ">Done</div>
         </div>
 
-        <div class="popup-footer button-group-footer">
-            <div class="button-group quiz-button-group">
-                <button class="button previous-question" disabled>Previous Question</button>
-                <button class="button next-question">Next Question</button>
-            </div>
-        </div>
-
-        <div class="popup-footer submit-footer">
-            <button class="button finish-quiz-button">Submit Quiz</button>
-        </div>
-
-
-        <div class="loader-view take-quiz-loader">
+        <div class="loader-view review-quiz-loader">
             <div>
                 <div class="sk-fold">
                     <div class="sk-fold-cube"></div>
@@ -69,7 +41,7 @@
                     <div class="sk-fold-cube"></div>
                     <div class="sk-fold-cube"></div>
                 </div>
-                <p>...</p>
+                <!-- <p>TODO: ...</p> -->
             </div>
         </div>
 
