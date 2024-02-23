@@ -159,6 +159,7 @@ async function loadCourses(options = "id"){
 
     let createCourseButton = createElement("div", "button");
     createCourseButton.appendChild(createCourseText);
+    createCourseButton.addEventListener("click", () => openCreateCourseOverlay())
 
     emptyView.appendChild(largeMessage);
     emptyView.appendChild(createCourseButton);

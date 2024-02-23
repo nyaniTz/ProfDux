@@ -57,6 +57,7 @@ function fetchLocalization(text){
         "timetable": {"en": "Timetable", "tr": "Ders Programı"},
         "total quiz marks": {"en": "Total Quiz Marks", "tr": "Toplam Doğru Sayısı"},
         "score": {"en": "Score", "tr": "Puan"},
+        "create course": {"en": "Create Course", "tr": "Kurs Oluştur"},
     }
 
     let escape =  { "en" : text, "tr" : text }

@@ -23,7 +23,7 @@
                     </h1>
 
                     <div class="button" onclick="openCreateCourseOverlay()">
-                        Create Course    
+                        <text>Create Course</text>   
                     </div>
                 </div>
 
