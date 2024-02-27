@@ -44,9 +44,8 @@
 
 .user-image img{
     margin-top: -10px;
-    margin-left: -20px;
     height: 50px;
-    width: 90px;
+    min-width: 100%;
     place-self: center;
 }
 
