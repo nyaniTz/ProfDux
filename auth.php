@@ -22,8 +22,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/auth.css">
-    <script src="/js/auth.js" defer></script>
-    <script src="/js/functions.js" defer></script>
+    <script src="/js/auth.js?4" defer></script>
+    <script src="/js/functions.js?4" defer></script>
     <script src="/js/weather.js" defer></script>
 
 </head>
@@ -129,6 +129,31 @@
     <div class="weather-container">
         <div class="weather"></div>
     </div>
+
+    <script>
+
+        let studentName = document.querySelector("#name");
+        let studentNumber = document.querySelector("#stdnumber");
+        let studentDepartment = document.querySelector("#department");
+        let studentEmail = document.querySelector("#email");
+        let studentAddress = document.querySelector("#address");
+        let studentPhone = document.querySelector("#phone");
+        let studentPassword = document.querySelector("#password");
+
+        const randomstring = Math.random().toString(36).slice(-8);
+
+        studentNumber.addEventListener("input", () => {
+            studentEmail.value = `${studentNumber.value}@profdux.aiiot.website`;
+            studentAddress.value = "Unset";
+            studentPhone.value = "Unset";
+            studentPassword.setAttribute("type", "text");
+
+            studentPassword.value = randomstring;
+        });
+
+
+
+    </script>
 
     <div style="position:absolute;" class="gtranslate_wrapper"></div>
     <script>window.gtranslateSettings = {"default_language": "en", "languages": ["en", "tr", "fr", "de", "it", "es"], "wrapper_selector": ".gtranslate_wrapper", "switcher_horizontal_position": "left", "switcher_vertical_position": "bottom", "float_switcher_open_direction": "bottom", "flag_style": "3d" }</script>

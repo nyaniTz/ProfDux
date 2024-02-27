@@ -112,7 +112,7 @@ function bubbleError(errorMessage){
 async function signup(){
 
     let params;
-    let uid = 'U' + uniqueID(1);
+    let id = 'U' + uniqueID(1);
 
     // TODO: Do some validation here.
     // if(!isPictureChosen()){
@@ -165,21 +165,17 @@ async function signup(){
         type: "post",
     };
 
-    console.log(call);
+    console.log(call.params);
 
     try {
-        let result = await AJAXCall(call);
-        sessionStorage.setItem('user', result);
-
-        // re-route to login or show success message.
-
-        console.log("done:", result);
-
+        await AJAXCall(call);
+        window.location.href = "success.html";
     } catch(error) {
         console.error("Signup failed:", error);
     }
 
     function signupAsStudent(){
+
         let studentName = document.querySelector("#name");
         let studentNumber = document.querySelector("#stdnumber");
         let studentDepartment = document.querySelector("#department");
@@ -195,29 +191,33 @@ async function signup(){
         let address = studentAddress.value;
         let phone = studentPhone.value;
         let password = studentPassword.value;
+        let timestamp = new Date().toJSON();
 
-        params =`action=signup&utype=student` + `&&uid=${uid}` + `&&name=${name}&&` + `studentno=${studentno}` + `&&department=${department}` + `&&email=${email}` + `&&address=${address}` + `&&phone=${phone}` + `&&password=${password}` + `&&photoName=${photoName}`;
+        console.log("timestamp: ", timestamp);
 
-    }
-
-    function signupAsTeacher(){
-        let teacherName = document.querySelector("#t-name");
-        let teacherDepartment = document.querySelector("#t-department");
-        let teacherEmail = document.querySelector("#t-email");
-        let teacherAddress = document.querySelector("#t-address");
-        let teacherPhone = document.querySelector("#t-phone");
-        let teacherPassword = document.querySelector("#t-password");
-
-        let name = teacherName.value;
-        let department = teacherDepartment.value;
-        let email = teacherEmail.value;
-        let address = teacherAddress.value;
-        let phone = teacherPhone.value;
-        let password = teacherPassword.value;
-        let teacherID = "TD" + uniqueID(-1); // Genarate random ID number for the teacher.
-
-        params = `uid=${uid}&name=${name}&studentno=${teacherID}&department=${department}&email=${email}&address=${address}&phone=${phone}&password=${password}&photoName=${photoName}&action=signup&utype=Teacher`;
+        params = 
+        `id=${id}&&email=${email}&&password=${password}&&role=student&&timestamp=${timestamp}&&name=${name}&&address=${address}&&image=${photoName}&&phone=${phone}&&institutionID=${studentno}&&department=${department}`
 
     }
+
+    // function signupAsTeacher(){
+    //     let teacherName = document.querySelector("#t-name");
+    //     let teacherDepartment = document.querySelector("#t-department");
+    //     let teacherEmail = document.querySelector("#t-email");
+    //     let teacherAddress = document.querySelector("#t-address");
+    //     let teacherPhone = document.querySelector("#t-phone");
+    //     let teacherPassword = document.querySelector("#t-password");
+
+    //     let name = teacherName.value;
+    //     let department = teacherDepartment.value;
+    //     let email = teacherEmail.value;
+    //     let address = teacherAddress.value;
+    //     let phone = teacherPhone.value;
+    //     let password = teacherPassword.value;
+    //     let teacherID = "TD" + uniqueID(-1); // Genarate random ID number for the teacher.
+
+    //     // params = `uid=${id}&name=${name}&studentno=${teacherID}&department=${department}&email=${email}&address=${address}&phone=${phone}&password=${password}&photoName=${photoName}&action=signup&utype=Teacher`;
+
+    // }
 }
 
