@@ -2,4 +2,5 @@
 
 *.mp4
 uploads/*
+!uploads/demoAccount.png
 quiz/*.json
