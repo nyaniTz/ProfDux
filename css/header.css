@@ -40,6 +40,7 @@
     border-radius: 50%;
     overflow: hidden;
     display: grid;
+    border: 2px solid var(--border-fade);
 }
 
 .user-image img{

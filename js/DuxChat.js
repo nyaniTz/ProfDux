@@ -189,6 +189,7 @@ async function generateGPTResponseFor(prompt, apiKey) {
             let chatContainer = duxChatOverlay.querySelector(".chat-container");
 
 
+            duxChatOverlay.style.padding = "0px 100px 100px 100px";
             duxChatOverlay.style.right = "0px";
             duxChatOverlay.style.bottom = "0px";
             duxChatOverlay.style.height = "100vh";
@@ -214,6 +215,8 @@ async function generateGPTResponseFor(prompt, apiKey) {
 
             closeButton.style.display = "none";
             chatContainer.style.display = "none";
+
+            duxChatOverlay.style.padding = "0px";
             duxChatOverlay.style.right = "30px";
             duxChatOverlay.style.bottom = "30px";
             duxChatOverlay.style.height = "70px";
