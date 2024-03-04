@@ -205,7 +205,7 @@ function AJAXCall(callObject){
                 let result = type == "fetch" ? 
                 JSON.parse(this.responseText) : this.responseText ;
 
-                console.log("look: ", result);
+                // console.log("look: ", result);
 
                 //TODO: Take a look one more time
                 if(result.length < 1 && type != "fetch") reject(rejectMessage || "SQLError");

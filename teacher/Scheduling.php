@@ -8,6 +8,9 @@
         
         <?php include '../include/teacherImports.php'; ?>
 
+        <link rel="stylesheet" href="../css/datepicker/datepicker.material.css">
+        <script src="../js/datepicker.js"></script>
+
     </head>
     <body>
 
@@ -16,8 +19,43 @@
         <div class="outer-container">
             <?php include 'components/sidebar.php'; ?>
             <div class="main-container">
-                <?php include 'components/dashboard.php'; ?>
+
+                <h1 class="large-title">Course Scheduling</h1>
+                
+                <div class="schedules-outer-container">
+                    
+                </div>
             </div>
         </div>
+
+        <script>
+
+            ( async () => {
+
+
+            let params = "id=ef87w9r42rbw";
+
+            let result = await AJAXCall({
+                phpFilePath: "../include/schedule/getSchedules.php",
+                rejectMessage: "Getting Schedules Failed",
+                params,
+                type: "fetch"
+            });
+
+            console.log("wow", result);
+
+            let schedules = new Schedules(result);
+            schedules.renderSchedules();
+
+                // setTimeout(() => {
+                //     var datepicker = new Datepicker('.date-input', {
+                //         // ranged: true,
+                //     });
+                // }, 3000);
+
+
+            })();
+
+        </script>
     </body>
 </html>

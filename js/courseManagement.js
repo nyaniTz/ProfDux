@@ -228,6 +228,8 @@ async function loadCourses(options = "id"){
                 //TODO: This part might cause bugs in future versions
                 courseViewContainer.innerHTML = "";
 
+                console.log("options: ", options);
+
                 switch(options){
                     case "id":  // Refactor this to be "teacher"
                         courseViewContainer.appendChild(emptyView);

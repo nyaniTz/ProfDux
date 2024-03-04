@@ -238,11 +238,6 @@
     color: var(--accent);
 }
 
-.large-title {
-    color: var(--accent);
-    font-weight: 600;
-}
-
 /* .course-view-container > div {
     display: grid;
     place-items: center;

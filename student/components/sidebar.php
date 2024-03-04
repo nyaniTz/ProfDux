@@ -39,11 +39,6 @@
             <text>Timetable</text>
         </a>
 
-        <a class="sidebar-link" data-id="Messaging" href="Messaging.php">
-            <img src="../assets/icons/fi/fi-rr-envelope.svg" alt="">
-            <p>Messaging</p>
-        </a>
-
         <a class="sidebar-link" data-id="Documents" href="Documents.php">
             <img src="../assets/icons/fi/fi-rr-document.svg" alt="">
             <p>E-book</p>
@@ -53,6 +48,12 @@
             <img src="../assets/icons/fi/fi-rr-add.svg" alt="">
             <p>Settings</p>
         </a>
+
+        <a class="sidebar-link" data-id="Messaging" href="Messaging.php">
+            <img src="../assets/icons/fi/fi-rr-envelope.svg" alt="">
+            <p>Messaging</p>
+        </a>
+
     </div>
 
     <div class="gtranslate_wrapper"></div>

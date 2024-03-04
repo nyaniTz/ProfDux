@@ -22,6 +22,7 @@
         "../css/popup.css",
         "../css/settings.css",
         "../css/quiz.css",
+        "../css/scheduling.css",
     );
 
     // These are for javascript files that you want
@@ -29,7 +30,8 @@
     $jsPaths = array(
         "../js/dialogs.js",
         "../js/functions.js",
-        "../js/localize.js"
+        "../js/localize.js",
+        "../js/Schedules.js"
     );
 
     // These are for javascript files that you want

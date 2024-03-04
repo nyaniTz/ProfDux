@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../css/translation.css">
+    <link rel="stylesheet" href="../css/root.css">
+    <link rel="stylesheet" href="../css/pdf-viewer.css">
+    <link rel="stylesheet" href="../css/image-viewer.css">
+    <link rel="stylesheet" href="../css/classroom.css">
+    <link rel="stylesheet" href="../css/scheduling.css">
+
+    <script src="../js/functions.js"></script>
+    <script src="../js/localize.js" defer></script>
+    <script src="../js/pdf-viewer.js" defer></script>
+    <script src="../js/image-viewer.js" defer></script>
+    <script src="../js/Course.js" defer></script>
+
+    <script src="../js/Classroom.js" defer></script>
+
+    <link rel="stylesheet" href="../css/spinkit.css">
+    <link rel="stylesheet" href="../css/popup.css">
+
+    <link rel="stylesheet" href="../css/datepicker/datepicker.material.css">
+    <script src="../js/datepicker.js"></script>
+    <script src="../js/Schedules.js?2"></script>
+</head>
+<body>
+
+    <div></div>
+    <div class="schedules-outer-container">
+
+        <!-- <div class="lesson-plan-container">
+
+            <div class="lesson-left-pane">
+                <div class="box"></div>
+            </div>
+
+            <div class="lesson-right-pane">
+
+                <div class="lesson-item-container">
+                    <div class="numbering"></div>
+                    <div class="lesson-item-inner-container">
+                        <div class="lesson-title">Lecture 1 Intro For Medicine Students</div>
+                        <div class="lesson-time">
+                            <input type="date" class="date-input"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lesson-item-container">
+                    <div class="numbering"></div>
+                    <div class="lesson-item-inner-container">
+                        <div class="lesson-title">Lecture 1 Intro For Medicine Students</div>
+                        <div class="lesson-time">
+                            <input type="date" class="date-input"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+    </div>
+
+    <style>
+
+        body {
+            display: grid;
+            height: 100vh;
+            grid-template-columns: 300px 1fr;
+        }
+
+
+    </style>
+
+    <script>
+
+        var datepicker = new Datepicker('.date-input', {
+            // ranged: true,
+        });
+
+        ( async () => {
+
+            let { id } = await getGlobalDetails();
+
+            let params = `id=${id}`;
+
+            let result = await AJAXCall({
+                phpFilePath: "../include/schedule/getSchedules.php",
+                rejectMessage: "Getting Schedules Failed",
+                params,
+                type: "fetch"
+            });
+
+            console.log("wow", result);
+
+            let schedules = new Schedules(result);
+            schedules.renderSchedules();
+
+        })();
+
+
+
+    </script>
+    
+</body>
+</html>

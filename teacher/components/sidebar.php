@@ -34,11 +34,6 @@
             <p>Scheduling</p>
         </a>
 
-        <a class="sidebar-link" data-id="Messaging" href="Messaging.php">
-            <img src="../assets/icons/fi/fi-rr-mailbox.svg" alt="">
-            <p>Messaging</p>
-        </a>
-
         <a class="sidebar-link" data-id="Weight Assignment" href="Weights.php">
             <img src="../assets/icons/fi/fi-rr-chart-pie-alt.svg" alt="">
             <p>Weight Assignment</p>
@@ -52,6 +47,11 @@
         <a class="sidebar-link" data-id="Settings" href="Settings.php">
             <img src="../assets/icons/fi/fi-rr-settings.svg" alt="">
             <p>Settings</p>
+        </a>
+
+        <a class="sidebar-link" data-id="Messaging" href="Messaging.php">
+            <img src="../assets/icons/fi/fi-rr-mailbox.svg" alt="">
+            <p>Messaging</p>
         </a>
     </div>
 

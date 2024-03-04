@@ -40,6 +40,11 @@ body {
     width: 100vw;
 }
 
+.large-title {
+    color: var(--accent);
+    font-weight: 600;
+}
+
 .outer-container {
     height: 100%;
     display: inline-block;
