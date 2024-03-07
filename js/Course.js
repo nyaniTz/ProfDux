@@ -654,7 +654,7 @@ async function loopThroughObjectForAsync(courseObject, asyncCallback){
     }
 }
 
-let excelLoader = loadLoader("Loading From Excel");
+// let excelLoader = loadLoader("Loading From Excel");
 
 
 async function excelNewCourseItemObjectLooper(course){
