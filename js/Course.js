@@ -354,6 +354,10 @@ class Course {
         });
     }
 
+    forceNewCourseDataAsNew(){
+
+    }
+
     deleteLectureTitle(id, title, _this){
 
         let lectureIndex = null;
@@ -648,6 +652,30 @@ async function loopThroughObjectForAsync(courseObject, asyncCallback){
         });
         
     }
+}
+
+let excelLoader = loadLoader("Loading From Excel");
+
+
+async function excelNewCourseItemObjectLooper(course){
+
+    let  { 
+        newLectures, 
+        newSubtopics 
+    } = course;
+
+    let savingCourseLoader = loadLoader("Saving Course");
+
+    await loopThroughObjectForAsync(newLectures, addLectureTitleToDatabase);
+    await loopThroughObjectForAsync(newSubtopics, addSubtopicTitleToDatabase);
+
+    refreshTeacherCourseOutline(); //Bugs???
+
+    setTimeout(() => {
+        console.log("course outline from excel");
+        removeLoader(savingCourseLoader);
+    }, 5000);
+
 }
 
 async function courseItemObjectLooper(course, type = ""){
