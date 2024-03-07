@@ -20,13 +20,13 @@
         $result = mysqli_query($conn,$query);
         $courses = mysqli_fetch_all($result,MYSQLI_ASSOC);
 
-        echo $courses;
-        
         $finalResult = array();
 
         foreach($courses as $course) {
 
             $courseID = $course['id'];
+
+            echo $course['id'];
             
             $lectureQuery = "
             SELECT *
@@ -41,6 +41,8 @@
             foreach($lectures as $lecture){
 
                 $lectureID = $lecture['id'];
+
+                echo $lecture['id'];
                 
                 $subtopicQuery = "
                 SELECT *
@@ -98,13 +100,12 @@
                 "lectures" => $lectureArray
             );
 
+            echo json_encode($resultA);
+
             $finalResult[] = $resultA;
 
         }
 
         echo json_encode($finalResult);
 
-    }
-    else{
-        echo json_encode(array("status" => "error"));
     }
