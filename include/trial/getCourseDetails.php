@@ -20,6 +20,8 @@
         $result = mysqli_query($conn,$query);
         $courses = mysqli_fetch_all($result,MYSQLI_ASSOC);
 
+        echo $courses;
+        
         $finalResult = array();
 
         foreach($courses as $course) {
