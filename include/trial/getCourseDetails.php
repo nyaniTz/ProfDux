@@ -14,7 +14,7 @@
 
         $query = "
         SELECT *
-        FROM `courses` WHERE id = '$courseID'
+        FROM `courses` WHERE id = 'ltcvladl'
         ";
 
         $result = mysqli_query($conn,$query);
@@ -25,12 +25,10 @@
         foreach($courses as $course) {
 
             $courseID = $course['id'];
-
-            echo $course['id'];
             
             $lectureQuery = "
             SELECT *
-            FROM `lectures` WHERE courseID = '$courseID'
+            FROM `lectures` WHERE courseID = 'ltcvladl'
             ";
 
             $lectureResult = mysqli_query($conn,$lectureQuery);
@@ -41,8 +39,6 @@
             foreach($lectures as $lecture){
 
                 $lectureID = $lecture['id'];
-
-                echo $lecture['id'];
                 
                 $subtopicQuery = "
                 SELECT *
@@ -72,6 +68,10 @@
                         "hierarchy" => $subtopic['hierarchy'],
                         "resources" => $resources
                     );
+
+                    echo "subtopic Array\n";
+                    echo json_encode($subtopicArray);
+    
                     
                 }
 
@@ -91,6 +91,9 @@
                     "quizzes" => $quizzes
                 );
 
+                echo "lecture Array\n";
+                echo json_encode($lectureArray);
+
             }
 
             $resultA = array(
@@ -100,6 +103,7 @@
                 "lectures" => $lectureArray
             );
 
+            echo "resultA \n";
             echo json_encode($resultA);
 
             $finalResult[] = $resultA;
