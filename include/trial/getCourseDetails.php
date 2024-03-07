@@ -67,11 +67,7 @@
                         "title" => $subtopic['title'],
                         "hierarchy" => $subtopic['hierarchy'],
                         "resources" => $resources
-                    );
-
-                    echo "subtopic Array\n";
-                    echo json_encode($subtopicArray);
-    
+                    );    
                     
                 }
 
@@ -103,7 +99,7 @@
                 "lectures" => $lectureArray
             );
 
-            echo "resultA \n";
+            echo "resultA:  \n";
             echo json_encode($resultA);
 
             $finalResult[] = $resultA;
