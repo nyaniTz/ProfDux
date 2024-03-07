@@ -202,10 +202,10 @@ function AJAXCall(callObject){
         xhr.onload = function(){
             if( this.status == 200 ){
 
+                console.log("look: ", this.responseText);
+                
                 let result = type == "fetch" ? 
                 JSON.parse(this.responseText) : this.responseText ;
-
-                console.log("look: ", this.responseText);
 
                 //TODO: Take a look one more time
                 if(result.length < 1 && type != "fetch") reject(rejectMessage || "SQLError");
