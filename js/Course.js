@@ -81,7 +81,7 @@ class Course {
 
             let itemizationElement = document.createElement("div");
             itemizationElement.className = "itemization";
-            itemizationElement.textContent = `${index + 1}.`;
+            // itemizationElement.textContent = `${index + 1}.`;
 
             let lectureInnerContainer = document.createElement("div");
             lectureInnerContainer.className = "lecture-inner-container";
@@ -231,7 +231,7 @@ class Course {
 
         let itemizationElement = document.createElement("div");
         itemizationElement.className = "itemization";
-        itemizationElement.textContent = `${++this.lectureIndex}.`;
+        // itemizationElement.textContent = `${++this.lectureIndex}.`;
 
         let lectureInnerContainer = document.createElement("div");
         lectureInnerContainer.className = "lecture-inner-container";

@@ -15,12 +15,17 @@
     padding-bottom: 100px;
     min-height: 80vh;
     align-items: start;
+    counter-reset: course-outline-counter;
 }
 
 .itemization {
     color: var(--accent);
     font-size: 2em;
     grid-column: 1;
+}
+.itemization::before{
+    counter-increment: course-outline-counter;
+    content: counter(course-outline-counter) ". ";
 }
 
 .lecture-inner-container {

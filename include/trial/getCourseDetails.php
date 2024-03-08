@@ -87,7 +87,7 @@
                     "quizzes" => $quizzes
                 );
 
-                echo "lecture Array\n";
+                echo "lecture Array: \n";
                 echo json_encode($lectureArray);
 
             }
