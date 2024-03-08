@@ -64,6 +64,8 @@
 
             async function createCourse(){
 
+                let createCourseLoader = loadLoader("Creating Course");
+
                 let courseCode = document.querySelector(".course-code").value;
                 let courseName = document.querySelector(".course-name").value;
                 let id = uniqueID(1);
@@ -91,9 +93,11 @@
                     type: "post"
                 });
 
+                loadCourses(); 
+
                 setTimeout(() => { 
                     closeCreateCourseOverlay();
-                    loadCourses(); 
+                    removeLoader(createCourseLoader);
                 }, 2000)
             }
 
