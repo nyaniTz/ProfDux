@@ -102,6 +102,7 @@
             }
 
             function openCreateCourseOverlay(){
+                clearCourseOverlayInputs();
                 let courseOverlay = document.querySelector(".create-course-overlay");
                 courseOverlay.style.display = "grid";
             }
@@ -125,6 +126,21 @@
                     URL.revokeObjectURL(output.src) // free memory
                 }
             }
+
+            function clearCourseOverlayInputs(){
+
+                const createCourseOverlay = document.querySelector(".create-course-overlay");
+                const courseImageElement = createCourseOverlay.querySelector(".course-image-view-element");
+                const courseCodeElement = createCourseOverlay.querySelector(".form-input.course-code");
+                const courseTitleElement = createCourseOverlay.querySelector(".form-input.course-name");
+
+                const overWrapper = document.querySelector(".over-wrapper");
+                overWrapper.style.display = "grid";
+
+                courseImageElement.removeAttribute("src")
+                courseCodeElement.value = "";
+                courseTitleElement.value = "";
+            }   
 
         </script>
 
