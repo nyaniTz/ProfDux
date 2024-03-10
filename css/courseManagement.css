@@ -23,6 +23,7 @@
     font-size: 2em;
     grid-column: 1;
 }
+
 .itemization::before{
     counter-increment: course-outline-counter;
     content: counter(course-outline-counter) ". ";
@@ -96,6 +97,30 @@
 }
 
 /* generate-quiz-button */
+#excelUploadButton {
+    background: white;
+    border: 2px solid #2F7D31;
+    border-radius: 5px;
+    display: grid;
+    padding: 9px;
+}
+
+#excelUploadButton div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 10px;
+    color: #2F7D31;
+    font-weight: 600;
+    align-items: center;
+}
+
+#excelUploadButton img {
+    height: 20px;
+}
+
+#excelCourseFileUpload {
+    display: none;
+}
 
 .delete-button {
     margin-left: 0px;

@@ -168,12 +168,19 @@ function cascadingDateChanges(){
 // }
 
 function uniqueID(stregth = 2){
-    const date = Date.now();
+    const date = Date.now() + getRandomArbitrary(0, 9999);
     const dateReversed = parseInt(String(date).split("").reverse().join(""));
     const base36 = number => (number).toString(36);
     if(stregth == 1) return base36(date);
     if(stregth == -1) return  base36(dateReversed);
     return base36(dateReversed) + base36(date);
+
+    // return crypto.randomUUID().split("-").join("");
+
+}
+
+function getRandomArbitrary(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
 }
 
 function setUsernameDetails(user){
@@ -201,11 +208,11 @@ function AJAXCall(callObject){
 
         xhr.onload = function(){
             if( this.status == 200 ){
-
-                console.log("look: ", this.responseText);
                 
                 let result = type == "fetch" ? 
                 JSON.parse(this.responseText) : this.responseText ;
+
+                console.log("look: ", result);
 
                 //TODO: Take a look one more time
                 if(result.length < 1 && type != "fetch") reject(rejectMessage || "SQLError");

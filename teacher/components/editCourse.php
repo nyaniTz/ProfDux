@@ -1,3 +1,5 @@
+<script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+
 <div class="inner-header">
     <div style="display:grid; grid-gap: 10px;">
         <h1 class="medium-title" id="course-title"></h1>
@@ -7,7 +9,15 @@
         </div>
     </div>
 
-    <div class="two-column-grid">
+    <div class="simple-grid">
+        <label for="excelCourseFileUpload" class="button" id="excelUploadButton">
+            <div>
+                <input type="file" id="excelCourseFileUpload" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                <img src="../assets/icons/excel.png" alt="">
+                <text>Excel Upload</text>
+            </div>
+        </label>
+
         <div class="button" id="saveCourseDetails">
             <text>Save</text>
         </div>

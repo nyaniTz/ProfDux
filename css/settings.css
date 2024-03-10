@@ -16,8 +16,8 @@
 
 .personal-image-view img{
     height: 240px;
-    width: 400px;
-    margin-left: -25%;
+    /* width: 400px;
+    margin-left: -25%; */
 }
 
 .setting-values {

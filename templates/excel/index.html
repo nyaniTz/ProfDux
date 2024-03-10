@@ -11,7 +11,21 @@
 </head>
 <body>
 
-    <input type="file">
-    
+    <input type="file" id="excelCourseFileUpload" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="loadExcelSheetToView(event)">
+
+    <script>
+
+
+        function loadExcelSheetToView(event){
+            
+            let file = event.target.files[0];
+
+            const objectURL = window.URL.createObjectURL(file);
+            
+            parseExcelForCourseObject(objectURL);
+
+        }
+
+    </script>
 </body>
 </html>

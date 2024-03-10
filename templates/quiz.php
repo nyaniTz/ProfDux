@@ -33,7 +33,7 @@
             lectureID: "",
             name: "",
             dateGenerated: "",
-            heirarchy: "",
+            hierarchy: "",
             totalMarks: ""
         }
 

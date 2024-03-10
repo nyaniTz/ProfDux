@@ -29,6 +29,7 @@
             $lectureQuery = "
             SELECT *
             FROM `lectures` WHERE courseID = '$courseID'
+            ORDER BY lectures.hierarchy
             ";
 
             $lectureResult = mysqli_query($conn,$lectureQuery);
@@ -43,6 +44,7 @@
                 $subtopicQuery = "
                 SELECT *
                 FROM `subtopics` WHERE lectureID = '$lectureID'
+                ORDER BY subtopics.hierarchy
                 ";
 
                 $subtopicResult = mysqli_query($conn,$subtopicQuery);

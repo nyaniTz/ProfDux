@@ -45,6 +45,11 @@ body {
     font-weight: 600;
 }
 
+.simple-grid {
+    display: grid;
+    grid-gap: 20px;
+}
+
 .outer-container {
     height: 100%;
     display: inline-block;
