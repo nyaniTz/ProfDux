@@ -1,13 +1,5 @@
 class Course {
 
-    status =  "unchaged"
-    id
-    title
-    courseCode
-    lectures
-
-    lectureIndex = 0
-    
     lectureUpdates = {}
     subtopicUpdates = {}
     newLectures = {}
@@ -42,8 +34,8 @@ class Course {
         this.title = title;
         this.courseCode = courseCode;
         this.lectures = lectures;
-        this.courseObject = courseObject;
         this.id = id
+        this.lectureIndex = 0
     }
 
     setTitle(title, _this){
@@ -68,9 +60,6 @@ class Course {
 
     renderDeleteButton(){
         let deleteButton = findElement("#deleteCourseButton");
-        // let textElement = createLocalizedTextElement(this.courseCode);        
-        // titleElement.innerHTML = "";
-        // titleElement.appendChild(textElement);
         deleteButton.addEventListener('click', () => this.deleteCourse(this.id));
     }
 
@@ -79,12 +68,9 @@ class Course {
         let courseGridContainer = findElement("#course-grid-container");
         courseGridContainer.innerHTML = "";
 
-        this.lectures.forEach( (lecture, index) => {
+        this.lectures.forEach( lecture => {
 
-            lecture.id
-            lecture.title
-            lecture.subtopics
-            this.lectureIndex += lecture.hierarchy;
+            this.lectureIndex = lecture.hierarchy;
 
             let lectureSection = document.createElement("div");
             lectureSection.className = "lecture-section";
@@ -101,7 +87,7 @@ class Course {
                 parentID: this.id,
                 title: lecture.title, 
                 inputChangeCallback: this.updateLectureTitle, 
-                hierarchy: lecture.hierarchy,
+                hierarchy: this.lectureIndex,
                 type: "lecture"
             }
 
@@ -173,7 +159,7 @@ class Course {
                 this.addSubtopicElement({
                     parentID: lecture.id, 
                     parentElement: subtopicsContainer,
-                    hierarchy: subtopicIndex
+                    hierarchy: ++subtopicIndex
                 });
             });
 
@@ -246,9 +232,7 @@ class Course {
         editButton.className = "button green-button quiz-edit-button";
         editButton.textContent = "edit quiz";
 
-        editButton.addEventListener("click", () => {
-            startEditingQuiz(filename);
-        })
+        editButton.addEventListener("click", () => startEditingQuiz(filename))
 
         quizRowContainer.appendChild(quizFilename);
         quizRowContainer.appendChild(editButton);
@@ -270,7 +254,6 @@ class Course {
 
         let itemizationElement = document.createElement("div");
         itemizationElement.className = "itemization";
-        // itemizationElement.textContent = `${++this.lectureIndex}.`;
 
         let lectureInnerContainer = document.createElement("div");
         lectureInnerContainer.className = "lecture-inner-container";
@@ -351,23 +334,25 @@ class Course {
 
     updateLectureTitle({ id, title, hierarchy, _this }){
         _this.lectureUpdates[id] = { id, title, hierarchy };
+        console.log(_this.lectureUpdates[id]);
     }
 
     updateSubtopicTitle({ id, title, hierarchy, _this }){
         _this.subtopicUpdates[id] = { id, title, hierarchy };
+        console.log(_this.subtopicUpdates[id]);
     }
 
     newLectureTitle({ id, parentID, title, hierarchy,  _this }){
         _this.newLectures[id] = { id, parentID, title, hierarchy };
+        console.log(_this.newLectures[id]);
     }
 
     newSubtopicTitle({ id, parentID, title, hierarchy,  _this }){
         _this.newSubtopics[id] = { id, parentID, title, hierarchy };
+        console.log(_this.newSubtopics[id]);
     }
 
-    deleteCourse(id){
-
-        console.log('idToDelete: ', id);
+    deleteCourse(){
 
         let options = {
             title: 'Are You Sure You Want To Delete This Course?',
@@ -377,9 +362,6 @@ class Course {
         
         return showOptionsDialog(options, async () => {
 
-            //TODO: set all of the deleteLectures, deleteSubtopics,
-            // deleteResources elements;
-
             this.lectureUpdates = {}
             this.subtopicUpdates = {}
         
@@ -387,8 +369,6 @@ class Course {
             this.newSubtopics = {}
             this.newResources = {}
 
-            let quizzesToDelete = {}
-        
             this.lectures.map( lecture => { 
                 this.deleteLectures[lecture.id] = { id: lecture.id }
 
@@ -409,13 +389,6 @@ class Course {
                 })
             })
 
-            console.log(
-                this.deleteLectures,
-                this.deleteSubtopics,
-                this.deleteResource,
-            )
-
-
             await courseItemObjectLooper(this, "delete course");
             await deleteCourseFromDatabase(this.id);
         });
@@ -429,6 +402,7 @@ class Course {
                 id: lecture.id, 
                 parentID: this.id, 
                 title: lecture.title, 
+                hierarchy: lecture.hierarchy,
                 _this: this 
             })
 
@@ -438,6 +412,7 @@ class Course {
                     id: subtopic.id, 
                     parentID: lecture.id, 
                     title: subtopic.title, 
+                    hierarchy: subtopic.hierarchy,
                     _this: this 
                 })
 
@@ -445,13 +420,11 @@ class Course {
 
         });
 
-        console.log("new lectures: ",this.newLectures)
-        console.log("new subtopics", this.newSubtopics)
     }
 
     deleteLectureTitle(id, _this){
 
-        let lectureIndex = null;
+        let lectureIndex = 0;
         
         this.lectures.forEach((lecture,index) => {
             if(lecture.id == id){
@@ -473,13 +446,7 @@ class Course {
                 _this.deleteSubtopics[subtopic.id] = { id: subtopic.id };
             })
         }
-    
 
-        // The function that will bind to the deleteLectures object
-        // will need to cascade by SQL to delete all subtopics
-        // that are bound to this lecture
-
-        // It will also need to erase all files and resources as well.
     }
 
     deleteSubtopicTitle(id, title, _this){
@@ -498,9 +465,8 @@ class Course {
             }
         })
 
-        if(!deleted){
+        if(!deleted)
             delete this.newLectures[id]
-        }
 
     }
 
@@ -508,7 +474,7 @@ class Course {
 
         let deleted = false;
 
-        let lectureIndex = null;
+        let lectureIndex = 0; // TODO: I'm lost
         let { id, lectureID } = idObject;
 
         this.lectures.forEach( (lecture,index) => {
@@ -528,9 +494,8 @@ class Course {
             })
         }
 
-        if(!deleted){
+        if(!deleted)
             delete this.newSubtopics[id]
-        }
 
     }
 
@@ -550,7 +515,7 @@ class Course {
 
         let inputElement = document.createElement("input");
         inputElement.type = "text";
-        inputElement.value = hierarchy + ".  " + title;
+        inputElement.value = title;
         inputElement.setAttribute("data-id", id);
         
         let inputCallbackObject = { id, parentID, title: inputElement.value, hierarchy, _this: this };
@@ -559,7 +524,9 @@ class Course {
         if(addType == "excelUpload") inputChangeCallback(inputCallbackObject);
 
         inputElement.onchange = () => {
+            inputCallbackObject.title = inputElement.value;
             inputChangeCallback(inputCallbackObject);
+            console.log(inputCallbackObject.title)
         }
 
         let deleteButton = document.createElement("div");
@@ -616,6 +583,8 @@ class Course {
     }
 
 }
+
+// TODO: Get Course class lines under 500
 
 async function generateQuiz(lectureObject){
 
@@ -722,6 +691,8 @@ async function fetchCourseWithID(givenID){
     if(courses.length > 0) 
     if(courses[0].status == "error") return;
 
+    console.log("Debug From Here: " , courses[0]);
+
     let selectedCourse = courses[0];
 
     ( function sortCourses(course){
@@ -736,6 +707,9 @@ async function fetchCourseWithID(givenID){
         });
     
     })(selectedCourse)
+
+    console.log("Sorted From Here: " , courses[0]);
+
 
     setTimeout(() => {
 
@@ -795,109 +769,6 @@ function loadExcelSheetToView(event) {
 
 
 }
-
-async function parseExcelForCourseObject(url){
-
-    const file = await (await fetch(url)).arrayBuffer();
-
-    const workbook = XLSX.read(file);
-    const worksheetsObject = workbook.Sheets;
-    // console.log("hello", worksheetsObject);
-
-    let entries = Object.entries(worksheetsObject);
-        
-    const worksheets = entries.map( ([key, val] = entry) => {
-        return val;
-    });
-
-    const lessonStructuredObjects = XLSX.utils.sheet_to_json(worksheets[0]);
-    console.log(lessonStructuredObjects);
-
-    function checkIfExistsInObject(Object, ...keyArray){
-        try{
-            let key = false;
-            keyArray.forEach( _key => { if(Object[_key]) key = _key })
-            return key
-        }catch(error){ return false }
-    }
-
-    // let result = checkIfExistsInObject(lessonStructuredObjects[0], "#", "##", "###");
-    // console.log(result);
-
-    let currentPosition = null;
-    let resultObjectArray = [];
-    let currentObject = {};
-
-    let lectureIndex = 0;
-    let subtopicIndex = 0;
-
-    lessonStructuredObjects.forEach( rowObject => {
-
-        let key = checkIfExistsInObject(rowObject, "#", "###");
-
-        const id = uniqueID(1);
-
-        if(key){
-            switch(key){
-                case "#":
-                    startNewTopic(id);
-                    break;
-                case "###":
-                    addNewSubtopic(id);
-            }
-        }
-
-        function startNewTopic(id){
-
-            if(currentPosition != null) resultObjectArray.push(currentObject)
-
-            currentObject = {};
-            subtopicIndex = 0;
-
-            let doesTitleTextExist = checkIfExistsInObject(rowObject, "##");
-
-            currentPosition = rowObject["#"];
-            currentObject.id = id;
-            currentObject.hierarchy = ++lectureIndex;
-            currentObject.title = doesTitleTextExist ? rowObject["##"] : "";
-            currentObject.subtopics = [];
-            currentObject.resources = [];
-            currentObject.quizzes = [];
-            resultObjectArray
-        }
-
-        function addNewSubtopic(id, index){
-            currentObject.subtopics.push({
-                id,
-                hierarchy: ++subtopicIndex,
-                title: rowObject["###"],
-            })
-        }
-
-    });
-
-    resultObjectArray.push(currentObject);
-
-    console.log("resulting Object: ", resultObjectArray);
-
-    return resultObjectArray;
-
-    let objectModel = {
-        hierarchy: "",
-        title: "",
-        subtopics: [
-            { hierarchy: "", title: ""}
-        ]
-    }
-
-    let lessonObjectArray = [
-        objectModel, objectModel, objectModel
-    ]
-
-    // console.log(lessonObjectArray);
-
-};
-
 
 async function excelNewCourseItemObjectLooper(course){
 
@@ -1015,7 +886,7 @@ async function updateLectureTitleToDatabase(lectureOject){
     let { id, title, hierarchy } = lectureOject;
 
     if(id.length > 2){
-        let params = `lectureID=${id}&&title=${title}&&hierarchy`;
+        let params = `lectureID=${id}&&title=${title}&&hierarchy=${hierarchy}`;
 
         await AJAXCall({
             phpFilePath: "../include/course/editLectureDetails.php",
@@ -1029,10 +900,10 @@ async function updateLectureTitleToDatabase(lectureOject){
 
 async function updateSubtopicTitleToDatabase(subtopicObject){
 
-    let { id, title } = subtopicObject;
+    let { id, title, hierarchy } = subtopicObject;
 
     if(id.length > 2){
-        let params = `id=${id}&&title=${title}`;
+        let params = `id=${id}&&title=${title}&&hierarchy=${hierarchy}`;
 
         await AJAXCall({
             phpFilePath: "../include/course/editSubtopicDetails.php",
@@ -1046,10 +917,10 @@ async function updateSubtopicTitleToDatabase(subtopicObject){
 
 async function addLectureTitleToDatabase(lectureOject){
 
-    let { id, title, parentID: courseID } = lectureOject;
+    let { id, title, parentID: courseID, hierarchy } = lectureOject;
 
     if(id.length > 2){
-        let params = `id=${id}&&title=${title}&&courseID=${courseID}`;
+        let params = `id=${id}&&title=${title}&&courseID=${courseID}&&hierarchy=${hierarchy}`;
 
         await AJAXCall({
             phpFilePath: "../include/course/addNewLecture.php",
@@ -1063,10 +934,10 @@ async function addLectureTitleToDatabase(lectureOject){
 
 async function addSubtopicTitleToDatabase(subtopicObject){
 
-    let { id, parentID: lectureID, title } = subtopicObject;
+    let { id, parentID: lectureID, title, hierarchy } = subtopicObject;
 
     if(id.length > 2){
-        let params = `id=${id}&&title=${title}&&lectureID=${lectureID}`;
+        let params = `id=${id}&&title=${title}&&lectureID=${lectureID}&&hierarchy=${hierarchy}`;
 
         await AJAXCall({
             phpFilePath: "../include/course/addNewSubtopic.php",

@@ -7,6 +7,7 @@
 
     $id = $_POST['id'];
     $title = $_POST['title'];
+    $hierarchy = $_POST['hierarchy'];
 
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
@@ -14,7 +15,7 @@
 
     $query = "
         UPDATE subtopics
-        SET title='$title'
+        SET title='$title', hierarchy='$hierarchy'
         WHERE id='$id'
     ";
 

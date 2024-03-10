@@ -31,7 +31,8 @@
         "../js/dialogs.js",
         "../js/functions.js",
         "../js/localize.js",
-        "../js/Schedules.js"
+        "../js/Schedules.js",
+        "../js/excelParser.js"
     );
 
     // These are for javascript files that you want
