@@ -424,7 +424,7 @@ class Course {
 
     deleteLectureTitle(id, _this){
 
-        let lectureIndex = 0;
+        let lectureIndex = null;
         
         this.lectures.forEach((lecture,index) => {
             if(lecture.id == id){
@@ -474,7 +474,7 @@ class Course {
 
         let deleted = false;
 
-        let lectureIndex = 0; // TODO: I'm lost
+        let lectureIndex = null;
         let { id, lectureID } = idObject;
 
         this.lectures.forEach( (lecture,index) => {
@@ -517,6 +517,7 @@ class Course {
         inputElement.type = "text";
         inputElement.value = title;
         inputElement.setAttribute("data-id", id);
+        inputElement.setAttribute("required", "true");
         
         let inputCallbackObject = { id, parentID, title: inputElement.value, hierarchy, _this: this };
 
@@ -679,14 +680,7 @@ async function fetchCourseWithID(givenID){
 
     courseGridContainer.innerHTML = loader;
 
-    //TODO: Might be in multiple places, refactor
-    // Is also in Classroom.php ...
-    let courses = await AJAXCall({
-        phpFilePath: "../include/course/getCourseDetails.php",
-        rejectMessage: "Getting Details Failed",
-        params: `id=${givenID}`,
-        type: "fetch"
-    });
+    let courses = await getCourseDetails(givenID);
 
     if(courses.length > 0) 
     if(courses[0].status == "error") return;
@@ -865,9 +859,6 @@ async function deleteSubtopicsFromDatabase(subtopicsObject){
 
     if(id.length > 2){
         let params = `id=${id}`;
-
-        //TODO: The file called deleteSubtopics.php also
-        // deletes associated resources.
 
         await AJAXCall({
             phpFilePath: "../include/delete/deleteSubtopic.php",

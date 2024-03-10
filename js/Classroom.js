@@ -244,12 +244,7 @@ function extractType(type){
 
 async function renderCourseOutline(givenID){
 
-    let courses = await AJAXCall({
-        phpFilePath: "../include/course/getCourseDetails.php",
-        rejectMessage: "Getting Details Failed",
-        params: `id=${givenID}`,
-        type: "fetch"
-    });
+    let courses = await getCourseDetails(givenID);
 
     console.log("courses 0 :", courses[0], givenID);
 

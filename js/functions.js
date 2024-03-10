@@ -492,3 +492,12 @@ function removeLoader(loader){
 function scrollBottom(element) {
     element.scroll({ top: element.scrollHeight, behavior: "smooth"})
 }
+
+async function getCourseDetails(givenID){
+    return AJAXCall({
+        phpFilePath: "../include/course/getCourseDetails.php",
+        rejectMessage: "Getting Details Failed",
+        params: `id=${givenID}`,
+        type: "fetch"
+    });
+}
