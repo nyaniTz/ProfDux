@@ -306,7 +306,11 @@ class EditFillInTheBlank extends Question {
 async function startEditingQuiz(filename, type="teacher"){
 
     let correctPath = `../quiz/generated/${filename}`;
+    console.log("correctPath:", correctPath);
+
     let quizFileResponse = await fetch(correctPath, {cache: "reload"});
+    console.log("quizFileResponse:", quizFileResponse);
+
     let questions = await quizFileResponse.json();
 
     let questionsArray = questions.map( question => {

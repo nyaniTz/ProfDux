@@ -82,20 +82,59 @@ async function parseExcelForCourseObject(url){
 
     console.log("resulting Object: ", resultObjectArray);
 
-    return resultObjectArray;
+    let { isError, errorMessage } = checkParsedObjectAgainst(resultObjectArray);
+
+    console.log("isError: ", isError, "errorMessage: ", errorMessage);
+
+    if(isError == false)
+        return resultObjectArray
+    else throw new Error("Format Is Wrong: ", errorMessage);
+
+};
+
+function checkParsedObjectAgainst(givenObjectArray){
+
+    let isError = false;
+    let errorMessage = [];
 
     let objectModel = {
-        hierarchy: "",
         title: "",
         subtopics: [
             { hierarchy: "", title: ""}
         ]
     }
 
-    let lessonObjectArray = [
-        objectModel, objectModel, objectModel
-    ]
+    givenObjectArray.forEach( givenObject => {
+        
+        if(!givenObject.id) {
+            errorMessage.push("id does not exist")
+            isError = true
+        }
 
-    // console.log(lessonObjectArray);
+        if(!givenObject.hierarchy) {
+            errorMessage.push("hierarchy does not exist")
+            isError = true
+        }
 
-};
+        if(!givenObject.subtopics) {
+            errorMessage.push("suptopics do not exist")
+            isError = true
+        }
+
+        if(!givenObject.title.length > 0) {
+            errorMessage.push("title does not exist")
+            isError = true
+        }
+
+        if(!givenObject.quizzes) {
+            errorMessage.push("quiz do not exist")
+            isError = true
+        }
+
+        if(isError) return;
+
+    })
+
+    return { isError, errorMessage };
+
+}

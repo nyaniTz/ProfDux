@@ -1,0 +1,103 @@
+[
+    {
+        "question": "Deniz suyu hangi elementten oluÅŸur?",
+        "answerOptions": [
+            "Hidrojen",
+            "Oksijen",
+            "Klor",
+            "Karbon"
+        ],
+        "answer": "Hidrojen, Oksijen",
+        "type": "multiple choice",
+        "hardness": "hard"
+    },
+    {
+        "question": "YeryÃ¼zÃ¼ndeki tuzlu suyun en bÃ¼yÃ¼k kaynaÄŸÄ± nedir?",
+        "answerOptions": [
+            "GÃ¼ney Kutbu",
+            "Okyanuslar",
+            "DaÄŸ buzullarÄ±",
+            "GÃ¶ller"
+        ],
+        "answer": "Okyanuslar",
+        "type": "multiple choice",
+        "hardness": "hard"
+    },
+    {
+        "question": "Suyun doÄŸada 3 hali vardÄ±r. Bunlar hangileridir?",
+        "answerOptions": [
+            "KatÄ±, Gaz, SÄ±vÄ±",
+            "Buhar, Toz, SÄ±caklÄ±k",
+            "Kalp, AkÄ±ÅŸ, BuharlaÅŸma",
+            "Yaz, KÄ±ÅŸ, Sonbahar"
+        ],
+        "answer": "KatÄ±, Gaz, SÄ±vÄ±",
+        "type": "multiple choice",
+        "hardness": "medium"
+    },
+    {
+        "question": "DÃ¼nyadaki suyun yaklaÅŸÄ±k kaÃ§Ä± tuzlu su olarak bulunmaktadÄ±r?",
+        "answerOptions": [
+            "%2",
+            "P",
+            "u",
+            "—"
+        ],
+        "answer": "—",
+        "type": "multiple choice",
+        "hardness": "medium"
+    },
+    {
+        "question": "YeryÃ¼zÃ¼ndeki suyun kaÃ§Ä± iÃ§ilebilir durumdadÄ±r?",
+        "answerOptions": ["",
+            "%",
+            "P",
+            "%3"
+        ],
+        "answer": "%3",
+        "type": "multiple choice",
+        "hardness": "easy"
+    },
+    {
+        "question": "Su molekÃ¼lÃ¼nÃ¼n kimyasal formÃ¼lÃ¼ nedir?",
+        "answer": "Hâ‚‚O",
+        "type": "fill in the blank",
+        "hardness": "medium"
+    },
+    {
+        "question": "Suyun yoÄŸunluÄŸunu artÄ±ran etkenler neler olabilir? LÃ¼tfen listeleyin.",
+        "answer": "Tuz, SÄ±caklÄ±k, Derinlik",
+        "type": "fill in the blank",
+        "hardness": "hard"
+    },
+    {
+        "question": "Denizlerdeki tuz oranÄ± Ã§ok yÃ¼ksektir. (DoÄŸru mu/YanlÄ±ÅŸ mÄ±?)",
+        "answerOptions": [
+            "DoÄŸru",
+            "YanlÄ±ÅŸ"
+        ],
+        "answer": "DoÄŸru",
+        "type": "true and false",
+        "hardness": "medium"
+    },
+    {
+        "question": "TÃ¼m buzullar tuzsuz sudan oluÅŸur. (DoÄŸru mu/YanlÄ±ÅŸ mÄ±?)",
+        "answerOptions": [
+            "DoÄŸru",
+            "YanlÄ±ÅŸ"
+        ],
+        "answer": "YanlÄ±ÅŸ",
+        "type": "true and false",
+        "hardness": "easy"
+    },
+    {
+        "question": "Su krizleri sadece az geliÅŸmiÅŸ Ã¼lkelerde yaÅŸanmaktadÄ±r. (DoÄŸru mu/YanlÄ±ÅŸ mÄ±?)",
+        "answerOptions": [
+            "DoÄŸru",
+            "YanlÄ±ÅŸ"
+        ],
+        "answer": "YanlÄ±ÅŸ",
+        "type": "true and false",
+        "hardness": "hard"
+    }
+]

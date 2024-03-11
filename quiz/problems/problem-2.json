@@ -1,0 +1,109 @@
+[
+    {
+        "question": "Su, insan vÃ¼cudu iÃ§in ne kadar Ã¶nemlidir?",
+        "answerOptions": [
+            "A) `-70",
+            "B) 0-40","C) -20",
+            "D) €-90"
+        ],
+        "answer": "A) `-70",
+        "type": "multiple choice",
+        "hardness": "hard"
+    },
+    {
+        "question": "TÃ¼rkiye'nin en bÃ¼yÃ¼k akarsuyu hangisidir?",
+        "answerOptions": [
+            "A) FÄ±rat",
+            "B) Sakarya",
+            "C) KÄ±zÄ±lÄ±rmak",
+            "D) BÃ¼yÃ¼k Menderes"
+        ],
+        "answer": "C) KÄ±zÄ±lÄ±rmak",
+        "type": "multiple choice",
+        "hardness": "hard"
+    },
+    {
+        "question": "Bir insan ne kadar sÃ¼re susuz kalabilir?",
+        "answerOptions": [
+            "A) 1 gÃ¼n",
+            "B) 3 gÃ¼n",
+            "C) 7 gÃ¼n",
+            "D) 10 gÃ¼n"
+        ],
+        "answer": "B) 3 gÃ¼n",
+        "type": "multiple choice",
+        "hardness": "medium"
+    },
+    {
+        "question": "DÃ¼nya Ã¼zerindeki suyun yaklaÅŸÄ±k kaÃ§Ä± tatlÄ± sudur?",
+        "answerOptions": [
+            "A) —",
+            "B) %5",
+            "C) %2.5",
+            "D) %0.3"
+        ],
+        "answer": "A) —",
+        "type": "multiple choice",
+        "hardness": "medium"
+    },
+    {
+        "question": "Su kirliliÄŸi hangi faktÃ¶rlerden etkilenir?",
+        "answerOptions": [
+            "A) CoÄŸrafi konum",
+            "B) Ä°klim",
+            "C) Sanayi atÄ±klarÄ±",
+            "D) Toprak yapÄ±sÄ±"
+        ],
+        "answer": "C) Sanayi atÄ±klarÄ±",
+        "type": "multiple choice",
+        "hardness": "medium"
+    },
+    {
+        "question": "Su molekÃ¼lÃ¼nde kaÃ§ hidrojen atomu bulunur?",
+        "answer": "2",
+        "type": "fill in the blank",
+        "hardness": "easy"
+    },
+    {
+        "question": "Bir yetiÅŸkinin gÃ¼nlÃ¼k su tÃ¼ketimi ne kadardÄ±r?",
+        "answerOptions": [
+            "A) 1 litre",
+            "B) 2 litre",
+            "C) 3 litre",
+            "D) 4 litre"
+        ],
+        "answer": "B) 2 litre",
+        "type": "multiple choice",
+        "hardness": "easy"
+    },
+    {
+        "question": "Geri dÃ¶nÃ¼ÅŸÃ¼mÃ¼n Ã¶nemi Ã¼zerine doÄŸru mu yanlÄ±ÅŸ mÄ±?",
+        "answerOptions": [
+            "DoÄŸru",
+            "YanlÄ±ÅŸ"
+        ],
+        "answer": "DoÄŸru",
+        "type": "true and false",
+        "hardness": "medium"
+    },
+    {
+        "question": "Plastik tÃ¼ketimi Ã§evreye zarar vermez, doÄŸru mu yanlÄ±ÅŸ mÄ±?",
+        "answerOptions": [
+            "DoÄŸru",
+            "YanlÄ±ÅŸ"
+        ],
+        "answer": "YanlÄ±ÅŸ",
+        "type": "true and false",
+        "hardness": "hard"
+    },
+    {
+        "question": "KÃ¼resel Ä±sÄ±nma su kaynaklarÄ±nÄ± olumsuz etkilemez, doÄŸru mu yanlÄ±ÅŸ mÄ±?",
+        "answerOptions": [
+            "DoÄŸru",
+            "YanlÄ±ÅŸ"
+        ],
+        "answer": "YanlÄ±ÅŸ",
+        "type": "true and false",
+        "hardness": "medium"
+    }
+]

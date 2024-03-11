@@ -18,7 +18,7 @@ class Course {
         this.newResources = {}
         this.lectures = lectures;
         
-        this.renderLectureSection()
+        this.renderLectureSection("excel")
         this.forceNewCourseDataAsNew()
     }
 
@@ -63,7 +63,7 @@ class Course {
         deleteButton.addEventListener('click', () => this.deleteCourse(this.id));
     }
 
-    renderLectureSection(){
+    renderLectureSection(from = "object"){
 
         let courseGridContainer = findElement("#course-grid-container");
         courseGridContainer.innerHTML = "";
@@ -120,7 +120,15 @@ class Course {
             generateQuizButton.textContent = "generate quiz";
             // generateQuizButton.innerHTML = `<img src="../assets/icons/fi/fi-rr-plus.svg" alt="">`;
             generateQuizButton.addEventListener("click", () => {
-                generateQuiz(lecture);
+               switch(from){
+                case "object": 
+                    generateQuiz(lecture);
+                    break;
+                case "excel": 
+                    generateQuiz(lecture, false);
+                    this.save();
+                    break;
+               }
             });
 
             //TODO: add/show addQuiz/editQuiz button if subtopicCount is larger than 1;
@@ -583,11 +591,15 @@ class Course {
         return badgeButton;
     }
 
+    save(){
+        courseItemObjectLooper(this)
+    }
+
 }
 
 // TODO: Get Course class lines under 500
 
-async function generateQuiz(lectureObject){
+async function generateQuiz(lectureObject, refresh = true){
 
     let loader = loadLoader("Generating Quiz");
 
@@ -613,14 +625,14 @@ async function generateQuiz(lectureObject){
     let easyQuestionsCount = 1;
 
     let query = 
-    `create for me in json format a series of new questions 
-    in the ${language} language as well as their answers 
+    `create for me in valid json format using ISO encoding, 
+    a series of new questions in the ${language} language as well as their answers 
     in the ${language} language in the topics of ${topic} 
     for ${educationEnvironment}. 
     There should be ${multipleChoiceCount} choice questions
     with a minimum of 4 answers that do not include letters
-    at the beginning. There should be  
-    ${fillInTheBlankCount} fill in the blank questions and 
+    at the beginning. 
+    There should be ${fillInTheBlankCount} fill in the blank questions and 
     ${trueAndFalseCount} true and false questions with their answer options. 
     ${hardQuestionsCount} of those questions should be hard, 
     ${mediumQuestionsCount} should be medium and 
@@ -628,7 +640,8 @@ async function generateQuiz(lectureObject){
     The json format should have the following keys, 
     "question, answerOptions, answer, type, hardness". 
     The answerOptions should only be available if the 
-    question type is multiple choice or true and false.`;
+    question type is multiple choice or true and false.
+    Do not add any invalid characters in the result.`;
 
     let unparsedJSONResponse = await generateGPTResponseFor(query);
     let questions = await JSON.parse(unparsedJSONResponse);
@@ -656,7 +669,7 @@ async function generateQuiz(lectureObject){
     console.log("quiz generation response: ", response);
 
     setTimeout(() => {
-        refreshTeacherCourseOutline(); //Bugs???
+        if(refresh) refreshTeacherCourseOutline(); //Bugs???
         removeLoader(loader);
     }, 2000);
     
@@ -685,8 +698,6 @@ async function fetchCourseWithID(givenID){
     if(courses.length > 0) 
     if(courses[0].status == "error") return;
 
-    console.log("Debug From Here: " , courses[0]);
-
     let selectedCourse = courses[0];
 
     ( function sortCourses(course){
@@ -701,9 +712,6 @@ async function fetchCourseWithID(givenID){
         });
     
     })(selectedCourse)
-
-    console.log("Sorted From Here: " , courses[0]);
-
 
     setTimeout(() => {
 
@@ -723,10 +731,15 @@ async function fetchCourseWithID(givenID){
 
         findElement("#excelCourseFileUpload").addEventListener("change", async (event) => { 
 
-            let file = event.target.files[0];
-            const objectURL = window.URL.createObjectURL(file);
-            let result = await parseExcelForCourseObject(objectURL);
-            course.eraseForExcelUpload(result);
+            try{
+                let file = event.target.files[0];
+                const objectURL = window.URL.createObjectURL(file);
+                let result = await parseExcelForCourseObject(objectURL);
+                course.eraseForExcelUpload(result);
+            }
+            catch(error){
+                console.log(error);
+            }
 
         });
 
@@ -751,17 +764,6 @@ async function loopThroughObjectForAsync(courseObject, asyncCallback){
         });
         
     }
-}
-
-function loadExcelSheetToView(event) {
-
-    let excelLoader = loadLoader("Loading From Excel");
-
-    let file = event.target.files[0];
-    const objectURL = window.URL.createObjectURL(file);
-    let resultObject = parseExcelForCourseObject(objectURL);
-
-
 }
 
 async function excelNewCourseItemObjectLooper(course){
