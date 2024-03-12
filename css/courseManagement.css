@@ -325,3 +325,72 @@
         width: inherit;
         min-height: 100%;
     }
+
+
+
+/* Edit Learning Objectives */
+
+.add-learning-objective-button {
+    background: var(--accent);
+    border-radius: 50%;
+    height: 35px;
+    width: 35px;
+    display: grid;
+    place-items: center;
+    opacity: 0.6;
+    transition: 0.3s;
+}.add-learning-objective-button img{
+    height: 11px;   
+    filter: invert(100%);
+    cursor: pointer;
+}.add-learning-objective-button:hover{
+    opacity: 1;
+    transform: scale(1.13);
+}
+
+.edit-learning-objectives-overlay .popup {
+    display: grid;
+    align-content: start;
+}
+
+.popup-body {
+    /* border: 1px solid red; */
+}
+
+.outer-objective-container {
+    counter-reset: learning-objectives-counter;
+    width: 100%;
+    display: grid;
+    grid-gap: 20px;
+    /* border: 1px solid red; */
+}
+
+.objective-container {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-gap: 20px;
+    align-items: center;
+}
+
+.objective-itemization {
+    color: gray;
+    font-size: 1em;
+    width: 20px;
+    counter-increment: learning-objectives-counter;
+}
+
+.objective-itemization::before{
+    content: counter(learning-objectives-counter) ".";
+}
+
+.objective-text {
+    color: gray;
+    border: 2px solid gray;
+    border-radius: 5px;
+    padding: 13px;
+    outline: none;
+}
+
+.objective-container .delete-button {
+    opacity: 1;
+}

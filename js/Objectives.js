@@ -3,10 +3,11 @@ class Objectives {
     currentHierarchy = 0
     currentIndex = 0
 
-    constructor({ objectives, filename }){
+    constructor({ objectives, filename, details }){
         // this.id = objectivesObject.id;
         this.filename = filename;
         this.objectives = objectives;
+        this.details = details;
         this.currentIndex = this.objectives.length - 1;
     }
 
@@ -97,7 +98,8 @@ class Objectives {
         ( async () => {
 
             try {
-                const result = await saveLearningObjectivesAsJSON(this.filename, this.objectives);
+                const jsonResult = await saveLearningObjectivesAsJSON(this.filename, this.objectives);
+                if(this.details.type == "new") await saveLearningObjectivesInDatabase(this.filename, this.details);
                 console.log(result);
             }
             catch(error){
@@ -126,6 +128,26 @@ async function saveLearningObjectivesAsJSON(filename, ArrayContainingObjects){
         });
 
         console.log("[5] async Result: ", result);
+
+    }catch(error){
+        //TODO: bubbleUpError()
+        console.log(error);
+    }
+
+}
+
+async function saveLearningObjectivesInDatabase(filename, details){
+
+    try{
+
+        let id = uniqueID(1);
+
+        let result = await AJAXCall({
+            phpFilePath: "../include/course/addNewObjective.php",
+            rejectMessage: "adding new objective failed",
+            params: `id=${id}&&filename=${filename}&&courseID=${details.courseID}`,
+            type: "post"
+        });
 
     }catch(error){
         //TODO: bubbleUpError()

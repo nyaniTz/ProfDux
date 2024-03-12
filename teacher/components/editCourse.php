@@ -4,6 +4,9 @@
     <div style="display:grid; grid-gap: 10px;">
         <h1 class="medium-title" id="course-title"></h1>
         <p class="small-title" id="course-code"></p>
+        <div class="button" id="editLearningObjectives" style="justify-self:start;">
+            Edit Learning Objectives  
+        </div>
         <div class="button" id="deleteCourseButton" style="justify-self:start;">
             Delete Course  
         </div>

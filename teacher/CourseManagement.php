@@ -52,6 +52,7 @@
         </div>
 
         <?php include 'components/courseCreationOverlay.php' ?>
+        <?php include 'components/editLearningObjectivesOverlay.php' ?>
 
         <script>
 
