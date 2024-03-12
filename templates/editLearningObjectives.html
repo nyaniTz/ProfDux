@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course</title>
+    <link rel="stylesheet" href="../css/translation.css">
+    <link rel="stylesheet" href="../css/root.css">
+    <link rel="stylesheet" href="../css/courseManagement.css">
+
+
+    <script src="../js/functions.js"></script>
+    <script src="../js/localize.js" defer></script>
+    <script src="Objectives.js"></script>
+
+    <link rel="stylesheet" href="../css/spinkit.css">
+    <link rel="stylesheet" href="../css/popup.css">
+</head>
+<body>
+
+    <div class="overlay edit-learning-objectives-overlay" style="display: grid;">
+        <div class="popup">
+            <div class="popup-header two-column-grid">
+                <div class="close-button" onclick="closePopup('.edit-learning-objectives-overlay')">
+                    <img src="../assets/icons/close.png" alt="">
+                </div>
+                <h1 class="pop-up-title">
+                    <text>Edit Learning Objectives</text>
+                </h1> 
+                <div class="button save-learning-objectives-button">
+                    <text>Save</text>
+                </div>
+            </div>
+
+            <div class="popup-body">
+
+                <div class="outer-objective-container">
+                    
+                </div>
+
+                <div class="add-learning-objective-button">
+                    <img src="../assets/icons/fi/fi-rr-plus.svg" alt="">
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        ( async () => {
+
+            let filename = "objective-34334344.json";
+            let correctPath = "../objectives/" + filename;
+            let objectivesObjectResponse = await fetch(correctPath, {cache: "reload"});
+            let objectives = await objectivesObjectResponse.json();
+
+            console.log("objectivesObject: ", objectives);
+
+            let addLearningObjectiveButton = document.querySelector(".add-learning-objective-button");
+            let saveLearningObjectivesButton = document.querySelector(".save-learning-objectives-button");
+
+            let learningObjectives = new Objectives({ objectives, filename });
+            learningObjectives.renderObjectives();
+            learningObjectives.setAddNewObjectiveButton(addLearningObjectiveButton);
+            learningObjectives.setSaveLearningObjectivesButton(saveLearningObjectivesButton);
+
+        })()
+
+    </script>
+
+    <style>
+
+
+        .add-learning-objective-button {
+            background: var(--accent);
+            border-radius: 50%;
+            height: 35px;
+            width: 35px;
+            display: grid;
+            place-items: center;
+            opacity: 0.6;
+            transition: 0.3s;
+        }.add-learning-objective-button img{
+            height: 11px;   
+            filter: invert(100%);
+            cursor: pointer;
+        }.add-learning-objective-button:hover{
+            opacity: 1;
+            transform: scale(1.13);
+        }
+
+        .edit-learning-objectives-overlay .popup {
+            display: grid;
+            align-content: start;
+        }
+
+        .popup-body {
+            /* border: 1px solid red; */
+        }
+
+        .outer-objective-container {
+            counter-reset: learning-objectives-counter;
+            width: 100%;
+            display: grid;
+            grid-gap: 20px;
+            /* border: 1px solid red; */
+        }
+
+        .objective-container {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            grid-gap: 20px;
+            align-items: center;
+        }
+
+        .objective-itemization {
+            color: gray;
+            font-size: 1em;
+            width: 20px;
+            counter-increment: learning-objectives-counter;
+        }
+
+        .objective-itemization::before{
+            content: counter(learning-objectives-counter) ".";
+        }
+
+        .objective-text {
+            color: gray;
+            border: 2px solid gray;
+            border-radius: 5px;
+            padding: 13px;
+            outline: none;
+        }
+
+        .objective-container .delete-button {
+            opacity: 1;
+        }
+        
+
+    </style>
+
+</body>
+</html>
