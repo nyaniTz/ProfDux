@@ -386,6 +386,7 @@ function editCourseWith(id){
     let mainContainer = document.querySelector(".main-container");
     mainContainer.setAttribute("data-id", id);
 
+    closePopup(".course-view-container");
     openPopup(".edit-course-container");
 
     let titleElement = document.querySelector("#course-title");
