@@ -8,6 +8,12 @@ class Course {
     deleteLectures = {}
     deleteSubtopics = {}
     deleteResource = {}
+    
+    markAllForDeletion(){
+        this.lectures.forEach( lecture => {
+            this.deleteLectureTitle(lecture.id, this)
+        });
+    }
 
     eraseForExcelUpload(lectures){
         this.lectureIndex = 0;
@@ -439,7 +445,7 @@ class Course {
 
         let lectureIndex = null;
         
-        this.lectures.forEach((lecture,index) => {
+        this.lectures.forEach((lecture, index) => {
             if(lecture.id == id){
                 lectureIndex = index;
                 return;
@@ -737,11 +743,15 @@ async function fetchCourseWithID(givenID){
 
         findElement("#excelCourseFileUpload").addEventListener("change", async (event) => { 
 
+            console.log("clickeddddd");
+
             try{
                 let file = event.target.files[0];
                 const objectURL = window.URL.createObjectURL(file);
                 let result = await parseExcelForCourseObject(objectURL);
+                course.markAllForDeletion()
                 course.eraseForExcelUpload(result);
+                findElement("#excelCourseFileUpload").value = "";
             }
             catch(error){
                 console.log(error);
@@ -772,32 +782,14 @@ async function loopThroughObjectForAsync(courseObject, asyncCallback){
     }
 }
 
-async function excelNewCourseItemObjectLooper(course){
-
-    let  { 
-        newLectures, 
-        newSubtopics 
-    } = course;
-
-    let savingCourseLoader = loadLoader("Saving Course");
-
-    await loopThroughObjectForAsync(newLectures, addLectureTitleToDatabase);
-    await loopThroughObjectForAsync(newSubtopics, addSubtopicTitleToDatabase);
-
-    refreshTeacherCourseOutline(); //Bugs???
-
-    setTimeout(() => {
-        console.log("course outline from excel");
-        removeLoader(savingCourseLoader);
-    }, 5000);
-
-}
-
 async function courseItemObjectLooper(course, type = ""){
 
     let loader = type != "delete course"? 
     loadLoader("Saving Course Outline"):
     loadLoader("Deleting Course");
+
+    console.log("delete Lectures: ", course.deleteLectures)
+    console.log("delete Subtopics: ", course.deleteSubtopics)
 
     // Here Now
     await loopThroughObjectForAsync(course.lectureUpdates, updateLectureTitleToDatabase);
