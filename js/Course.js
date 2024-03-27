@@ -69,9 +69,8 @@ class Course {
         editLearningObjectivesButton.addEventListener('click', () => editLearningObjectives(this.id));
     }
 
-    renderDeleteButton(){
-        let deleteButton = findElement("#deleteCourseButton");
-        deleteButton.addEventListener('click', () => this.deleteCourse(this.id));
+    renderDeleteButton(button){
+        button.addEventListener('click', () => this.deleteCourse(this.id));
     }
 
     renderLectureSection(from = "object"){
@@ -378,6 +377,8 @@ class Course {
             denyTitle: 'No',
             acceptTitle: 'Yes'
         }
+
+        console.log("Delete Course: ");
         
         return showOptionsDialog(options, async () => {
 
@@ -725,11 +726,14 @@ async function fetchCourseWithID(givenID){
     })(selectedCourse)
 
     setTimeout(() => {
+        
+        // This is very important
+        let deleteButton = clearEventListenersFor(findElement("#deleteCourseButton"));
 
         let course = new Course(selectedCourse);
         course.renderTitle();
         course.renderCourseCode();
-        course.renderDeleteButton();
+        course.renderDeleteButton(deleteButton);
         course.renderEditLearningObjectivesButton();
         course.renderLectureSection();
 

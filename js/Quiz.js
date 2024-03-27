@@ -47,10 +47,6 @@ class Quiz {
 
         console.log("[2] filename: ", this.filename);
 
-        clearEventListenersFor(this.nextButton)
-        clearEventListenersFor(this.previousButton)
-        clearEventListenersFor(this.finishQuizButton)
-
         handleEndQuiz({
             filename: this.filename,
             questions: this.questions,
@@ -478,6 +474,10 @@ async function startQuiz(quizGradeObject, type="new"){
     let previousButton = document.querySelector(".previous-question");
     let nextButton = document.querySelector(".next-question");
     let finishQuizButton = document.querySelector(".finish-quiz-button");
+
+    previousButton = clearEventListenersFor(previousButton)
+    nextButton = clearEventListenersFor(nextButton)
+    finishQuizButton = clearEventListenersFor(finishQuizButton)
 
     quiz.setNextButton(nextButton);
     quiz.setPreviousButton(previousButton);

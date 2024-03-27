@@ -6,7 +6,7 @@ function localizeTextElements(){
 
         if(__text__.getAttribute("data-created") != "true") {
 
-            console.log(__text__, __text__.getAttribute("data-created"));
+            // console.log(__text__, __text__.getAttribute("data-created"));
 
             let text = __text__.textContent;
             let textComparisons = fetchLocalization(text);

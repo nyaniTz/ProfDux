@@ -57,7 +57,6 @@
         <script>
 
             window.addEventListener("load", function() {
-                console.log("okay");
                 loadCourses("id");
             })
 

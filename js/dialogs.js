@@ -101,9 +101,11 @@ function showOptionsDialog(messageDetails, callback){
     
         function closeDialog() {
             dialog.style.transform = "scale(0)";
+
             setTimeout(() => {
                 overlay.style.display = "none";
                 overlay.remove();
+                console.log("removed? ", overlay);
             }, 800);
         }
     })

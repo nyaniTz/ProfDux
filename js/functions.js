@@ -212,7 +212,7 @@ function AJAXCall(callObject){
                 let result = type == "fetch" ? 
                 JSON.parse(this.responseText) : this.responseText ;
 
-                console.log("look: ", result);
+                // console.log("look: ", result);
 
                 //TODO: Take a look one more time
                 if(result.length < 1 && type != "fetch") reject(rejectMessage || "SQLError");
@@ -454,6 +454,7 @@ function getCurrentTimeInJSONFormat(){
 function clearEventListenersFor(old_element){
     var new_element = old_element.cloneNode(true);
     old_element.parentNode.replaceChild(new_element, old_element);
+    return new_element
 }
 
 function loadLoader(message){

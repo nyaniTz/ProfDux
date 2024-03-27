@@ -3,7 +3,6 @@ let globalUserDetails;
 ( async () => {
 
     let result = await getUserDetails();
-    console.log(result);
     globalUserDetails = result;
     localizeTextElements();
     setHeaderInfo(result);
@@ -17,8 +16,6 @@ function setHeaderInfo(userObject){
     let usernameFields = document.querySelectorAll(".username");
     let imageFields = document.querySelectorAll(".user-image img");
     let usernameInnerContainer = createLocalizedTextElement(name);
-
-    console.log(role);
     let roleAsTextElement = createLocalizedTextElement(role);
     
 

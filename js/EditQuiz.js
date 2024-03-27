@@ -342,6 +342,10 @@ async function startEditingQuiz(filename, type="teacher"){
     let nextButton = editQuizOverlay.querySelector(".next-question");
     let saveButton = editQuizOverlay.querySelector(".save-button");
 
+    previousButton = clearEventListenersFor(previousButton);
+    nextButton = clearEventListenersFor(nextButton);
+    saveButton = clearEventListenersFor(saveButton);
+
     quiz.setNextButton(nextButton);
     quiz.setPreviousButton(previousButton);
     quiz.setSaveButton(saveButton);

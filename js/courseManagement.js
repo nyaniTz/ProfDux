@@ -76,7 +76,7 @@ function startUploading(){
 
     async function uploadWithObject(fileObject){
 
-        console.log("fileObject", fileObject);
+        // console.log("fileObject", fileObject);
 
         if(fileObject && subtopicID){
 
@@ -134,7 +134,7 @@ function openUploadOverlay(id){
 
     let uploadOverlay = document.querySelector(".upload-overlay");
     uploadOverlay.style.display = "grid";
-    console.log("subtopic ID:", id);
+    // console.log("subtopic ID:", id);
     uploadOverlay.setAttribute('data-id', id);
 
 }
@@ -186,13 +186,9 @@ async function loadCourses(options = "id"){
 
     let { id:userID } = await getGlobalDetails();
 
-    console.log("userID: ", userID);
-
     try {
 
         const params = `id=${userID}`;
-
-        console.log(params);
 
         let phpFilePath;
 
@@ -216,10 +212,10 @@ async function loadCourses(options = "id"){
         });
 
         setTimeout(() => {
-            console.log("result", result);
+            // console.log("result", result);
 
             if(result && result.length > 0) {
-                console.log("so far so good.");
+                // console.log("so far so good.");
                 loadCoursesUI(result, options, userID);
                 resolve();
             }
@@ -228,7 +224,7 @@ async function loadCourses(options = "id"){
                 //TODO: This part might cause bugs in future versions
                 courseViewContainer.innerHTML = "";
 
-                console.log("options: ", options);
+                // console.log("options: ", options);
 
                 switch(options){
                     case "id":  // Refactor this to be "teacher"
@@ -252,13 +248,9 @@ async function loadCourses(options = "id"){
 
     function loadCoursesUI(coursesObject, options, userID){
 
-        console.log("userID: ", userID);
-
         courseViewContainer.innerHTML = "";
 
         coursesObject.map( async (course) => {
-
-            console.log("this course: ", course);
 
             const { id, title, image, courseCode } = course;
 
