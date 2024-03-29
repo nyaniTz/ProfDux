@@ -83,3 +83,12 @@
     place-items: center;
     padding: 1em 2em 2em 2em;
 }
+
+.overlay.edit-learning-objectives-overlay .popup {
+    height: 500px;
+}
+
+.overlay.edit-learning-objectives-overlay .popup .popup-body{
+    height: 100%;
+    overflow: auto;
+}

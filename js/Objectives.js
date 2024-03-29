@@ -100,7 +100,7 @@ class Objectives {
             try {
                 const jsonResult = await saveLearningObjectivesAsJSON(this.filename, this.objectives);
                 if(this.details.type == "new") await saveLearningObjectivesInDatabase(this.filename, this.details);
-                console.log(result);
+                console.log(jsonResult);
             }
             catch(error){
                 console.log(error)
@@ -153,5 +153,61 @@ async function saveLearningObjectivesInDatabase(filename, details){
         //TODO: bubbleUpError()
         console.log(error);
     }
+
+}
+
+async function refreshObjectives(){
+
+    let loader = loadLoader("Generating Objectives");
+
+    let mainContainer = document.querySelector(".main-container");
+    let id = mainContainer.getAttribute("data-id");
+
+    console.log("id:", id);
+
+    const courseDetails = await getTitleAndFilename(id);
+    console.log(courseDetails);
+    const { title, filename } = courseDetails[0];
+    
+    const prompt = `generate for me in json format with the structure { courseTitle: "", learningObjectives: [ "" ] }, a decent amount of learning 
+    objectives for students for the given course title: ${title}
+    `
+
+    const objectivesResponse = await generateGPTResponseFor(prompt);
+    const objectivesJSON = await JSON.parse(objectivesResponse);
+    const objectivesList = objectivesJSON.learningObjectives;
+
+    console.log("objectiveList: ", objectivesJSON);
+    console.log("objectiveList: ", objectivesList);
+
+    // let objectivesList = [
+    //     "Understand the historical background and context of the story","Analyze the characters and their motivations"
+    //     ,"Examine the themes of friendship, adventure, and self-discovery","Explore the cultural influences and representation in the film","Understand the animation techniques used in the movie","Discuss the music and its importance in setting the tone"
+    // ]
+
+    const objectives = objectivesList.map( (objective, index) => { 
+        return { hierarchy: index + 1, title: objective }
+    })
+
+    type = "edit";
+    details = {
+        type,
+        courseID: id
+    }
+
+    let addLearningObjectiveButton = clearEventListenersFor(findElement(".add-learning-objective-button"));
+    let saveLearningObjectivesButton = clearEventListenersFor(findElement(".save-learning-objectives-button"));
+
+    console.log("objectivesObject: ", objectives);
+
+    let learningObjectives = new Objectives({ objectives, filename, details });
+    learningObjectives.renderObjectives();
+    learningObjectives.setAddNewObjectiveButton(addLearningObjectiveButton);
+    learningObjectives.setSaveLearningObjectivesButton(saveLearningObjectivesButton);
+
+    setTimeout(() => {
+        learningObjectives.saveObjectives();
+        removeLoader(loader);
+    }, 2000);
 
 }

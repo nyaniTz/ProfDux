@@ -7,8 +7,13 @@
             <h1 class="pop-up-title">
                 <text>Edit Learning Objectives</text>
             </h1> 
-            <div class="button save-learning-objectives-button">
-                <text>Save</text>
+            <div class="objectives-action-buttons">
+                <div class="circular-button reload-objectives" onclick="refreshObjectives()">
+                    <img src="../assets/icons/reload.png" alt="">
+                </div>
+                <div class="button save-learning-objectives-button">
+                    <text>Save</text>
+                </div>
             </div>
         </div>
 

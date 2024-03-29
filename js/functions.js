@@ -502,3 +502,12 @@ async function getCourseDetails(givenID){
         type: "fetch"
     });
 }
+
+async function getTitleAndFilename(givenID){
+    return AJAXCall({
+        phpFilePath: "../include/course/getTitleAndFilename.php",
+        rejectMessage: "Getting Details Failed",
+        params: `id=${givenID}`,
+        type: "fetch"
+    });
+}

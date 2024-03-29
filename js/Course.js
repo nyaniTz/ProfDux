@@ -1030,5 +1030,6 @@ async function editLearningObjectives(id){
     learningObjectives.renderObjectives();
     learningObjectives.setAddNewObjectiveButton(addLearningObjectiveButton);
     learningObjectives.setSaveLearningObjectivesButton(saveLearningObjectivesButton);
+    learningObjectives.saveObjectives();
     openPopup(".edit-learning-objectives-overlay");
 }
