@@ -49,6 +49,7 @@
                     </div>
 
                     <?php include 'components/exams.php' ?>
+                    <?php include 'components/examModal.php' ?>
 
                 </div>
 

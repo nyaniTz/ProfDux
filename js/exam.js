@@ -297,3 +297,13 @@ async function fetchCourseWithIDForExam(givenID) {
     );
   }, 2000);
 }
+
+function openExamModal() {
+  var modal = document.getElementById("exam-modal");
+  modal.style.display = "block";
+}
+
+function closeExamModal() {
+  var modal = document.getElementById("exam-modal");
+  modal.style.display = "none";
+}
