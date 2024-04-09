@@ -1,3 +1,7 @@
+.exams-container {
+  width: 100%;
+}
+
 .exam-item {
   background-color: #fff;
   border: 2px solid var(--border-fade);
@@ -8,6 +12,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 10px;
+  width: 100%;
 }
 
 .teacher-exam-add-button {
@@ -40,6 +46,7 @@
   overflow: auto; /* Enable scroll if needed */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
   padding-top: 60px;
+  transition: transform 0.3s ease;
 }
 
 /* Modal content */
@@ -50,7 +57,7 @@
   border-radius: 10px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
-  height: 80%;
+  height: auto;
   overflow-y: auto;
 }
 
@@ -116,10 +123,14 @@
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  margin-top: 30px;
 }
 
 .exam-modal-container-first-div {
   width: 48%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
 .exam-modal-container-second-div {

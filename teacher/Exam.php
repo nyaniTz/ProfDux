@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                <div class="edit-course-container inner-overlay">
+                <div class="edit-course-container inner-overlay" style="justify-content: flex-start;flex-direction: column;">
 
                     <div class="back-arrow" onclick="openPopup('.course-view-container'); closeEditCourseContainer()">
                         <img class="icon" src="../assets/icons/fi/fi-rr-arrow-alt-left.svg" alt="">

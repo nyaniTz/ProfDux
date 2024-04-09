@@ -213,7 +213,9 @@ function goToExams(id) {
   mainContainer.setAttribute("data-id", id);
 
   closePopup(".course-view-container");
-  openPopup(".edit-course-container");
+
+  let popup = document.querySelector(".edit-course-container");
+  popup.style.display = "flex";
 
   let titleElement = document.querySelector("#course-title");
   titleElement.textContent = "";
