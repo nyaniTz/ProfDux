@@ -25,7 +25,8 @@
         "../css/quiz.css",
         "../css/classroom.css",
         "../css/DuxChat.css",
-        "../css/exam.css"
+        "../css/exam.css",
+        "../css/examStudent.css"
     );
 
     // These are for javascript files that you want
