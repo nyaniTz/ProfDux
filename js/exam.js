@@ -217,17 +217,13 @@ function goToExams(id) {
   let popup = document.querySelector(".edit-course-container");
   popup.style.display = "flex";
 
-  let titleElement = document.querySelector("#course-title");
-  titleElement.textContent = "";
-
-  let courseCode = document.querySelector("#course-code");
-  courseCode.textContent = "";
-
+  console.log("112");
   fetchCourseWithIDForExam(id);
+  console.log("333112");
 }
 
 async function fetchCourseWithIDForExam(givenID) {
-  let courseGridContainer = findElement("#course-grid-container");
+  let courseGridContainer = findElement(".course-view-container");
   let loader = `
       <div class="loader">
           <div class="sk-chase">
@@ -260,11 +256,6 @@ async function fetchCourseWithIDForExam(givenID) {
   })(selectedCourse);
 
   setTimeout(() => {
-    // This is very important
-    let deleteButton = clearEventListenersFor(
-      findElement("#deleteCourseButton")
-    );
-
     let course = new Course(selectedCourse);
     course.renderTitle();
     course.renderCourseCode();
@@ -308,4 +299,135 @@ function openExamModal() {
 function closeExamModal() {
   var modal = document.getElementById("exam-modal");
   modal.style.display = "none";
+}
+
+async function generateExam(e) {
+  e.preventDefault();
+
+  const trueFalse = document.getElementById("exam-true-false-input");
+  const multipleChoices = document.getElementById(
+    "exam-multiple-choices-input"
+  );
+  const matching = document.getElementById("exam-matching-input");
+  const fillInBlank = document.getElementById("exam-fill-in-blank-input");
+  const examMinutes = document.getElementById("exam-minutes-input");
+  const examDate = document.getElementById("exam-date-input");
+  let mainContainer = document.querySelector(".main-container");
+  const courseID = mainContainer.getAttribute("data-id");
+
+  const easyInput = document.getElementById("exam-easy-input");
+  const mediumInput = document.getElementById("exam-medium-input");
+  const hardInput = document.getElementById("exam-hard-input");
+
+  let loader = loadLoader("Generating Exam");
+
+  const result = await getCourseDetails(courseID);
+
+  let subtopicTitles = [];
+
+  result.forEach((course) => {
+    course.lectures.forEach((lecture) => {
+      lecture.subtopics.forEach((subtopic) => {
+        subtopicTitles.push(subtopic.title);
+      });
+    });
+  });
+
+  const subtopicString = subtopicTitles.join(", ");
+
+  let language = "turkish"; //TODO: Toggle option.
+  let topic = subtopicString;
+  let educationEnvironment = "college students";
+
+  //TODO: question count is going to 9 and not the intended maximum
+  let multipleChoiceCount = multipleChoices.value; //10
+  let fillInTheBlankCount = fillInBlank.value; //2
+  let trueAndFalseCount = trueFalse.value; //5
+  let matchingCount = matching.value; //5
+
+  //TODO: figure out logic
+  let hardQuestionsCount = hardInput.value;
+  let mediumQuestionsCount = mediumInput.value;
+  let easyQuestionsCount = easyInput.value;
+
+  let query = `create for me in valid json format using ISO encoding,
+    a series of new questions in the ${language} language as well as their answers
+    in the ${language} language in the topics of ${topic}
+    for ${educationEnvironment}.
+    There should be ${multipleChoiceCount} choice questions
+    with a minimum of 4 answers that do not include letters
+    at the beginning.
+    There should be ${matchingCount} matching questions, ${fillInTheBlankCount} fill in the blank questions and
+    ${trueAndFalseCount} true and false questions with their answer options.
+    ${hardQuestionsCount} of those questions should be hard,
+    ${mediumQuestionsCount} should be medium and
+    ${easyQuestionsCount} should be easy.
+    The json format should have the following keys,
+    "question, answerOptions, answer, type, hardness".
+    The answerOptions should only be available if the
+    question type is multiple choice or true and false.
+    Do not add any invalid characters in the result.`;
+
+  let unparsedJSONResponse = await generateGPTResponseFor(query);
+  let questions = await JSON.parse(unparsedJSONResponse);
+  console.log("questions amount: ", questions.questions.length);
+
+  let filename = `Exam-${uniqueID(2)}.json`;
+  saveExamAsJSON(filename, questions.questions, "generated");
+
+  let examID = uniqueID(1);
+  let dateGenerated = getCurrentTimeInJSONFormat();
+
+  let params =
+    `id=${examID}&&courseID=${courseID}` +
+    `&&dateGenerated=${dateGenerated}&&filename=${filename}&&minutes=${examMinutes.value}&&examDate=${examDate.value}&&amountOfTrueFalseQuestions=${trueAndFalseCount}&&amountOfMultipleChoicesQuestions=${multipleChoiceCount}&&amountOfMatchingQuestions=${matchingCount}&&amountOfFillInTheBlankQuestions=${fillInTheBlankCount}&&hardQuestionsCount=${hardQuestionsCount}&&mediumQuestionsCount=${mediumQuestionsCount}&&easyQuestionsCount=${easyQuestionsCount}`;
+
+  let response = await AJAXCall({
+    phpFilePath: "../include/exam/addNewExam.php",
+    rejectMessage: "New Exam Failed To Add",
+    params,
+    type: "post",
+  });
+
+  console.log("exam generation response: ", response);
+
+  setTimeout(() => {
+    closeExamModal();
+    removeLoader(loader);
+  }, 2000);
+}
+
+async function saveExamAsJSON(filename, ArrayContainingObjects, type) {
+  let JSONString = JSON.stringify(ArrayContainingObjects);
+
+  let correctPath;
+
+  switch (type) {
+    case "student":
+    case "new":
+    case "resume":
+      correctPath = `../exam/taken/${filename}`;
+      break;
+    case "teacher":
+    case "generated":
+      correctPath = `../exam/generated/${filename}`;
+      break;
+  }
+
+  console.log("[3] correctPath: ", correctPath);
+  console.log("[4] jsonString: ", JSONString);
+
+  try {
+    let result = await AJAXCall({
+      phpFilePath: "../include/saveJSONData.php",
+      rejectMessage: "saving json file failed",
+      params: `filepath=${correctPath}&&jsonString=${JSONString}`,
+      type: "post",
+    });
+
+    console.log("[5] async Result: ", result);
+  } catch (error) {
+    //TODO: bubbleUpError()
+    console.log(error);
+  }
 }

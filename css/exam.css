@@ -52,7 +52,7 @@
 /* Modal content */
 .exam-modal-content {
   background-color: #fefefe;
-  margin: 5% auto;
+  margin: auto;
   padding: 30px;
   border-radius: 10px;
   border: 1px solid #888;
@@ -143,11 +143,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  flex-direction: column;
 }
 
-.exam-modal-hardness-levels p {
-  padding: 15px;
+.exam-modal-hardness-levels input {
   background-color: #f3f3f3;
   color: #6f2036;
   font-size: 18px;
@@ -155,22 +154,8 @@
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.3s ease;
-  margin-left: 10px;
-}
-
-.exam-modal-hardness-levels > :first-child {
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  margin-left: 0px;
-}
-
-.exam-modal-hardness-levels > :last-child {
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-
-.exam-modal-hardness-levels p:hover {
-  transform: scale(1.05);
+  border: none;
+  border-radius: 10px;
 }
 
 .exam-modal-generate-button {
