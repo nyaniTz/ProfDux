@@ -17,14 +17,16 @@ $amountOfFillInTheBlankQuestions = $_POST['amountOfFillInTheBlankQuestions'];
 $mediumQuestionsCount = $_POST['mediumQuestionsCount'];
 $hardQuestionsCount = $_POST['hardQuestionsCount'];
 $easyQuestionsCount = $_POST['easyQuestionsCount'];
+$examName = $_POST['examName'];
+
 
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
 $query = "
-        INSERT INTO exam (id, courseID, dateGenerated, filename, minutes, examDate,amountOfTrueFalseQuestions,amountOfMultipleChoicesQuestions,amountOfMatchingQuestions,amountOfFillInTheBlankQuestions,easyQuestionsCount,mediumQuestionsCount,hardQuestionsCount)
-        VALUES ('$id', '$courseID', '$dateGenerated', '$filename', '$minutes', '$examDate','$amountOfTrueFalseQuestions','$amountOfMultipleChoicesQuestions','$amountOfMatchingQuestions','$amountOfFillInTheBlankQuestions','$easyQuestionsCount','$mediumQuestionsCount','$hardQuestionsCount')
+        INSERT INTO exam (id, courseID, dateGenerated, filename, minutes, examDate,amountOfTrueFalseQuestions,amountOfMultipleChoicesQuestions,amountOfMatchingQuestions,amountOfFillInTheBlankQuestions,easyQuestionsCount,mediumQuestionsCount,hardQuestionsCount,examName)
+        VALUES ('$id', '$courseID', '$dateGenerated', '$filename', '$minutes', '$examDate','$amountOfTrueFalseQuestions','$amountOfMultipleChoicesQuestions','$amountOfMatchingQuestions','$amountOfFillInTheBlankQuestions','$easyQuestionsCount','$mediumQuestionsCount','$hardQuestionsCount','$examName')
     ";
 
 $result = mysqli_query($conn, $query);

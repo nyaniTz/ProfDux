@@ -216,10 +216,9 @@ function goToExams(id) {
 
   let popup = document.querySelector(".edit-course-container");
   popup.style.display = "flex";
+  fetchAllExam(id);
 
-  console.log("112");
-  fetchCourseWithIDForExam(id);
-  console.log("333112");
+  // fetchCourseWithIDForExam(id);
 }
 
 async function fetchCourseWithIDForExam(givenID) {
@@ -305,6 +304,7 @@ async function generateExam(e) {
   e.preventDefault();
 
   const trueFalse = document.getElementById("exam-true-false-input");
+  const examName = document.getElementById("exam-name-input");
   const multipleChoices = document.getElementById(
     "exam-multiple-choices-input"
   );
@@ -379,7 +379,7 @@ async function generateExam(e) {
   let dateGenerated = getCurrentTimeInJSONFormat();
 
   let params =
-    `id=${examID}&&courseID=${courseID}` +
+    `id=${examID}&&courseID=${courseID}&&examName=${examName.value}` +
     `&&dateGenerated=${dateGenerated}&&filename=${filename}&&minutes=${examMinutes.value}&&examDate=${examDate.value}&&amountOfTrueFalseQuestions=${trueAndFalseCount}&&amountOfMultipleChoicesQuestions=${multipleChoiceCount}&&amountOfMatchingQuestions=${matchingCount}&&amountOfFillInTheBlankQuestions=${fillInTheBlankCount}&&hardQuestionsCount=${hardQuestionsCount}&&mediumQuestionsCount=${mediumQuestionsCount}&&easyQuestionsCount=${easyQuestionsCount}`;
 
   let response = await AJAXCall({
@@ -429,5 +429,44 @@ async function saveExamAsJSON(filename, ArrayContainingObjects, type) {
   } catch (error) {
     //TODO: bubbleUpError()
     console.log(error);
+  }
+}
+
+async function fetchAllExam(id) {
+  const examResponse = await AJAXCall({
+    phpFilePath: "../include/exam/getAllExam.php",
+    rejectMessage: "Get All Exam Failed To Be Fetched",
+    params: `courseID=${id}`,
+    type: "fetch",
+  });
+
+  const examsContainer = document.getElementById("exams-container");
+  examsContainer.innerHTML = "";
+  
+  for (let i = 0; i < examResponse.length; i++) {
+    const newDiv = document.createElement("div");
+    const newFirstP = document.createElement("p");
+    const newSecondP = document.createElement("p");
+
+    newDiv.className = "exam-item";
+
+    newFirstP.innerHTML = examResponse[i].examName;
+    newSecondP.innerHTML = examResponse[i].examDate;
+
+    newDiv.appendChild(newFirstP);
+    newDiv.appendChild(newSecondP);
+    examsContainer.appendChild(newDiv);
+  }
+
+  if (examResponse.length === 0) {
+    const newDiv = document.createElement("div");
+    newDiv.className = "exam-item";
+    newDiv.style = "display:flex; justify-content:center;align-items:center;";
+
+    const newFirstP = document.createElement("p");
+
+    newFirstP.innerHTML = "You did not create any exam!";
+    newDiv.appendChild(newFirstP);
+    examsContainer.appendChild(newDiv);
   }
 }

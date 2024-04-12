@@ -2,45 +2,8 @@
 
 <div style="display: flex;justify-content: space-between;align-items: center;flex-direction: column; width:100%;">
     <div class="exams-container">
-        <div class="exam-item">
-            <p>Exam Name </p>
-            <p>Exam Time </p>
-        </div>
-        <div class="exam-item">
-            <p>Exam Name </p>
-            <p>Exam Time </p>
-        </div>
-        <div class="exam-item">
-            <p>Exam Name </p>
-            <p>Exam Time </p>
-        </div>
-        <div class="exam-item">
-            <p>Exam Name </p>
-            <p>Exam Time </p>
-        </div>
-        <div class="exam-item">
-            <p>Exam Name </p>
-            <p>Exam Time </p>
-        </div>
-        <div class="exam-item">
-            <p>Exam Name </p>
-            <p>Exam Time </p>
-        </div>
-        <div class="exam-item">
-            <p>Exam Name </p>
-            <p>Exam Time </p>
-        </div>
-        <div class="exam-item">
-            <p>Exam Name </p>
-            <p>Exam Time </p>
-        </div>
-        <div class="exam-item">
-            <p>Exam Name </p>
-            <p>Exam Time </p>
-        </div>
-        <div class="exam-item">
-            <p>Exam Name </p>
-            <p>Exam Time </p>
+        <div class="exams-container" id="exams-container">
+
         </div>
 
         <div style="width:100%;display:flex;align-items:center;justify-content:center;margin-top:50px;">

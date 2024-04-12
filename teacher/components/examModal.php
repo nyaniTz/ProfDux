@@ -6,6 +6,10 @@
       <div class="exam-modal-container">
         <div class="exam-modal-container-first-div">
           <div class="exam-modal-question-type-box">
+            <p>Exam Name</p>
+            <input type="text" required id="exam-name-input" />
+          </div>
+          <div class="exam-modal-question-type-box">
             <p>True / False</p>
             <input type="number" required id="exam-true-false-input" />
           </div>
