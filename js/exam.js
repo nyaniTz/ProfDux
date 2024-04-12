@@ -390,7 +390,9 @@ async function generateExam(e) {
   });
 
   console.log("exam generation response: ", response);
-
+  
+  fetchAllExam(courseID)
+  
   setTimeout(() => {
     closeExamModal();
     removeLoader(loader);
