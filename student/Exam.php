@@ -36,39 +36,8 @@
                     Upcoming Exams
                 </h2>
 
-                <div class="course-view-container" style="margin-top:10px">
-                    <div class="course-card" onclick="openExamModal()">
-                        <div class="course-card-image"><img src="../assets/images/courseDefault.jpg"></div>
-                        <div class="card-text">
-                            <div class="course-card-code">MAT9</div>
-                            <div class="course-card-title">Exam Date</div>
-                        </div>
-                        <div class="card-overlay"></div>
-                    </div>
-                    <div class="course-card" onclick="openExamModal()">
-                        <div class="course-card-image"><img src="../assets/images/courseDefault.jpg"></div>
-                        <div class="card-text">
-                            <div class="course-card-code">MAT9</div>
-                            <div class="course-card-title">Exam Date</div>
-                        </div>
-                        <div class="card-overlay"></div>
-                    </div>
-                    <div class="course-card" onclick="openExamModal()">
-                        <div class="course-card-image"><img src="../assets/images/courseDefault.jpg"></div>
-                        <div class="card-text">
-                            <div class="course-card-code">MAT9</div>
-                            <div class="course-card-title">Exam Date</div>
-                        </div>
-                        <div class="card-overlay"></div>
-                    </div>
-                    <div class="course-card" onclick="openExamModal()">
-                        <div class="course-card-image"><img src="../assets/images/courseDefault.jpg"></div>
-                        <div class="card-text">
-                            <div class="course-card-code">MAT9</div>
-                            <div class="course-card-title">Exam Date</div>
-                        </div>
-                        <div class="card-overlay"></div>
-                    </div>
+                <div class="course-view-container" id="student-exam-container" style="margin-top:10px">
+                  
                 </div>
             </div>
 
@@ -106,6 +75,7 @@
             window.addEventListener("load", function() {
                 // TODO: Use a different function to call this one
                 // loadCourses("mine");
+                getAllCoursesOfStudent()
             })
         </script>
 </body>

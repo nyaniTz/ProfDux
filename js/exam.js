@@ -290,9 +290,69 @@ async function fetchCourseWithIDForExam(givenID) {
   }, 2000);
 }
 
-function openExamModal() {
+async function openExamModal(exam) {
   var modal = document.getElementById("exam-modal");
   modal.style.display = "block";
+
+  const result = await AJAXCall({
+    phpFilePath: "../include/readJSONData.php",
+    rejectMessage: "saving json file failed",
+    params: `filepath=../exam/generated/${exam.filename}`,
+    type: "post",
+  });
+
+  const questions = JSON.parse(result);
+
+  let questionsAsString = "";
+  const studentExamModalContent = document.getElementById(
+    "student-exam-modal-content"
+  );
+  console.log(questions);
+
+  studentExamModalContent.innerHTML = "";
+
+  for (let i = 0; i < questions.length; i++) {
+    questionsAsString += `
+    <div class="exam-question">
+    <h4 class="exam-question-title">Question ${i + 1}</h4>
+    <p style="margin-top:10px"> ${questions[i].question}</p>
+    `;
+    if (questions[i].answerOptions) {
+      if (questions[i].answerOptions.length === 4) {
+        questionsAsString += `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px" >
+        <p> A) ${questions[i].answerOptions[0]}</p>
+        <p> B) ${questions[i].answerOptions[1]}</p>
+        <p> C) ${questions[i].answerOptions[2]}</p>
+        <p> D) ${questions[i].answerOptions[3]}</p>
+        </div>
+        `;
+      } else {
+        questionsAsString += `
+  <div style="display:flex;justify-content:flex-start;align-items:center;margin-top:10px" >
+  <p> A) ${questions[i].answerOptions[0]}</p>
+  <p style="margin-left:30px"> B) ${questions[i].answerOptions[1]}</p>
+  </div>
+  `;
+      }
+    }
+    questionsAsString += `
+  </div>
+  `;
+  }
+
+  const defaultModal = `<span id="student-exam-modal-close" class="student-exam-modal-close" onclick="closeExamModal()">&times;</span>
+<h3>Remained Exam <strong>${exam.minutes}</strong>  Minutes</h3>
+<h3 class="exam-modal-title">Please solve your exam!</h3>
+<div class="student-exam-modal-container" style="margin-top:10px;">
+  
+    ${questionsAsString}
+
+    <div style="display:flex;justify-content:center;align-items:center;cursor:pointer">
+        <button class="exam-modal-generate-button">Send</button>
+    </div>`;
+
+  studentExamModalContent.innerHTML = defaultModal;
 }
 
 function closeExamModal() {
@@ -380,7 +440,7 @@ async function generateExam(e) {
 
   let params =
     `id=${examID}&&courseID=${courseID}&&examName=${examName.value}` +
-    `&&dateGenerated=${dateGenerated}&&filename=${filename}&&minutes=${examMinutes.value}&&examDate=${examDate.value}&&amountOfTrueFalseQuestions=${trueAndFalseCount}&&amountOfMultipleChoicesQuestions=${multipleChoiceCount}&&amountOfMatchingQuestions=${matchingCount}&&amountOfFillInTheBlankQuestions=${fillInTheBlankCount}&&hardQuestionsCount=${hardQuestionsCount}&&mediumQuestionsCount=${mediumQuestionsCount}&&easyQuestionsCount=${easyQuestionsCount}`;
+    `&&dateGenerated=${dateGenerated}&&filename=${filename}&&minutes=${examMinutes.value}&&examDate=${examDate.value}&&amountOfTrueFalseQuestions=${trueAndFalseCount}&&amountOfMultipleChoicesQuestions=${multipleChoiceCount}&&amountOfMatchingQuestions=${matchingCount}&&amountOfFillInTheBlankQuestions=${fillInTheBlankCount}&&hardQuestionsCount=${hardQuestionsCount}&&mediumQuestionsCount=${mediumQuestionsCount}&&easyQuestionsCount=${easyQuestionsCount}&&courseCode=${result[0].courseCode}`;
 
   let response = await AJAXCall({
     phpFilePath: "../include/exam/addNewExam.php",
@@ -390,9 +450,9 @@ async function generateExam(e) {
   });
 
   console.log("exam generation response: ", response);
-  
-  fetchAllExam(courseID)
-  
+
+  fetchAllExam(courseID);
+
   setTimeout(() => {
     closeExamModal();
     removeLoader(loader);
@@ -444,7 +504,7 @@ async function fetchAllExam(id) {
 
   const examsContainer = document.getElementById("exams-container");
   examsContainer.innerHTML = "";
-  
+
   for (let i = 0; i < examResponse.length; i++) {
     const newDiv = document.createElement("div");
     const newFirstP = document.createElement("p");
@@ -470,5 +530,70 @@ async function fetchAllExam(id) {
     newFirstP.innerHTML = "You did not create any exam!";
     newDiv.appendChild(newFirstP);
     examsContainer.appendChild(newDiv);
+  }
+}
+
+async function getAllCoursesOfStudent() {
+  let { id: globalUserID } = await globalUserDetails;
+
+  const subscriptions = await AJAXCall({
+    phpFilePath: "../include/exam/getAllSubscriptions.php",
+    rejectMessage: "Get All Subscriptions Failed To Be Fetched",
+    params: `userID=${globalUserID}`,
+    type: "fetch",
+  });
+
+  const exams = [];
+
+  for (let i = 0; i < subscriptions.length; i++) {
+    const exam = await AJAXCall({
+      phpFilePath: "../include/exam/getAllExamByCourseID.php",
+      rejectMessage: "Get My Exams Failed To Be Fetched",
+      params: `courseID=${subscriptions[i].courseID}`,
+      type: "fetch",
+    });
+
+    exams.push(...exam);
+  }
+
+  const studentExamContainer = document.getElementById(
+    "student-exam-container"
+  );
+
+  studentExamContainer.innerHTML = "";
+
+  for (let i = 0; i < exams.length; i++) {
+    const mainDiv = document.createElement("div");
+    mainDiv.classList.add("course-card");
+    mainDiv.onclick = () => openExamModal(exams[i]);
+
+    const imgDiv = document.createElement("div");
+    imgDiv.classList.add("course-card-image");
+    const img = document.createElement("img");
+    img.src = "../assets/images/courseDefault.jpg";
+    imgDiv.appendChild(img);
+
+    const cardTextDiv = document.createElement("div");
+    cardTextDiv.classList.add("card-text");
+
+    const courseCodeDiv = document.createElement("div");
+    courseCodeDiv.classList.add("course-card-code");
+    courseCodeDiv.textContent = exams[i].courseCode;
+
+    const examNameDiv = document.createElement("div");
+    examNameDiv.classList.add("course-card-title");
+    examNameDiv.textContent = exams[i].examName;
+
+    cardTextDiv.appendChild(courseCodeDiv);
+    cardTextDiv.appendChild(examNameDiv);
+
+    const cardOverlayDiv = document.createElement("div");
+    cardOverlayDiv.classList.add("card-overlay");
+
+    mainDiv.appendChild(imgDiv);
+    mainDiv.appendChild(cardTextDiv);
+    mainDiv.appendChild(cardOverlayDiv);
+
+    studentExamContainer.appendChild(mainDiv);
   }
 }
