@@ -1,1 +1,101 @@
-[{"question":"Suyun yoğunluğu hangi faktörlere bağlıdır?","answerOptions":["Sıcaklık","Tuzluluk","Basınç","Kirlilik"],"answer":"Sıcaklık, tuzluluk ve basınç","type":"multiple choice","hardness":"hard"},{"question":"Hidrojen bağları suyun özelliklerinden biridir, doğru mu?","answerOptions":["Doğru","Yanlış"],"answer":"Doğru","type":"true and false","hardness":"medium"},{"question":"Su, insan vücudu için neden önemlidir?","answerOptions":["Terleme","Besin taşıma","Hücre işlevleri","Hava solunumu"],"answer":"Terleme, besin taşıma ve hücre işlevleri","type":"multiple choice","hardness":"hard"},{"question":"Suyun bileşimi nasıldır?","answerOptions":["H2O","CO2","O2","NaCl"],"answer":"H2O","type":"multiple choice","hardness":"medium"},{"question":"Su, kaynama noktası ne durumda artar?","answerOptions":["Artar","Azalır"],"answer":"Artar","type":"true and false","hardness":"easy"},{"question":"Suyun buharlaşma süreci neyi etkiler?","answer":"Sıcaklık","type":"fill in the blank","hardness":"medium"},{"question":"Suyun düşük sıcaklıkta donması özelliği hangi canlılar için önemlidir?","answerOptions":["Buzda yaşayan hayvanlar","Deniz canlıları"],"answer":"Buzda yaşayan hayvanlar","type":"multiple choice","hardness":"hard"},{"question":"Su, yüzey gerilimi sayesinde hangi canlıların hareket etmesini sağlar?","answerOptions":["Su yüzeyinde yürüyen böcekler","Su altında yüzen balıklar"],"answer":"Su yüzeyinde yürüyen böcekler","type":"multiple choice","hardness":"medium"},{"question":"Su, oda sıcaklığında hangi halde bulunur?","answerOptions":["Katı","Sıvı","Gaz"],"answer":"Sıvı","type":"multiple choice","hardness":"hard"},{"question":"Yeryüzündeki suyun en büyük kaynağı nedir?","answer":"Okyanuslar","type":"fill in the blank","hardness":"medium"}]
+[
+    {
+        "question": "Suyun yoğunluğu hangi faktörlere bağlıdır?",
+        "answerOptions": [
+            "Sıcaklık",
+            "Tuzluluk",
+            "Basınç",
+            "Kirlilik"
+        ],
+        "answer": "Sıcaklık, tuzluluk ve basınç",
+        "type": "multiple choice",
+        "hardness": "hard"
+    },
+    {
+        "question": "Hidrojen bağları suyun özelliklerinden biridir, doğru mu?",
+        "answerOptions": [
+            "Doğru",
+            "Yanlış"
+        ],
+        "answer": "Doğru",
+        "type": "true and false",
+        "hardness": "medium"
+    },
+    {
+        "question": "Su, insan vücudu için neden önemlidir?",
+        "answerOptions": [
+            "Terleme",
+            "Besin taşıma",
+            "Hücre işlevleri",
+            "Hava solunumu"
+        ],
+        "answer": "Terleme, besin taşıma ve hücre işlevleri",
+        "type": "multiple choice",
+        "hardness": "hard"
+    },
+    {
+        "question": "Suyun bileşimi nasıldır?",
+        "answerOptions": [
+            "H2O",
+            "CO2",
+            "O2",
+            "NaCl"
+        ],
+        "answer": "H2O",
+        "type": "multiple choice",
+        "hardness": "medium"
+    },
+    {
+        "question": "Su, kaynama noktası ne durumda artar?",
+        "answerOptions": [
+            "Artar",
+            "Azalır"
+        ],
+        "answer": "Artar",
+        "type": "true and false",
+        "hardness": "easy"
+    },
+    {
+        "question": "Suyun buharlaşma süreci neyi etkiler?",
+        "answer": "Sıcaklık",
+        "type": "fill in the blank",
+        "hardness": "medium"
+    },
+    {
+        "question": "Suyun düşük sıcaklıkta donması özelliği hangi canlılar için önemlidir?",
+        "answerOptions": [
+            "Buzda yaşayan hayvanlar",
+            "Deniz canlıları"
+        ],
+        "answer": "Buzda yaşayan hayvanlar",
+        "type": "multiple choice",
+        "hardness": "hard"
+    },
+    {
+        "question": "Su, yüzey gerilimi sayesinde hangi canlıların hareket etmesini sağlar?",
+        "answerOptions": [
+            "Su yüzeyinde yürüyen böcekler",
+            "Su altında yüzen balıklar"
+        ],
+        "answer": "Su yüzeyinde yürüyen böcekler",
+        "type": "multiple choice",
+        "hardness": "medium"
+    },
+    {
+        "question": "Su, oda sıcaklığında hangi halde bulunur?",
+        "answerOptions": [
+            "Katı",
+            "Sıvı",
+            "Gaz"
+        ],
+        "answer": "Sıvı",
+        "type": "multiple choice",
+        "hardness": "hard"
+    },
+    {
+        "question": "Yeryüzündeki suyun en büyük kaynağı nedir?",
+        "answer": "Okyanuslar",
+        "type": "fill in the blank",
+        "hardness": "medium"
+    }
+]

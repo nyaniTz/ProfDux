@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="../css/translation.css">
+    <link rel="stylesheet" href="../css/root.css">
+    <link rel="stylesheet" href="../css/pdf-viewer.css">
+    <link rel="stylesheet" href="../css/image-viewer.css">
+    <link rel="stylesheet" href="../css/classroom.css">
+    <link rel="stylesheet" href="../css/scheduling.css">
+
+    <script src="../js/functions.js"></script>
+    <script src="../js/localize.js" defer></script>
+    <script src="../js/pdf-viewer.js" defer></script>
+    <script src="../js/image-viewer.js" defer></script>
+    <script src="../js/Course.js" defer></script>
+
+    <script src="../js/Classroom.js" defer></script>
+
+    <link rel="stylesheet" href="../css/spinkit.css">
+    <link rel="stylesheet" href="../css/popup.css">
+
+    <link rel="stylesheet" href="../css/datepicker/datepicker.material.css">
+    <script src="../js/datepicker.js"></script>
+    <script src="../js/Ebooks.js?2"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.5.141/build/pdf.min.js"></script>
+
+</head>
+<body>
+
+    <div></div>
+    <div class="ebooks-outer-container">
+    </div>
+
+    <canvas class="pdf-thumbnail"></canvas>
+
+    <style>
+
+        .pdf-thumbnail {
+            height: 350px;
+            width: 270px;
+            border-radius: 5px;
+        }
+
+        body {
+            display: grid;
+            height: 100vh;
+            grid-template-columns: 300px 1fr;
+        }
+
+        .ebooks-outer-container {
+            padding: 20px;
+            display: grid;
+        }
+
+        .course-ebook-container {
+            display: grid;
+            align-items: start;
+            grid-template-rows: auto 1fr;
+            grid-gap: 40px;
+        }
+
+        .ebook-list-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            align-items: start;
+            grid-gap: 20px;
+        }
+
+        .ebook-container{
+            width: 100%;
+            border: 2px solid gray;
+            border-radius: 5px;
+            grid-gap: 20px;
+            cursor: pointer;
+        }
+
+        .ebook-icon {
+            height: 200px;
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+        }
+
+        .ebook-icon img {
+            height: 50px;
+        }
+
+        .ebook-name {
+            border-top: 2px solid gray;
+            padding: 20px;
+        }
+
+
+    </style>
+
+    <script>
+
+            const initialReportState = { // duplicate ... move
+                pdfDoc: null,
+                currentPage: 1,
+                pageCount: 0,
+                zoom: 3,
+            };
+
+            ( async () => {
+
+                // let { id } = await getUserDetails();
+                // let params = `id=${id}`;
+
+                // let result = await AJAXCall({
+                //     phpFilePath: "../include/schedule/getEbooks.php",
+                //     rejectMessage: "Getting Books Failed",
+                //     params,
+                //     type: "fetch"
+                // });
+
+                // console.log("wow", result);
+
+                let result = [{
+                    title: "Introduction to C++",
+                    courseCode: "C453",
+                    ebooks: [
+                        { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
+                        { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
+                        { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
+                        { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
+                    ]
+                },
+                {
+                    title: "Introduction to C++",
+                    courseCode: "C453",
+                    ebooks: [
+                        { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
+                        { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
+                        { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
+                        { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
+                    ]
+                }
+            ]
+
+                let ebooks = new Ebooks(result);
+                ebooks.renderEbooks();
+
+            })();
+
+            // Viewer
+
+            async function renderPDFShot(canvasElementClass){
+  
+                initialReportState.pdfDoc
+                .getPage(initialReportState.currentPage)
+                .then((page) => {
+                    const canvas = document.querySelector(canvasElementClass);
+                    const ctx = canvas.getContext('2d');
+                    const viewport = page.getViewport({
+                        scale: initialReportState.zoom,
+                    });
+
+                    viewport.transform[4] -= 200;
+                    viewport.transform[5] -= 200;
+
+                    canvas.height = viewport.height / 2;
+                    canvas.width = viewport.width / 2;
+
+                    // Render the PDF page into the canvas context.
+                    const renderCtx = {
+                        canvasContext: ctx,
+                        viewport: viewport,
+                    };
+                
+                    page.render(renderCtx);
+                });
+            };
+
+
+    </script>
+    
+</body>
+</html>

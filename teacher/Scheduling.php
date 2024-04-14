@@ -32,27 +32,26 @@
 
             ( async () => {
 
+                let { id } = await getUserDetails();
+                let params = `id=${id}`;
 
-            let params = "id=ef87w9r42rbw";
+                let result = await AJAXCall({
+                    phpFilePath: "../include/schedule/getSchedules.php",
+                    rejectMessage: "Getting Schedules Failed",
+                    params,
+                    type: "fetch"
+                });
 
-            let result = await AJAXCall({
-                phpFilePath: "../include/schedule/getSchedules.php",
-                rejectMessage: "Getting Schedules Failed",
-                params,
-                type: "fetch"
-            });
+                console.log("wow", result);
 
-            console.log("wow", result);
+                let schedules = new Schedules(result);
+                schedules.renderSchedules();
 
-            let schedules = new Schedules(result);
-            schedules.renderSchedules();
-
-                // setTimeout(() => {
-                //     var datepicker = new Datepicker('.date-input', {
-                //         // ranged: true,
-                //     });
-                // }, 3000);
-
+                    // setTimeout(() => {
+                    //     var datepicker = new Datepicker('.date-input', {
+                    //         // ranged: true,
+                    //     });
+                    // }, 3000);
 
             })();
 
