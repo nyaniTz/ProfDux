@@ -7,7 +7,6 @@
     $id = $_POST['id'];
     $userID = $_POST['userID'];
     $examID = $_POST['examID'];
-    $filename = $_POST['filename'];
     $status = $_POST['status'];
     $timeStarted = $_POST['timeStarted'];
 
@@ -16,8 +15,8 @@
     }
 
     $query = "
-        INSERT INTO examGrades (id, userID, examID, filename, status, timeStarted)
-        VALUES ('$id', '$userID', '$examID', '$filename', '$status', '$timeStarted')
+        INSERT INTO examGrades (id, userID, examID, status, timeStarted)
+        VALUES ('$id', '$userID', '$examID', '$status', '$timeStarted')
     ";
 
     $result = mysqli_query($conn,$query);

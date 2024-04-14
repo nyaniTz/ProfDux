@@ -5,8 +5,6 @@
     $conn = OpenConnection();
    
     $id = $_POST['id'];
-    $userID = $_POST['userID'];
-    $ExamID = $_POST['ExamID'];
     $filename = $_POST['filename'];
     $status = $_POST['status'];
     $value = $_POST['value'];
@@ -19,7 +17,7 @@
     $query = "
         UPDATE examGrades
         SET filename='$filename', status = '$status', timeEnded = '$timeEnded',
-        value = '$value', ExamID = '$ExamID', userID = '$userID'
+        value = '$value'
         WHERE id='$id'
     ";
 

@@ -1,5 +1,5 @@
 <div id="exam-modal" class="student-exam-modal">
-    <div class="student-exam-modal-content" id="student-exam-modal-content">
+    <form class="student-exam-modal-content" id="student-exam-modal-content" onsubmit="saveExamGrade(event)">
 
-    </div>
+    </form>
 </div>

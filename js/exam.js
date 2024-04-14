@@ -291,6 +291,21 @@ async function fetchCourseWithIDForExam(givenID) {
 }
 
 async function openExamModal(exam) {
+  let examGradeID = uniqueID(1);
+  let examID = exam.id;
+  let { id: globalUserID } = await globalUserDetails;
+
+  let timeStarted = Date.now();
+
+  let status = "Started";
+
+  await AJAXCall({
+    phpFilePath: "../include/exam/addNewExamGrade.php",
+    rejectMessage: "Add New Exam Grade file failed",
+    params: `id=${examGradeID}&&userID=${globalUserID}&&examID=${examID}&&status=${status}&&timeStarted=${timeStarted}`,
+    type: "post",
+  });
+
   var modal = document.getElementById("exam-modal");
   modal.style.display = "block";
 
@@ -307,7 +322,8 @@ async function openExamModal(exam) {
   const studentExamModalContent = document.getElementById(
     "student-exam-modal-content"
   );
-  console.log(questions);
+
+  studentExamModalContent.setAttribute("examGradeID", examGradeID);
 
   studentExamModalContent.innerHTML = "";
 
@@ -320,25 +336,39 @@ async function openExamModal(exam) {
     if (questions[i].answerOptions) {
       if (questions[i].answerOptions.length === 4) {
         questionsAsString += `
+        <div>
+        
+        
+      
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px" >
         <p> A) ${questions[i].answerOptions[0]}</p>
         <p> B) ${questions[i].answerOptions[1]}</p>
         <p> C) ${questions[i].answerOptions[2]}</p>
         <p> D) ${questions[i].answerOptions[3]}</p>
         </div>
+        <input type="text" required class="student-question-answer" placeholder="Enter answer here" />
+        </div>
         `;
       } else {
         questionsAsString += `
-  <div style="display:flex;justify-content:flex-start;align-items:center;margin-top:10px" >
-  <p> A) ${questions[i].answerOptions[0]}</p>
-  <p style="margin-left:30px"> B) ${questions[i].answerOptions[1]}</p>
-  </div>
-  `;
+            <div>
+            <div style="display:flex;justify-content:flex-start;align-items:center;margin-top:10px" >
+            <p> A) ${questions[i].answerOptions[0]}</p>
+            <p style="margin-left:30px"> B) ${questions[i].answerOptions[1]}</p>
+            </div>
+            <input type="text" required class="student-question-answer" placeholder="Enter answer here" />
+            </div>
+           `;
       }
+    } else {
+      questionsAsString += `
+      <div>
+      <input type="text" required class="student-question-answer" placeholder="Enter answer here" />
+      </div>
+     `;
     }
-    questionsAsString += `
-  </div>
-  `;
+
+    questionsAsString += `</div>`;
   }
 
   const defaultModal = `<span id="student-exam-modal-close" class="student-exam-modal-close" onclick="closeExamModal()">&times;</span>
@@ -349,15 +379,95 @@ async function openExamModal(exam) {
     ${questionsAsString}
 
     <div style="display:flex;justify-content:center;align-items:center;cursor:pointer">
-        <button class="exam-modal-generate-button">Send</button>
+        <button class="exam-modal-generate-button" style="cursor:pointer" >Send</button>
     </div>`;
 
   studentExamModalContent.innerHTML = defaultModal;
 }
 
-function closeExamModal() {
+async function saveExamGrade(e) {
+  e.preventDefault();
+  let filename = `Exam-Grade-${uniqueID(2)}.json`;
+
+  const answersOfQuestions = document.getElementsByClassName(
+    "student-question-answer"
+  );
+
+  let answerJSON = [];
+  for (let i = 0; i < answersOfQuestions.length; i++) {
+    answerJSON.push({
+      question: i + 1,
+      answer: answersOfQuestions[i].value,
+    });
+  }
+
+  let JSONString = JSON.stringify(answerJSON);
+
+  let correctPath = `../exam/grades/${filename}`;
+
+  await AJAXCall({
+    phpFilePath: "../include/saveJSONData.php",
+    rejectMessage: "saving json file failed",
+    params: `filepath=${correctPath}&&jsonString=${JSONString}`,
+    type: "post",
+  });
+
+  const studentExamModalContent = document.getElementById(
+    "student-exam-modal-content"
+  );
+
+  let examGradeID = studentExamModalContent.getAttribute("examGradeID");
+
+  let timeEnded = Date.now();
+  let status = "Done";
+
+  // TODO: We have to this mark situation
+  let value = "3";
+
+  let resultOfSaveExam = await AJAXCall({
+    phpFilePath: "../include/exam/updateNewExamGrade.php",
+    rejectMessage: "Update New Exam Grade file failed",
+    params: `id=${examGradeID}&&filename=${filename}&&status=${status}&&value=${value}&&timeEnded=${timeEnded}`,
+    type: "post",
+  });
+
+  animateDialog("You successfully send your exam");
+
   var modal = document.getElementById("exam-modal");
   modal.style.display = "none";
+}
+
+function closeExamModal() {
+  let options = {
+    title: "Are You Sure You Want To Leave Exam?",
+    denyTitle: "No",
+    acceptTitle: "Yes",
+  };
+
+  showOptionsDialog(options, async () => {
+    var modal = document.getElementById("exam-modal");
+    modal.style.display = "none";
+
+    const studentExamModalContent = document.getElementById(
+      "student-exam-modal-content"
+    );
+
+    let examGradeID = studentExamModalContent.getAttribute("examGradeID");
+
+    let timeEnded = Date.now();
+    let status = "Exam Failed";
+
+    let filename = "";
+
+    let value = "0";
+
+    await AJAXCall({
+      phpFilePath: "../include/exam/updateNewExamGrade.php",
+      rejectMessage: "Update New Exam Grade file failed",
+      params: `id=${examGradeID}&&filename=${filename}&&status=${status}&&value=${value}&&timeEnded=${timeEnded}`,
+      type: "post",
+    });
+  });
 }
 
 async function generateExam(e) {
@@ -584,8 +694,13 @@ async function getAllCoursesOfStudent() {
     examNameDiv.classList.add("course-card-title");
     examNameDiv.textContent = exams[i].examName;
 
+    const examDateDiv = document.createElement("div");
+    examDateDiv.classList.add("course-card-title");
+    examDateDiv.textContent = exams[i].examDate;
+
     cardTextDiv.appendChild(courseCodeDiv);
     cardTextDiv.appendChild(examNameDiv);
+    cardTextDiv.appendChild(examDateDiv);
 
     const cardOverlayDiv = document.createElement("div");
     cardOverlayDiv.classList.add("card-overlay");
