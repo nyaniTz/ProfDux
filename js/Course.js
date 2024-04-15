@@ -653,7 +653,7 @@ async function generateQuiz(lectureObject, refresh = true){
     "question, answerOptions, answer, type, hardness". 
     The answerOptions should only be available if the 
     question type is multiple choice or true and false.
-    Do not add any invalid characters in the result.`;
+    Do not add any invalid characters in the result please.`;
 
     let unparsedJSONResponse = await generateGPTResponseFor(query);
     let questions = await JSON.parse(unparsedJSONResponse);

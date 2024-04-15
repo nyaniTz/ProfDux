@@ -1,6 +1,6 @@
 <div id="exam-modal" class="exam-modal">
   <div class="exam-modal-content">
-    <span id="exam-modal-close" class="exam-modal-close" onclick="closeExamModal()">&times;</span>
+    <span id="exam-modal-close" class="exam-modal-close" onclick="closeExamModalTeacher()">&times;</span>
     <h3 class="exam-modal-title">Please select your question types!</h3>
     <form onsubmit="generateExam(event)">
       <div class="exam-modal-container">

@@ -290,9 +290,23 @@ async function fetchCourseWithIDForExam(givenID) {
   }, 2000);
 }
 
+
+function openExamModalTeacher() {
+  var modal = document.getElementById("exam-modal");
+  modal.style.display = "block";
+}
+
+function closeExamModalTeacher() {
+  var modal = document.getElementById("exam-modal");
+  modal.style.display = "none";
+}
+
 async function openExamModal(exam) {
+
   let examGradeID = uniqueID(1);
+
   let examID = exam.id;
+
   let { id: globalUserID } = await globalUserDetails;
 
   let timeStarted = Date.now();
@@ -644,7 +658,10 @@ async function fetchAllExam(id) {
 }
 
 async function getAllCoursesOfStudent() {
-  let { id: globalUserID } = await globalUserDetails;
+
+  let { id: globalUserID } = await getUserDetails();
+
+  console.log("gus: ", globalUserID);
 
   const subscriptions = await AJAXCall({
     phpFilePath: "../include/exam/getAllSubscriptions.php",
@@ -665,6 +682,8 @@ async function getAllCoursesOfStudent() {
 
     exams.push(...exam);
   }
+
+  console.log("exams: ", exams);
 
   const studentExamContainer = document.getElementById(
     "student-exam-container"
