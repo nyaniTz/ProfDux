@@ -49,7 +49,7 @@
                     <img class="icon" src="../assets/icons/fi/fi-rr-arrow-alt-left.svg" alt="">
                 </div>
 
-                <?php include 'components/exams.php' ?>
+                <?php include 'components/Exams.php' ?>
                 <?php include 'components/examModal.php' ?>
 
             </div>
