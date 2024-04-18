@@ -55,7 +55,8 @@
         "../js/Question.js",
         "../js/Quiz.js",
         "../js/EditQuiz.js",
-        "../js/exam.js"
+        "../js/exam.js",
+        "../js/EditExam.js",
     );
 
     foreach ($cssPaths as $path) {

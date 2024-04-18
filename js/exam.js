@@ -290,7 +290,6 @@ async function fetchCourseWithIDForExam(givenID) {
   }, 2000);
 }
 
-
 function openExamModalTeacher() {
   var modal = document.getElementById("exam-modal");
   modal.style.display = "block";
@@ -302,7 +301,6 @@ function closeExamModalTeacher() {
 }
 
 async function openExamModal(exam) {
-
   let examGradeID = uniqueID(1);
 
   let examID = exam.id;
@@ -629,13 +627,19 @@ async function fetchAllExam(id) {
   const examsContainer = document.getElementById("exams-container");
   examsContainer.innerHTML = "";
 
+  const teacherBackIcon = document.getElementById("teacher-back-icon");
+  teacherBackIcon.onclick = () => {
+    openPopup(".course-view-container");
+    closeEditCourseContainer();
+  };
+
   for (let i = 0; i < examResponse.length; i++) {
     const newDiv = document.createElement("div");
     const newFirstP = document.createElement("p");
     const newSecondP = document.createElement("p");
 
     newDiv.className = "exam-item";
-
+    newDiv.onclick = () => goToExamDetails();
     newFirstP.innerHTML = examResponse[i].examName;
     newSecondP.innerHTML = examResponse[i].examDate;
 
@@ -658,7 +662,6 @@ async function fetchAllExam(id) {
 }
 
 async function getAllCoursesOfStudent() {
-
   let { id: globalUserID } = await getUserDetails();
 
   console.log("gus: ", globalUserID);
@@ -730,4 +733,90 @@ async function getAllCoursesOfStudent() {
 
     studentExamContainer.appendChild(mainDiv);
   }
+}
+
+async function goToExamDetails() {
+  let mainContainer = document.querySelector(".main-container");
+  const id = mainContainer.getAttribute("data-id");
+
+  closePopup(".course-view-container");
+
+  let popup = document.querySelector(".edit-course-container");
+  popup.style.display = "flex";
+
+  const examsContainer = document.getElementById("exams-container");
+  examsContainer.innerHTML = "";
+
+  const teacherExamAddButton = document.getElementById(
+    "teacher-exam-add-button"
+  );
+  teacherExamAddButton.innerHTML = "";
+
+  const teacherBackIcon = document.getElementById("teacher-back-icon");
+  teacherBackIcon.onclick = () => {
+    fetchAllExam(id);
+  };
+
+  // TODO: We have to show just exists language files
+
+  examsContainer.innerHTML = `
+  <div style="display:flex; justify-content:center;align-items:center;flex-direction:column" >
+  <form style="display:flex; justify-content:center;align-items:center;flex-direction:column ;margin-bottom:40px" onsubmit="convertFileToSelectedLanguage(event)" >
+  <h4  style="  color: #6f2036;font-weight:600;font-size:17px">
+  Choose which language you want to create from which file
+  </h4>
+  <div style="display:flex; justify-content:center;align-items:center;flex-direction:row; margin-top:20px;" >
+  <div>
+  <select name="languages" id="languages-to" class="exam-item" style="margin:0px;padding:10px" >
+    <option value="turkish">Turkish File</option>
+    <option value="english">English File</option>
+    <option value="russian">Russian File</option>
+    <option value="ukrainian">Ukrainian File</option>
+  </select>
+  </div>
+
+  <div style="margin-left:10px;">
+  <img style="margin-bottom:-3px" class="icon" src="../assets/icons/fi/fi-rr-arrow-alt-left.svg" alt="">
+  </div>
+
+  <div style="margin-left:10px">
+  <select name="languages" id="languages-from" class="exam-item" style="margin:0px;padding:10px" >
+   <option value="turkish">Turkish File</option>
+   <option value="english">English File</option>
+   <option value="russian">Russian File</option>
+   <option value="ukrainian">Ukrainian File</option>
+  </select>
+  </div>
+  </div>
+
+  <button class="exam-modal-generate-button" style="width:120px; padding: 15px 10px; cursor:pointer" > Convert </button>
+
+  </form>
+
+  <div style="display:flex; justify-content:space-around;align-items:center;width:100%" >
+  <div class="exam-item" onclick="openExamFileEditModal('turkish')" > Turkish File </div>
+  <div class="exam-item" style="margin-left:5px" onclick="openExamFileEditModal('english')" > English File </div>
+  </div>
+
+  <div style="display:flex; justify-content:space-around;align-items:center;width:100%" >
+  <div class="exam-item" onclick="openExamFileEditModal('russian')"  > Russian File </div>
+  <div class="exam-item" style="margin-left:5px" onclick="openExamFileEditModal('ukrainian')"  > Ukrainian File </div>
+  </div>
+  </div>
+  `;
+}
+
+async function convertFileToSelectedLanguage(e) {
+  e.preventDefault();
+  // TODO: Converting File to selected language
+}
+
+async function openExamFileEditModal(language) {
+  // TODO: We have to select these files on DB according to given language
+  // TODO: We have to add to lock question and answers
+  // TODO: We have to add to select correct answer etc.
+
+  console.log(language);
+
+  await startEditingExam("Exam-ml1m0r7vluwx0m2v.json");
 }
