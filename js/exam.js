@@ -560,9 +560,18 @@ async function generateExam(e) {
   let examID = uniqueID(1);
   let dateGenerated = getCurrentTimeInJSONFormat();
 
+  let examFileID = uniqueID(1);
+
+  await AJAXCall({
+    phpFilePath: "../include/exam/addNewFile.php",
+    rejectMessage: "New File Failed To Add",
+    params: `id=${examFileID}&&filename=${filename}&&dateGenerated=${dateGenerated}&&examID=${examID}&&language=${language}`,
+    type: "post",
+  });
+
   let params =
     `id=${examID}&&courseID=${courseID}&&examName=${examName.value}` +
-    `&&dateGenerated=${dateGenerated}&&filename=${filename}&&minutes=${examMinutes.value}&&examDate=${examDate.value}&&amountOfTrueFalseQuestions=${trueAndFalseCount}&&amountOfMultipleChoicesQuestions=${multipleChoiceCount}&&amountOfMatchingQuestions=${matchingCount}&&amountOfFillInTheBlankQuestions=${fillInTheBlankCount}&&hardQuestionsCount=${hardQuestionsCount}&&mediumQuestionsCount=${mediumQuestionsCount}&&easyQuestionsCount=${easyQuestionsCount}&&courseCode=${result[0].courseCode}`;
+    `&&dateGenerated=${dateGenerated}&&filename=${filename}&&fileID=${examFileID}&&minutes=${examMinutes.value}&&examDate=${examDate.value}&&amountOfTrueFalseQuestions=${trueAndFalseCount}&&amountOfMultipleChoicesQuestions=${multipleChoiceCount}&&amountOfMatchingQuestions=${matchingCount}&&amountOfFillInTheBlankQuestions=${fillInTheBlankCount}&&hardQuestionsCount=${hardQuestionsCount}&&mediumQuestionsCount=${mediumQuestionsCount}&&easyQuestionsCount=${easyQuestionsCount}&&courseCode=${result[0].courseCode}`;
 
   let response = await AJAXCall({
     phpFilePath: "../include/exam/addNewExam.php",
@@ -576,7 +585,7 @@ async function generateExam(e) {
   fetchAllExam(courseID);
 
   setTimeout(() => {
-    closeExamModal();
+    closeExamModalTeacher();
     removeLoader(loader);
   }, 2000);
 }
@@ -639,7 +648,7 @@ async function fetchAllExam(id) {
     const newSecondP = document.createElement("p");
 
     newDiv.className = "exam-item";
-    newDiv.onclick = () => goToExamDetails();
+    newDiv.onclick = () => goToExamDetails(examResponse[i].id);
     newFirstP.innerHTML = examResponse[i].examName;
     newSecondP.innerHTML = examResponse[i].examDate;
 
@@ -735,7 +744,7 @@ async function getAllCoursesOfStudent() {
   }
 }
 
-async function goToExamDetails() {
+async function goToExamDetails(examID) {
   let mainContainer = document.querySelector(".main-container");
   const id = mainContainer.getAttribute("data-id");
 
@@ -757,7 +766,29 @@ async function goToExamDetails() {
     fetchAllExam(id);
   };
 
-  // TODO: We have to show just exists language files
+  const result = await AJAXCall({
+    phpFilePath: "../include/exam/getAllFiles.php",
+    rejectMessage: "File Failed To Get",
+    params: `examID=${examID}`,
+    type: "post",
+  });
+
+  const resultAsArray = JSON.parse(result);
+
+  let firstBoxOfLanguages = "";
+  let secondBoxOfLanguages = "";
+
+  for (let i = 0; i < resultAsArray.length; i++) {
+    if (resultAsArray[i].language === "turkish") {
+      firstBoxOfLanguages += `<div class="exam-item" onclick="openExamFileEditModal('${resultAsArray[i].filename}')" > Turkish File </div>`;
+    } else if (resultAsArray[i].language === "english") {
+      firstBoxOfLanguages += `<div class="exam-item" onclick="openExamFileEditModal('${resultAsArray[i].filename}')" > English File </div>`;
+    } else if (resultAsArray[i].language === "russian") {
+      secondBoxOfLanguages += `<div class="exam-item" onclick="openExamFileEditModal('${resultAsArray[i].filename}')" > Russian File </div>`;
+    } else if (resultAsArray[i].language === "ukrainian") {
+      secondBoxOfLanguages += `<div class="exam-item" onclick="openExamFileEditModal('${resultAsArray[i].filename}')" > Ukrainian File </div>`;
+    }
+  }
 
   examsContainer.innerHTML = `
   <div style="display:flex; justify-content:center;align-items:center;flex-direction:column" >
@@ -794,13 +825,11 @@ async function goToExamDetails() {
   </form>
 
   <div style="display:flex; justify-content:space-around;align-items:center;width:100%" >
-  <div class="exam-item" onclick="openExamFileEditModal('turkish')" > Turkish File </div>
-  <div class="exam-item" style="margin-left:5px" onclick="openExamFileEditModal('english')" > English File </div>
+    ${firstBoxOfLanguages}
   </div>
 
   <div style="display:flex; justify-content:space-around;align-items:center;width:100%" >
-  <div class="exam-item" onclick="openExamFileEditModal('russian')"  > Russian File </div>
-  <div class="exam-item" style="margin-left:5px" onclick="openExamFileEditModal('ukrainian')"  > Ukrainian File </div>
+    ${secondBoxOfLanguages}
   </div>
   </div>
   `;
@@ -811,12 +840,8 @@ async function convertFileToSelectedLanguage(e) {
   // TODO: Converting File to selected language
 }
 
-async function openExamFileEditModal(language) {
-  // TODO: We have to select these files on DB according to given language
+async function openExamFileEditModal(filename) {
   // TODO: We have to add to lock question and answers
-  // TODO: We have to add to select correct answer etc.
 
-  console.log(language);
-
-  await startEditingExam("Exam-ml1m0r7vluwx0m2v.json");
+  await startEditingExam(filename);
 }

@@ -97,184 +97,211 @@ class EditExam {
   }
 }
 
-// class EditMultipleChoice extends Question {
-//   constructor(questionObject, marksWorth = 1) {
-//     // randomize answer options
-//     super(questionObject);
-//     this.marksWorth = marksWorth;
-//   }
+class EditMultipleChoiceForExam extends Question {
+  constructor(questionObject, marksWorth = 1) {
+    // randomize answer options
+    super(questionObject);
+    this.marksWorth = marksWorth;
+  }
 
-//   render() {
-//     let question = document.createElement("div");
-//     question.setAttribute("contentEditable", "true");
-//     question.className = "question editable";
-//     question.textContent = this.question;
+  render() {
+    let question = document.createElement("div");
+    question.setAttribute("contentEditable", "true");
+    question.className = "question editable";
+    question.textContent = this.question;
 
-//     question.addEventListener("input", (event) => {
-//       this.question = event.target.textContent;
-//     });
+    question.addEventListener("input", (event) => {
+      this.question = event.target.textContent;
+    });
 
-//     let answerOptionsList = document.createElement("div");
-//     answerOptionsList.className = "answer-options-list";
+    let answerOptionsList = document.createElement("div");
+    answerOptionsList.className = "answer-options-list";
 
-//     let answerOptionMap = this.answerOptions.map((option, index) => {
-//       let answerOptionContainer = document.createElement("div");
+    let answerOptionMap = this.answerOptions.map((option, index) => {
+      let answerOptionContainer = document.createElement("div");
 
-//       if (this.inputAnswer == this.answerOptions[index]) {
-//         answerOptionContainer.className = "answer-option-container active";
-//       } else {
-//         answerOptionContainer.className = "answer-option-container";
-//       }
+      if (this.inputAnswer == this.answerOptions[index]) {
+        answerOptionContainer.className = "answer-option-container active";
+      } else {
+        answerOptionContainer.className = "answer-option-container";
+      }
 
-//       let letterOption = document.createElement("div");
-//       letterOption.className = "letter-option";
-//       letterOption.textContent = letters[index];
+      let letterOption = document.createElement("div");
+      letterOption.className = "letter-option";
+      letterOption.textContent = letters[index];
 
-//       let answerOption = document.createElement("div");
-//       answerOption.setAttribute("contentEditable", "true");
-//       answerOption.className = "answer-option editable";
-//       answerOption.textContent = option;
+      let answerOption = document.createElement("div");
+      answerOption.setAttribute("contentEditable", "true");
+      answerOption.className = "answer-option editable";
+      answerOption.textContent = option;
 
-//       answerOption.addEventListener("input", (event) => {
-//         this.answerOptions[index] = event.target.textContent;
-//       });
+      answerOption.addEventListener("input", (event) => {
+        this.answerOptions[index] = event.target.textContent;
+      });
 
-//       answerOptionContainer.addEventListener("click", () => {
-//         disableOtherOptions();
-//         answerOptionContainer.className = "answer-option-container active";
-//       });
+      answerOptionContainer.addEventListener("click", () => {
+        disableOtherOptions();
+        answerOptionContainer.className = "answer-option-container active";
+      });
 
-//       //TODO: have an option to select the correct answer, or show the
-//       // correct answer
+      //TODO: have an option to select the correct answer, or show the
+      // correct answer
 
-//       answerOptionContainer.appendChild(letterOption);
-//       answerOptionContainer.appendChild(answerOption);
-//       answerOptionsList.appendChild(answerOptionContainer);
-//       return answerOptionContainer;
-//     });
+      answerOptionContainer.appendChild(letterOption);
+      answerOptionContainer.appendChild(answerOption);
+      answerOptionsList.appendChild(answerOptionContainer);
+      return answerOptionContainer;
+    });
 
-//     function disableOtherOptions() {
-//       answerOptionMap.forEach(
-//         (option) => (option.className = "answer-option-container")
-//       );
-//     }
+    let letterOption = document.createElement("div");
+    letterOption.className = "letter-option";
+    letterOption.style = "width:100px";
+    letterOption.textContent = "Answer";
 
-//     super.renderQuizArea(question, answerOptionsList);
-//   }
-// }
+    let answerOption = document.createElement("div");
+    answerOption.setAttribute("contentEditable", "true");
+    answerOption.className = "answer-option editable";
+    answerOption.textContent = this.answer;
 
-// class EditTrueAndFalse extends Question {
-//   constructor(questionObject, marksWorth = 1) {
-//     super(questionObject);
-//     this.marksWorth = marksWorth;
-//   }
+    answerOption.addEventListener("input", (event) => {
+      this.answer = event.target.textContent;
+    });
 
-//   render() {
-//     let question = document.createElement("div");
-//     question.setAttribute("contentEditable", "true");
-//     question.className = "question editable";
-//     question.textContent = this.question;
+    let answerOptionContainer = document.createElement("div");
 
-//     question.addEventListener("input", (event) => {
-//       this.question = event.target.textContent;
-//     });
+    answerOptionContainer.className = "answer-option-container";
 
-//     let answerOptions = this.answerOptions || [];
+    answerOptionContainer.addEventListener("click", () => {
+      disableOtherOptions();
+      answerOptionContainer.className = "answer-option-container active";
+    });
 
-//     // There are bugs here. What if the teacher wants to edit???
-//     if (this.answerOptions.length == 0) {
-//       switch (this.answer) {
-//         case "Yes":
-//           answerOptions = ["Yes", "No"]; //TODO: Match for other languages
-//           break;
-//         case "True":
-//           answerOptions = ["True", "False"];
-//           break;
-//         case "False":
-//           answerOptions = ["True", "False"];
-//           break;
-//         case "No":
-//           answerOptions = ["Yes", "No"];
-//           break;
-//       }
-//     }
+    answerOptionContainer.appendChild(letterOption);
+    answerOptionContainer.appendChild(answerOption);
+    answerOptionsList.appendChild(answerOptionContainer);
 
-//     let answerOptionsList = document.createElement("div");
-//     answerOptionsList.className = "tf-options-list";
+    function disableOtherOptions() {
+      answerOptionMap.forEach(
+        (option) => (option.className = "answer-option-container")
+      );
+    }
 
-//     let answerOptionMap = answerOptions.map((option, index) => {
-//       let answerOptionContainer = document.createElement("div");
-//       answerOptionContainer.className = "tf-answer-option-container";
+    super.renderQuizArea(question, answerOptionsList);
+  }
+}
 
-//       let answerOption = document.createElement("div");
-//       answerOption.textContent = option;
+class EditTrueAndFalseExam extends Question {
+  constructor(questionObject, marksWorth = 1) {
+    super(questionObject);
+    this.marksWorth = marksWorth;
+  }
 
-//       if (this.answer == answerOptions[index]) {
-//         answerOption.className = "button tf-answer-option active";
-//       } else {
-//         answerOption.className = "button tf-answer-option";
-//       }
+  render() {
+    let question = document.createElement("div");
+    question.setAttribute("contentEditable", "true");
+    question.className = "question editable";
+    question.textContent = this.question;
 
-//       answerOption.addEventListener("click", () => {
-//         disableOtherOptions();
-//         answerOption.className = "button tf-answer-option active";
+    question.addEventListener("input", (event) => {
+      this.question = event.target.textContent;
+    });
 
-//         this.answer = option;
-//       });
+    let answerOptions = this.answerOptions || [];
 
-//       answerOptionContainer.appendChild(answerOption);
-//       answerOptionsList.appendChild(answerOptionContainer);
-//       return answerOption;
-//     });
+    // There are bugs here. What if the teacher wants to edit???
+    if (this.answerOptions.length == 0) {
+      switch (this.answer) {
+        case "Yes":
+          answerOptions = ["Yes", "No"]; //TODO: Match for other languages
+          break;
+        case "True":
+          answerOptions = ["True", "False"];
+          break;
+        case "False":
+          answerOptions = ["True", "False"];
+          break;
+        case "No":
+          answerOptions = ["Yes", "No"];
+          break;
+      }
+    }
 
-//     function disableOtherOptions() {
-//       answerOptionMap.forEach(
-//         (option) => (option.className = "button tf-answer-option")
-//       );
-//     }
+    let answerOptionsList = document.createElement("div");
+    answerOptionsList.className = "tf-options-list";
 
-//     super.renderQuizArea(question, answerOptionsList);
-//   }
-// }
+    let answerOptionMap = answerOptions.map((option, index) => {
+      let answerOptionContainer = document.createElement("div");
+      answerOptionContainer.className = "tf-answer-option-container";
 
-// class EditFillInTheBlank extends Question {
-//   constructor(questionObject, marksWorth = 1) {
-//     super(questionObject);
-//     this.marksWorth = marksWorth;
-//   }
+      let answerOption = document.createElement("div");
+      answerOption.textContent = option;
 
-//   render() {
-//     let question = document.createElement("div");
-//     question.setAttribute("contentEditable", "true");
-//     question.className = "question editable";
-//     question.textContent = this.question;
+      if (this.answer == answerOptions[index]) {
+        answerOption.className = "button tf-answer-option active";
+      } else {
+        answerOption.className = "button tf-answer-option";
+      }
 
-//     question.addEventListener("input", (event) => {
-//       this.question = event.target.textContent;
-//     });
+      answerOption.addEventListener("click", () => {
+        disableOtherOptions();
+        answerOption.className = "button tf-answer-option active";
 
-//     let blankTextContainer = document.createElement("div");
-//     blankTextContainer.className = "fitb-answer-option-container";
+        this.answer = option;
+      });
 
-//     let blankTextEditableField = document.createElement("input");
-//     blankTextEditableField.className = "fitb-answer-input";
-//     blankTextEditableField.placeholder = "Enter You Answer Here";
+      answerOptionContainer.appendChild(answerOption);
+      answerOptionsList.appendChild(answerOptionContainer);
+      return answerOption;
+    });
 
-//     if (this.answer) {
-//       blankTextEditableField.className = "fitb-answer-input active";
-//       blankTextEditableField.value = this.answer;
-//     }
+    function disableOtherOptions() {
+      answerOptionMap.forEach(
+        (option) => (option.className = "button tf-answer-option")
+      );
+    }
 
-//     blankTextEditableField.addEventListener("input", () => {
-//       blankTextEditableField.className = "fitb-answer-input active";
-//       this.answer = blankTextEditableField.value;
-//     });
+    super.renderQuizArea(question, answerOptionsList);
+  }
+}
 
-//     blankTextContainer.appendChild(blankTextEditableField);
+class EditFillInTheBlankExam extends Question {
+  constructor(questionObject, marksWorth = 1) {
+    super(questionObject);
+    this.marksWorth = marksWorth;
+  }
 
-//     super.renderQuizArea(question, blankTextContainer);
-//   }
-// }
+  render() {
+    let question = document.createElement("div");
+    question.setAttribute("contentEditable", "true");
+    question.className = "question editable";
+    question.textContent = this.question;
+
+    question.addEventListener("input", (event) => {
+      this.question = event.target.textContent;
+    });
+
+    let blankTextContainer = document.createElement("div");
+    blankTextContainer.className = "fitb-answer-option-container";
+
+    let blankTextEditableField = document.createElement("input");
+    blankTextEditableField.className = "fitb-answer-input";
+    blankTextEditableField.placeholder = "Enter You Answer Here";
+
+    if (this.answer) {
+      blankTextEditableField.className = "fitb-answer-input active";
+      blankTextEditableField.value = this.answer;
+    }
+
+    blankTextEditableField.addEventListener("input", () => {
+      blankTextEditableField.className = "fitb-answer-input active";
+      this.answer = blankTextEditableField.value;
+    });
+
+    blankTextContainer.appendChild(blankTextEditableField);
+
+    super.renderQuizArea(question, blankTextContainer);
+  }
+}
 
 async function startEditingExam(filename, type = "teacher") {
   let correctPath = `../exam/generated/${filename}`;
@@ -290,16 +317,18 @@ async function startEditingExam(filename, type = "teacher") {
       case "mcq":
       case "multiple choice":
       case "multiple choice question":
-        return new EditMultipleChoice(question);
+        return new EditMultipleChoiceForExam(question);
       case "true and false":
       case "t and f":
       case "t/f":
       case "true/false":
       case "true-false":
       case "t-f":
-        return new EditTrueAndFalse(question);
+        return new EditTrueAndFalseExam(question);
       case "fill in the blank":
-        return new EditFillInTheBlank(question);
+        return new EditFillInTheBlankExam(question);
+      case "matching":
+        return new EditFillInTheBlankExam(question);
       default:
         throw new Error("Not Made Yet");
     }

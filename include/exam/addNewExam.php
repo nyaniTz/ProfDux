@@ -8,6 +8,7 @@ $id = $_POST['id'];
 $courseID = $_POST['courseID'];
 $dateGenerated = $_POST['dateGenerated'];
 $filename = $_POST['filename'];
+$fileID = $_POST['fileID'];
 $minutes = $_POST['minutes'];
 $examDate = $_POST['examDate'];
 $amountOfTrueFalseQuestions = $_POST['amountOfTrueFalseQuestions'];
@@ -26,8 +27,8 @@ if (!$conn) {
 }
 
 $query = "
-        INSERT INTO exam (id, courseID, dateGenerated, filename, minutes, examDate,amountOfTrueFalseQuestions,amountOfMultipleChoicesQuestions,amountOfMatchingQuestions,amountOfFillInTheBlankQuestions,easyQuestionsCount,mediumQuestionsCount,hardQuestionsCount,examName,courseCode)
-        VALUES ('$id', '$courseID', '$dateGenerated', '$filename', '$minutes', '$examDate','$amountOfTrueFalseQuestions','$amountOfMultipleChoicesQuestions','$amountOfMatchingQuestions','$amountOfFillInTheBlankQuestions','$easyQuestionsCount','$mediumQuestionsCount','$hardQuestionsCount','$examName','$courseCode')
+        INSERT INTO exam (id, courseID, dateGenerated, filename, fileID, minutes, examDate,amountOfTrueFalseQuestions,amountOfMultipleChoicesQuestions,amountOfMatchingQuestions,amountOfFillInTheBlankQuestions,easyQuestionsCount,mediumQuestionsCount,hardQuestionsCount,examName,courseCode)
+        VALUES ('$id', '$courseID', '$dateGenerated', '$filename', '$fileID', '$minutes', '$examDate','$amountOfTrueFalseQuestions','$amountOfMultipleChoicesQuestions','$amountOfMatchingQuestions','$amountOfFillInTheBlankQuestions','$easyQuestionsCount','$mediumQuestionsCount','$hardQuestionsCount','$examName','$courseCode')
     ";
 
 $result = mysqli_query($conn, $query);
