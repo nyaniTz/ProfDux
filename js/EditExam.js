@@ -150,6 +150,7 @@ class EditMultipleChoiceForExam extends QuestionForExam {
 
   render() {
     let questionMainDiv = document.createElement("div");
+    let answerMainDiv = document.createElement("div");
 
     let question = document.createElement("div");
     question.setAttribute("contentEditable", "true");
@@ -160,95 +161,52 @@ class EditMultipleChoiceForExam extends QuestionForExam {
       this.question = event.target.textContent;
     });
 
-    const tooltipContainer = document.createElement("div");
-    tooltipContainer.classList.add("tooltip-container");
+    const lockContainerQuestion = document.createElement("div");
+    lockContainerQuestion.classList.add("tooltip-container");
 
-    const questionLock = document.createElement("div");
-    questionLock.classList.add("tooltip-target");
-    if (this.lockedQuestion) {
-      questionLock.classList.add("tooltip-target-locked");
-      questionLock.textContent = "Locked";
-    } else {
-      questionLock.classList.remove("tooltip-target-locked");
-      questionLock.textContent = "Unlocked";
+    const lockSelectQuestion = document.createElement("select");
+    lockSelectQuestion.classList.add("tooltip-target");
+
+    lockSelectQuestion.addEventListener("change", () => {
+      this.lockedQuestion = lockSelectQuestion.value;
+    });
+
+    const currentLanguages = [
+      { lang: "Turkish" },
+      { lang: "English" },
+      { lang: "Russian" },
+      { lang: "Ukrainian" },
+    ];
+
+    for (let i = 0; i < currentLanguages.length; i++) {
+      const questionLock = document.createElement("option");
+      questionLock.textContent = currentLanguages[i].lang;
+      questionLock.value = currentLanguages[i].lang;
+      lockSelectQuestion.appendChild(questionLock);
     }
+    lockSelectQuestion.value = this.lockedQuestion;
 
-    const tooltip = document.createElement("div");
-    tooltip.classList.add("tooltip");
+    lockContainerQuestion.appendChild(lockSelectQuestion);
 
-    questionLock.addEventListener("click", () => {
-      if (this.lockedQuestion) {
-        questionLock.classList.remove("tooltip-target-locked");
-        questionLock.textContent = "Unlocked";
-        this.lockedQuestion = false;
-      } else {
-        questionLock.classList.add("tooltip-target-locked");
-        questionLock.textContent = "Locked";
-        this.lockedQuestion = true;
-      }
+    const lockContainerAnswer = document.createElement("div");
+    lockContainerAnswer.classList.add("tooltip-container");
+
+    const lockSelectAnswer = document.createElement("select");
+    lockSelectAnswer.classList.add("tooltip-target");
+
+    lockSelectAnswer.addEventListener("change", () => {
+      this.lockedAnswer = lockSelectAnswer.value;
     });
 
-    questionLock.addEventListener("mouseover", function (event) {
-      const tooltipContent =
-        "Lock question if you do not want to translate to another language";
-      tooltip.textContent = tooltipContent;
-      tooltip.style.display = "block";
-      tooltip.style.right = "0px";
-      tooltip.style.top = "60px";
-    });
-
-    questionLock.addEventListener("mouseout", function () {
-      tooltip.style.display = "none";
-    });
-
-    tooltipContainer.appendChild(questionLock);
-    tooltipContainer.appendChild(tooltip);
-
-    let answerMainDiv = document.createElement("div");
-
-    const tooltipContainerAnswer = document.createElement("div");
-    tooltipContainerAnswer.classList.add("tooltip-container");
-
-    const answerLock = document.createElement("div");
-    answerLock.classList.add("tooltip-target");
-    if (this.lockedAnswer) {
-      answerLock.classList.add("tooltip-target-locked");
-      answerLock.textContent = "Locked";
-    } else {
-      answerLock.classList.remove("tooltip-target-locked");
-      answerLock.textContent = "Unlocked";
+    for (let i = 0; i < currentLanguages.length; i++) {
+      const answerLock = document.createElement("option");
+      answerLock.textContent = currentLanguages[i].lang;
+      answerLock.value = currentLanguages[i].lang;
+      lockSelectAnswer.appendChild(answerLock);
     }
+    lockSelectAnswer.value = this.lockedAnswer;
 
-    const tooltipAnswer = document.createElement("div");
-    tooltipAnswer.classList.add("tooltip");
-
-    answerLock.addEventListener("click", () => {
-      if (this.lockedAnswer) {
-        answerLock.classList.remove("tooltip-target-locked");
-        answerLock.textContent = "Unlocked";
-        this.lockedAnswer = false;
-      } else {
-        answerLock.classList.add("tooltip-target-locked");
-        answerLock.textContent = "Locked";
-        this.lockedAnswer = true;
-      }
-    });
-
-    answerLock.addEventListener("mouseover", function (event) {
-      const tooltipContent =
-        "Lock answer if you do not want to translate to another language";
-      tooltipAnswer.textContent = tooltipContent;
-      tooltipAnswer.style.display = "block";
-      tooltipAnswer.style.right = "0px";
-      tooltipAnswer.style.top = "60px";
-    });
-
-    answerLock.addEventListener("mouseout", function () {
-      tooltipAnswer.style.display = "none";
-    });
-
-    tooltipContainerAnswer.appendChild(answerLock);
-    tooltipContainerAnswer.appendChild(tooltipAnswer);
+    lockContainerAnswer.appendChild(lockSelectAnswer);
 
     let answerOptionsList = document.createElement("div");
     answerOptionsList.className = "answer-options-list";
@@ -322,10 +280,10 @@ class EditMultipleChoiceForExam extends QuestionForExam {
       );
     }
 
-    questionMainDiv.appendChild(tooltipContainer);
+    questionMainDiv.appendChild(lockContainerQuestion);
     questionMainDiv.appendChild(question);
 
-    answerMainDiv.appendChild(tooltipContainerAnswer);
+    answerMainDiv.appendChild(lockContainerAnswer);
     answerMainDiv.appendChild(answerOptionsList);
 
     super.renderQuizArea(questionMainDiv, answerMainDiv);
@@ -340,6 +298,7 @@ class EditTrueAndFalseExam extends QuestionForExam {
 
   render() {
     let questionMainDiv = document.createElement("div");
+    let answerMainDiv = document.createElement("div");
 
     let question = document.createElement("div");
     question.setAttribute("contentEditable", "true");
@@ -350,95 +309,52 @@ class EditTrueAndFalseExam extends QuestionForExam {
       this.question = event.target.textContent;
     });
 
-    const tooltipContainer = document.createElement("div");
-    tooltipContainer.classList.add("tooltip-container");
+    const lockContainerQuestion = document.createElement("div");
+    lockContainerQuestion.classList.add("tooltip-container");
 
-    const questionLock = document.createElement("div");
-    questionLock.classList.add("tooltip-target");
-    if (this.lockedQuestion) {
-      questionLock.classList.add("tooltip-target-locked");
-      questionLock.textContent = "Locked";
-    } else {
-      questionLock.classList.remove("tooltip-target-locked");
-      questionLock.textContent = "Unlocked";
+    const lockSelectQuestion = document.createElement("select");
+    lockSelectQuestion.classList.add("tooltip-target");
+
+    lockSelectQuestion.addEventListener("change", () => {
+      this.lockedQuestion = lockSelectQuestion.value;
+    });
+
+    const currentLanguages = [
+      { lang: "Turkish" },
+      { lang: "English" },
+      { lang: "Russian" },
+      { lang: "Ukrainian" },
+    ];
+
+    for (let i = 0; i < currentLanguages.length; i++) {
+      const questionLock = document.createElement("option");
+      questionLock.textContent = currentLanguages[i].lang;
+      questionLock.value = currentLanguages[i].lang;
+      lockSelectQuestion.appendChild(questionLock);
     }
+    lockSelectQuestion.value = this.lockedQuestion;
 
-    const tooltip = document.createElement("div");
-    tooltip.classList.add("tooltip");
+    lockContainerQuestion.appendChild(lockSelectQuestion);
 
-    questionLock.addEventListener("click", () => {
-      if (this.lockedQuestion) {
-        questionLock.classList.remove("tooltip-target-locked");
-        questionLock.textContent = "Unlocked";
-        this.lockedQuestion = false;
-      } else {
-        questionLock.classList.add("tooltip-target-locked");
-        questionLock.textContent = "Locked";
-        this.lockedQuestion = true;
-      }
+    const lockContainerAnswer = document.createElement("div");
+    lockContainerAnswer.classList.add("tooltip-container");
+
+    const lockSelectAnswer = document.createElement("select");
+    lockSelectAnswer.classList.add("tooltip-target");
+
+    lockSelectAnswer.addEventListener("change", () => {
+      this.lockedAnswer = lockSelectAnswer.value;
     });
 
-    questionLock.addEventListener("mouseover", function () {
-      const tooltipContent =
-        "Lock question if you do not want to translate to another language";
-      tooltip.textContent = tooltipContent;
-      tooltip.style.display = "block";
-      tooltip.style.right = "0px";
-      tooltip.style.top = "60px";
-    });
-
-    questionLock.addEventListener("mouseout", function () {
-      tooltip.style.display = "none";
-    });
-
-    tooltipContainer.appendChild(questionLock);
-    tooltipContainer.appendChild(tooltip);
-
-    let answerMainDiv = document.createElement("div");
-
-    const tooltipContainerAnswer = document.createElement("div");
-    tooltipContainerAnswer.classList.add("tooltip-container");
-
-    const answerLock = document.createElement("div");
-    answerLock.classList.add("tooltip-target");
-    if (this.lockedAnswer) {
-      answerLock.classList.add("tooltip-target-locked");
-      answerLock.textContent = "Locked";
-    } else {
-      answerLock.classList.remove("tooltip-target-locked");
-      answerLock.textContent = "Unlocked";
+    for (let i = 0; i < currentLanguages.length; i++) {
+      const answerLock = document.createElement("option");
+      answerLock.textContent = currentLanguages[i].lang;
+      answerLock.value = currentLanguages[i].lang;
+      lockSelectAnswer.appendChild(answerLock);
     }
+    lockSelectAnswer.value = this.lockedAnswer;
 
-    const tooltipAnswer = document.createElement("div");
-    tooltipAnswer.classList.add("tooltip");
-
-    answerLock.addEventListener("click", () => {
-      if (this.lockedAnswer) {
-        answerLock.classList.remove("tooltip-target-locked");
-        answerLock.textContent = "Unlocked";
-        this.lockedAnswer = false;
-      } else {
-        answerLock.classList.add("tooltip-target-locked");
-        answerLock.textContent = "Locked";
-        this.lockedAnswer = true;
-      }
-    });
-
-    answerLock.addEventListener("mouseover", function () {
-      const tooltipContent =
-        "Lock answer if you do not want to translate to another language";
-      tooltipAnswer.textContent = tooltipContent;
-      tooltipAnswer.style.display = "block";
-      tooltipAnswer.style.right = "0px";
-      tooltipAnswer.style.top = "60px";
-    });
-
-    answerLock.addEventListener("mouseout", function () {
-      tooltipAnswer.style.display = "none";
-    });
-
-    tooltipContainerAnswer.appendChild(answerLock);
-    tooltipContainerAnswer.appendChild(tooltipAnswer);
+    lockContainerAnswer.appendChild(lockSelectAnswer);
 
     let answerOptions = this.answerOptions || [];
 
@@ -494,9 +410,9 @@ class EditTrueAndFalseExam extends QuestionForExam {
       );
     }
 
-    questionMainDiv.appendChild(tooltipContainer);
+    questionMainDiv.appendChild(lockContainerQuestion);
     questionMainDiv.appendChild(question);
-    answerMainDiv.appendChild(tooltipContainerAnswer);
+    answerMainDiv.appendChild(lockContainerAnswer);
     answerMainDiv.appendChild(answerOptionsList);
 
     super.renderQuizArea(questionMainDiv, answerMainDiv);
@@ -511,6 +427,7 @@ class EditFillInTheBlankExam extends QuestionForExam {
 
   render() {
     let questionMainDiv = document.createElement("div");
+    let answerMainDiv = document.createElement("div");
 
     let question = document.createElement("div");
     question.setAttribute("contentEditable", "true");
@@ -521,95 +438,52 @@ class EditFillInTheBlankExam extends QuestionForExam {
       this.question = event.target.textContent;
     });
 
-    const tooltipContainer = document.createElement("div");
-    tooltipContainer.classList.add("tooltip-container");
+    const lockContainerQuestion = document.createElement("div");
+    lockContainerQuestion.classList.add("tooltip-container");
 
-    const questionLock = document.createElement("div");
-    questionLock.classList.add("tooltip-target");
-    if (this.lockedQuestion) {
-      questionLock.classList.add("tooltip-target-locked");
-      questionLock.textContent = "Locked";
-    } else {
-      questionLock.classList.remove("tooltip-target-locked");
-      questionLock.textContent = "Unlocked";
+    const lockSelectQuestion = document.createElement("select");
+    lockSelectQuestion.classList.add("tooltip-target");
+
+    lockSelectQuestion.addEventListener("change", () => {
+      this.lockedQuestion = lockSelectQuestion.value;
+    });
+
+    const currentLanguages = [
+      { lang: "Turkish" },
+      { lang: "English" },
+      { lang: "Russian" },
+      { lang: "Ukrainian" },
+    ];
+
+    for (let i = 0; i < currentLanguages.length; i++) {
+      const questionLock = document.createElement("option");
+      questionLock.textContent = currentLanguages[i].lang;
+      questionLock.value = currentLanguages[i].lang;
+      lockSelectQuestion.appendChild(questionLock);
     }
+    lockSelectQuestion.value = this.lockedQuestion;
 
-    const tooltip = document.createElement("div");
-    tooltip.classList.add("tooltip");
+    lockContainerQuestion.appendChild(lockSelectQuestion);
 
-    questionLock.addEventListener("click", () => {
-      if (this.lockedQuestion) {
-        questionLock.classList.remove("tooltip-target-locked");
-        questionLock.textContent = "Unlocked";
-        this.lockedQuestion = false;
-      } else {
-        questionLock.classList.add("tooltip-target-locked");
-        questionLock.textContent = "Locked";
-        this.lockedQuestion = true;
-      }
+    const lockContainerAnswer = document.createElement("div");
+    lockContainerAnswer.classList.add("tooltip-container");
+
+    const lockSelectAnswer = document.createElement("select");
+    lockSelectAnswer.classList.add("tooltip-target");
+
+    lockSelectAnswer.addEventListener("change", () => {
+      this.lockedAnswer = lockSelectAnswer.value;
     });
 
-    questionLock.addEventListener("mouseover", function (event) {
-      const tooltipContent =
-        "Lock question if you do not want to translate to another language";
-      tooltip.textContent = tooltipContent;
-      tooltip.style.display = "block";
-      tooltip.style.right = "0px";
-      tooltip.style.top = "60px";
-    });
-
-    questionLock.addEventListener("mouseout", function () {
-      tooltip.style.display = "none";
-    });
-
-    tooltipContainer.appendChild(questionLock);
-    tooltipContainer.appendChild(tooltip);
-
-    let answerMainDiv = document.createElement("div");
-
-    const tooltipContainerAnswer = document.createElement("div");
-    tooltipContainerAnswer.classList.add("tooltip-container");
-
-    const answerLock = document.createElement("div");
-    answerLock.classList.add("tooltip-target");
-    if (this.lockedAnswer) {
-      answerLock.classList.add("tooltip-target-locked");
-      answerLock.textContent = "Locked";
-    } else {
-      answerLock.classList.remove("tooltip-target-locked");
-      answerLock.textContent = "Unlocked";
+    for (let i = 0; i < currentLanguages.length; i++) {
+      const answerLock = document.createElement("option");
+      answerLock.textContent = currentLanguages[i].lang;
+      answerLock.value = currentLanguages[i].lang;
+      lockSelectAnswer.appendChild(answerLock);
     }
+    lockSelectAnswer.value = this.lockedAnswer;
 
-    const tooltipAnswer = document.createElement("div");
-    tooltipAnswer.classList.add("tooltip");
-
-    answerLock.addEventListener("click", () => {
-      if (this.lockedAnswer) {
-        answerLock.classList.remove("tooltip-target-locked");
-        answerLock.textContent = "Unlocked";
-        this.lockedAnswer = false;
-      } else {
-        answerLock.classList.add("tooltip-target-locked");
-        answerLock.textContent = "Locked";
-        this.lockedAnswer = true;
-      }
-    });
-
-    answerLock.addEventListener("mouseover", function (event) {
-      const tooltipContent =
-        "Lock answer if you do not want to translate to another language";
-      tooltipAnswer.textContent = tooltipContent;
-      tooltipAnswer.style.display = "block";
-      tooltipAnswer.style.right = "0px";
-      tooltipAnswer.style.top = "60px";
-    });
-
-    answerLock.addEventListener("mouseout", function () {
-      tooltipAnswer.style.display = "none";
-    });
-
-    tooltipContainerAnswer.appendChild(answerLock);
-    tooltipContainerAnswer.appendChild(tooltipAnswer);
+    lockContainerAnswer.appendChild(lockSelectAnswer);
 
     let blankTextContainer = document.createElement("div");
     blankTextContainer.className = "fitb-answer-option-container";
@@ -630,9 +504,9 @@ class EditFillInTheBlankExam extends QuestionForExam {
 
     blankTextContainer.appendChild(blankTextEditableField);
 
-    questionMainDiv.appendChild(tooltipContainer);
+    questionMainDiv.appendChild(lockContainerQuestion);
     questionMainDiv.appendChild(question);
-    answerMainDiv.appendChild(tooltipContainerAnswer);
+    answerMainDiv.appendChild(lockContainerAnswer);
     answerMainDiv.appendChild(blankTextContainer);
 
     super.renderQuizArea(questionMainDiv, answerMainDiv);
