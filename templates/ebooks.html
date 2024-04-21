@@ -41,8 +41,8 @@
     <style>
 
         .pdf-thumbnail {
-            height: 350px;
-            width: 270px;
+            height: 250px;
+            width: 100%;
             border-radius: 5px;
         }
 
@@ -55,13 +55,14 @@
         .ebooks-outer-container {
             padding: 20px;
             display: grid;
+            grid-gap: 40px;
         }
 
         .course-ebook-container {
             display: grid;
             align-items: start;
             grid-template-rows: auto 1fr;
-            grid-gap: 40px;
+            grid-gap: 20px;
         }
 
         .ebook-list-container {
@@ -73,10 +74,16 @@
 
         .ebook-container{
             width: 100%;
-            border: 2px solid gray;
             border-radius: 5px;
-            grid-gap: 20px;
             cursor: pointer;
+        }
+
+        .course-title {
+            color: var(--accent);
+        }
+
+        .ebook-name {
+            color: white;
         }
 
         .ebook-icon {
@@ -84,6 +91,10 @@
             overflow: hidden;
             display: grid;
             place-items: center;
+            border: 2px solid var(--medium-gray);
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-bottom: none;
         }
 
         .ebook-icon img {
@@ -91,8 +102,11 @@
         }
 
         .ebook-name {
-            border-top: 2px solid gray;
+            /* border-top: 2px solid gray; */
             padding: 20px;
+            background: var(--accent);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
         }
 
 
@@ -127,8 +141,12 @@
                     ebooks: [
                         { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
                         { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
+                        { title: "Super long title that no one will ever have as a pdf title but what the hell, let's break the layout", value: "1707638783.pdf" },
                         { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
                         { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
+                        { title: "Introduction to Boring Things for Boring People", value: "1707638783.pdf" },
+                        { title: "How to Eat for beginners", value: "1707638783.pdf" },
+                        { title: "Ha, you think you can code?", value: "1707638783.pdf" },
                     ]
                 },
                 {

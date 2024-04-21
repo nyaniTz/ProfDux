@@ -42,6 +42,16 @@ function showTeacherForm(){
 
 }
 
+// Enter Key To Login
+document.querySelector("#password-field")
+.addEventListener("keydown", (event) => {
+
+    var key = event.keyCode;
+
+    if(key == 13){
+        login();
+    }
+})
 
 async function login(){
 

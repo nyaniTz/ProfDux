@@ -13,7 +13,7 @@ class Ebooks {
             const courseEbookContainer = document.createElement("div");
             courseEbookContainer.className = "course-ebook-container";
 
-            const courseTitle = document.createElement("h1");
+            const courseTitle = document.createElement("h2");
             courseTitle.className = "course-title";
             courseTitle.textContent = `${course.courseCode} : ${course.title}`;
             courseEbookContainer.appendChild(courseTitle);
