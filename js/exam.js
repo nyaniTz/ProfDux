@@ -323,7 +323,7 @@ async function openExamModal(exam) {
 
   const result = await AJAXCall({
     phpFilePath: "../include/readJSONData.php",
-    rejectMessage: "saving json file failed",
+    rejectMessage: "read json file failed",
     params: `filepath=../exam/generated/${exam.filename}`,
     type: "post",
   });
@@ -554,8 +554,18 @@ async function generateExam(e) {
   let questions = await JSON.parse(unparsedJSONResponse);
   console.log("questions amount: ", questions.questions.length);
 
+  const newQuestions = [];
+
+  for (let i = 0; i < questions.questions.length; i++) {
+    newQuestions.push({
+      ...questions.questions[i],
+      lockedQuestion: "Turkish",
+      lockedAnswer: "Turkish",
+    });
+  }
+
   let filename = `Exam-${uniqueID(2)}.json`;
-  saveExamAsJSON(filename, questions.questions, "generated");
+  saveExamAsJSON(filename, newQuestions, "generated");
 
   let examID = uniqueID(1);
   let dateGenerated = getCurrentTimeInJSONFormat();
@@ -792,13 +802,13 @@ async function goToExamDetails(examID) {
 
   examsContainer.innerHTML = `
   <div style="display:flex; justify-content:center;align-items:center;flex-direction:column" >
-  <form style="display:flex; justify-content:center;align-items:center;flex-direction:column ;margin-bottom:40px" onsubmit="convertFileToSelectedLanguage(event)" >
+  <form data-exam-id="${examID}" id="create-file-for-language" style="display:flex; justify-content:center;align-items:center;flex-direction:column; margin-bottom:40px" onsubmit="convertFileToSelectedLanguage(event)" >
   <h4  style="  color: #6f2036;font-weight:600;font-size:17px">
   Choose which language you want to create from which file
   </h4>
   <div style="display:flex; justify-content:center;align-items:center;flex-direction:row; margin-top:20px;" >
   <div>
-  <select name="languages" id="languages-to" class="exam-item" style="margin:0px;padding:10px" >
+  <select name="languages" default-value="turkish" id="languages-to" class="exam-item" style="margin:0px;padding:10px" >
     <option value="turkish">Turkish File</option>
     <option value="english">English File</option>
     <option value="russian">Russian File</option>
@@ -811,7 +821,7 @@ async function goToExamDetails(examID) {
   </div>
 
   <div style="margin-left:10px">
-  <select name="languages" id="languages-from" class="exam-item" style="margin:0px;padding:10px" >
+  <select name="languages" id="languages-from" default-value="turkish" class="exam-item" style="margin:0px;padding:10px" >
    <option value="turkish">Turkish File</option>
    <option value="english">English File</option>
    <option value="russian">Russian File</option>
@@ -820,28 +830,90 @@ async function goToExamDetails(examID) {
   </div>
   </div>
 
-  <button class="exam-modal-generate-button" style="width:120px; padding: 15px 10px; cursor:pointer" > Convert </button>
+  <button class="exam-modal-generate-button" style="width:120px; padding: 15px 10px; cursor:pointer" type="submit" > Convert </button>
 
   </form>
 
-  <div style="display:flex; justify-content:space-around;align-items:center;width:100%" >
+  <div style="width:100%" >
     ${firstBoxOfLanguages}
-  </div>
-
-  <div style="display:flex; justify-content:space-around;align-items:center;width:100%" >
     ${secondBoxOfLanguages}
   </div>
   </div>
   `;
 }
 
-async function convertFileToSelectedLanguage(e) {
-  e.preventDefault();
-  // TODO: Converting File to selected language
+async function convertFileToSelectedLanguage(event) {
+  event.preventDefault();
+
+  var examID = document
+    .getElementById("create-file-for-language")
+    .getAttribute("data-exam-id");
+
+  const languagesTo = document.getElementById("languages-to");
+
+  const languagesFrom = document.getElementById("languages-from");
+
+  const resultOfGetSingleFile = await AJAXCall({
+    phpFilePath: "../include/exam/getSingleFile.php",
+    rejectMessage: "File Failed To Get",
+    params: `examID=${examID}&&language=${languagesFrom.value}`,
+    type: "post",
+  });
+
+  const resultAsArray = JSON.parse(resultOfGetSingleFile);
+
+  const result = await AJAXCall({
+    phpFilePath: "../include/readJSONData.php",
+    rejectMessage: "saving json file failed",
+    params: `filepath=../exam/generated/${resultAsArray[0].filename}`,
+    type: "post",
+  });
+
+  const parsedResult = JSON.parse(result);
+
+  const newData = [];
+  for (let i = 0; i < parsedResult.length; i++) {
+    let query = `Translate answer=${parsedResult[i].answer} and answerOptions=${parsedResult[i].answerOptions} to ${parsedResult[i].lockedAnswer}. 
+    Return json like {answer:"",answerOptions:[""]}`;
+
+    let unparsedJSONResponse = await generateGPTResponseFor(query);
+    let answers = await JSON.parse(unparsedJSONResponse);
+
+    let queryQuestion = `Translate question=${parsedResult[i].question} to ${parsedResult[i].lockedQuestion}. 
+    Return json like {question:""}`;
+
+    let unparsedJSONResponseQuestion = await generateGPTResponseFor(
+      queryQuestion
+    );
+    let questions = await JSON.parse(unparsedJSONResponseQuestion);
+
+    newData.push({
+      id: parsedResult[i].id,
+      question: questions.question,
+      answer: answers.answer,
+      answerOptions: answers.answerOptions,
+      type: parsedResult[i].type,
+      hardness: parsedResult[i].hardness,
+      marksWorth: parsedResult[i].marksWorth,
+      lockedQuestion: parsedResult[i].lockedQuestion,
+      lockedAnswer: parsedResult[i].lockedAnswer,
+    });
+  }
+
+  let newFilename = `Exam-${uniqueID(2)}.json`;
+  saveExamAsJSON(newFilename, newData, "generated");
+
+  let examFileID = uniqueID(1);
+  let dateGenerated = getCurrentTimeInJSONFormat();
+
+  await AJAXCall({
+    phpFilePath: "../include/exam/addNewFile.php",
+    rejectMessage: "New File Failed To Add",
+    params: `id=${examFileID}&&filename=${newFilename}&&dateGenerated=${dateGenerated}&&examID=${examID}&&language=${languagesTo.value}`,
+    type: "post",
+  });
 }
 
 async function openExamFileEditModal(filename) {
-  // TODO: We have to add to lock question and answers
-
   await startEditingExam(filename);
 }
