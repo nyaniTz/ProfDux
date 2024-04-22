@@ -25,6 +25,7 @@
         "../css/quiz.css",
         "../css/classroom.css",
         "../css/DuxChat.css",
+        "../css/ebook.css",
         "../css/exam.css",
         "../css/examStudent.css"
     );
@@ -46,7 +47,6 @@
         "../js/openAIKey.js",
         "../js/tab.js",
         "../js/headerBar.js",
-
         "../js/pdf-viewer.js",
         "../js/image-viewer.js",
         "../js/courseManagement.js",
@@ -55,6 +55,7 @@
         "../js/Quiz.js",
         "../js/Classroom.js",
         "../js/DuxChat.js",
+        "../js/Ebooks.js",
         "../js/exam.js"
     );
 
