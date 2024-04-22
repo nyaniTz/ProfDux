@@ -84,8 +84,8 @@ function startUploading(){
             const id = uniqueID(1);
 
             try{
-                const { newFileName:value } = await uploadFile(fileObject);
-                if(value) await sendResourceToDatabase({id, value, type, subtopicID});
+                const { newFileName: value, oldFileName } = await uploadFile(fileObject);
+                if(value) await sendResourceToDatabase({id, value, type, subtopicID, oldFileName});
                 else throw new Error("Upload Failed");
                 
                 setTimeout(() => {
@@ -108,10 +108,11 @@ async function sendResourceToDatabase(resourceObject){
         id, 
         value, 
         type, 
-        subtopicID
+        subtopicID,
+        oldFileName
     } = resourceObject;
 
-    const params = `id=${id}&&value=${value}&&type=${type}&&subtopicID=${subtopicID}`;
+    const params = `id=${id}&&value=${value}&&type=${type}&&subtopicID=${subtopicID}&&title=${oldFileName}`;
 
     return await AJAXCall({
         phpFilePath: "../include/course/addNewResource.php",

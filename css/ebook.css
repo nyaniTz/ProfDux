@@ -1,0 +1,73 @@
+.pdf-thumbnail {
+    height: 250px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.ebooks-outer-container {
+    padding: 20px;
+    display: grid;
+    grid-gap: 40px;
+}
+
+.course-ebook-container {
+    display: grid;
+    align-items: start;
+    grid-template-rows: auto 1fr;
+    grid-gap: 20px;
+}
+
+.ebook-list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    align-items: start;
+    grid-gap: 20px;
+}
+
+.ebook-container{
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.course-title {
+    color: var(--accent);
+}
+
+.ebook-name {
+    color: white;
+}
+
+.ebook-icon {
+    height: 200px;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    border: 2px solid var(--medium-gray);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: none;
+}
+
+.ebook-icon img {
+    height: 50px;
+}
+
+.ebook-name {
+    /* border-top: 2px solid gray; */
+    padding: 20px;
+    background: var(--accent);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.empty-book-set {
+    border: 2px solid var(--medium-gray);
+    padding: 20px;
+    border-radius: 10px;
+    color: var(--dark-gray);
+    background-color: var(--light-gray);
+    grid-column: 1/-1;
+    display: grid;
+    place-content: center;
+}

@@ -8,6 +8,9 @@
 
         <?php include '../include/studentImports.php'; ?>
 
+        <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.5.141/build/pdf.min.js"></script>
+
+
     </head>
     <body>
 
@@ -19,37 +22,89 @@
                 <h1 class="large-title">E-books</h1>
                 
                 <div class="ebooks-outer-container">
-                    
                 </div>
             </div>
         </div>
 
         <script>
 
+            const initialReportState = { // duplicate ... move
+                pdfDoc: null,
+                currentPage: 1,
+                pageCount: 0,
+                zoom: 3,
+            };
+
             ( async () => {
 
                 let { id } = await getUserDetails();
-                let params = `id=${id}`;
 
-                let result = await AJAXCall({
-                    phpFilePath: "../include/schedule/getEbooks.php",
-                    rejectMessage: "Getting Books Failed",
-                    params,
+                let resourcesResult = await AJAXCall({
+                    phpFilePath: "../include/course/getResourcesForUser.php",
+                    rejectMessage: "Running Query Failed",
+                    params: `id=${id}`,
                     type: "fetch"
                 });
 
-                console.log("wow", result);
+                let reMapped = resourcesResult.map( course => {
 
-                // let schedules = new Schedules(result);
-                // schedules.renderSchedules();
+                    let ebooks = [];
 
-                    // setTimeout(() => {
-                    //     var datepicker = new Datepicker('.date-input', {
-                    //         // ranged: true,
-                    //     });
-                    // }, 3000);
+                    course.lectures.forEach( lectures => 
+                        
+                        lectures.subtopics.forEach( subtopic => 
 
-            })();
+                            subtopic.resources.forEach( resource => 
+                                resource.type == "application/pdf" ? ebooks.push({
+                                    title: resource.title,
+                                    value: resource.value
+                                }) : false
+                            )
+
+                        )
+
+                    )
+                    
+                    return {
+                        title: course.title,
+                        courseCode: course.courseCode,
+                        ebooks
+                    }
+                })
+
+                let ebooks = new Ebooks(reMapped);
+                ebooks.renderEbooks();
+
+                })();
+
+                // Viewer
+
+                async function renderPDFShot(canvasElementClass){
+
+                initialReportState.pdfDoc
+                .getPage(initialReportState.currentPage)
+                .then((page) => {
+                    const canvas = document.querySelector(canvasElementClass);
+                    const ctx = canvas.getContext('2d');
+                    const viewport = page.getViewport({
+                        scale: initialReportState.zoom,
+                    });
+
+                    viewport.transform[4] -= 200;
+                    viewport.transform[5] -= 200;
+
+                    canvas.height = viewport.height / 2;
+                    canvas.width = viewport.width / 2;
+
+                    // Render the PDF page into the canvas context.
+                    const renderCtx = {
+                        canvasContext: ctx,
+                        viewport: viewport,
+                    };
+
+                    page.render(renderCtx);
+                });
+                };
 
         </script>
     </body>

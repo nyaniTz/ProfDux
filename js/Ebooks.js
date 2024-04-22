@@ -8,6 +8,13 @@ class Ebooks {
 
         const ebooksOuterContainer = document.querySelector(".ebooks-outer-container");
     
+        if(this.ebooksArray.length <= 0){
+            const emptyBookSet = document.createElement("div");
+            emptyBookSet.className = "empty-book-set";
+            emptyBookSet.textContent = "You are not subscribed to any courses. Ebooks will appear here from courses you have subscribed to."
+            ebooksOuterContainer.appendChild(emptyBookSet);
+        }
+
         this.ebooksArray.forEach( course => {
 
             const courseEbookContainer = document.createElement("div");
@@ -20,6 +27,13 @@ class Ebooks {
 
             const ebookListContainer = document.createElement("div");
             ebookListContainer.className = "ebook-list-container";
+
+            if(course.ebooks.length <= 0){
+                const emptyBookSet = document.createElement("div");
+                emptyBookSet.className = "empty-book-set";
+                emptyBookSet.textContent = "There are no ebooks for this course"
+                ebookListContainer.appendChild(emptyBookSet);
+            }
 
             course.ebooks.forEach( ebook => {
 

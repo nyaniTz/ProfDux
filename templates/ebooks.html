@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../css/image-viewer.css">
     <link rel="stylesheet" href="../css/classroom.css">
     <link rel="stylesheet" href="../css/scheduling.css">
+    <link rel="stylesheet" href="../css/ebook.css?2">
 
     <script src="../js/functions.js"></script>
     <script src="../js/localize.js" defer></script>
@@ -40,79 +41,36 @@
 
     <style>
 
-        .pdf-thumbnail {
-            height: 250px;
-            width: 100%;
-            border-radius: 5px;
-        }
-
         body {
             display: grid;
             height: 100vh;
             grid-template-columns: 300px 1fr;
         }
 
-        .ebooks-outer-container {
-            padding: 20px;
-            display: grid;
-            grid-gap: 40px;
-        }
-
-        .course-ebook-container {
-            display: grid;
-            align-items: start;
-            grid-template-rows: auto 1fr;
-            grid-gap: 20px;
-        }
-
-        .ebook-list-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            align-items: start;
-            grid-gap: 20px;
-        }
-
-        .ebook-container{
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .course-title {
-            color: var(--accent);
-        }
-
-        .ebook-name {
-            color: white;
-        }
-
-        .ebook-icon {
-            height: 200px;
-            overflow: hidden;
-            display: grid;
-            place-items: center;
-            border: 2px solid var(--medium-gray);
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            border-bottom: none;
-        }
-
-        .ebook-icon img {
-            height: 50px;
-        }
-
-        .ebook-name {
-            /* border-top: 2px solid gray; */
-            padding: 20px;
-            background: var(--accent);
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-
-
     </style>
 
     <script>
+
+        // let SQLQuery = 
+        
+        // `
+        // SELECT * FROM resources
+        // WHERE type = '${}' AND subtopicID = '${}'
+        
+        // `
+        
+        // ;
+
+        function fetchDataFromQuery(SQLQuery){
+
+            return AJAXCall({
+                phpFilePath: "../include/SQLRunner.php",
+                rejectMessage: "Running Query Failed",
+                params: `query=${SQLQuery}`,
+                type: "fetch"
+            });
+
+        }
 
             const initialReportState = { // duplicate ... move
                 pdfDoc: null,
@@ -123,23 +81,52 @@
 
             ( async () => {
 
-                // let { id } = await getUserDetails();
-                // let params = `id=${id}`;
+                let { id } = await getUserDetails();
 
-                // let result = await AJAXCall({
-                //     phpFilePath: "../include/schedule/getEbooks.php",
-                //     rejectMessage: "Getting Books Failed",
-                //     params,
-                //     type: "fetch"
-                // });
+                console.log(id);
 
-                // console.log("wow", result);
+                let resourcesResult = await AJAXCall({
+                    phpFilePath: "../include/course/getResourcesForUser.php",
+                    rejectMessage: "Running Query Failed",
+                    params: `id=${id}`,
+                    type: "fetch"
+                });
+
+                console.log(resourcesResult);
+
+                let reMapped = resourcesResult.map( course => {
+
+                    let ebooks = [];
+
+                    course.lectures.forEach( lectures => 
+                        
+                        lectures.subtopics.forEach( subtopic => 
+
+                            subtopic.resources.forEach( resource => 
+                                resource.type == "application/pdf" ? ebooks.push({
+                                    title: resource.title,
+                                    value: resource.value
+                                }) : false
+                            )
+
+                        )
+
+                    )
+                    
+                    return {
+                        title: course.title,
+                        courseCode: course.courseCode,
+                        ebooks
+                    }
+                })
+
+                console.log("reMapped: ", reMapped);
 
                 let result = [{
                     title: "Introduction to C++",
                     courseCode: "C453",
                     ebooks: [
-                        { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
+                        { title: "Introduction to Basics and Variables", value: "1707638783.pdf", lecture: "", subtopic: ""},
                         { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
                         { title: "Super long title that no one will ever have as a pdf title but what the hell, let's break the layout", value: "1707638783.pdf" },
                         { title: "Introduction to Basics and Variables", value: "1707638783.pdf" },
@@ -161,7 +148,7 @@
                 }
             ]
 
-                let ebooks = new Ebooks(result);
+                let ebooks = new Ebooks(reMapped);
                 ebooks.renderEbooks();
 
             })();
