@@ -25,7 +25,9 @@
         "../css/quiz.css",
         "../css/classroom.css",
         "../css/DuxChat.css",
-        "../css/ebook.css"
+        "../css/ebook.css",
+        "../css/exam.css",
+        "../css/examStudent.css"
     );
 
     // These are for javascript files that you want
@@ -45,7 +47,6 @@
         "../js/openAIKey.js",
         "../js/tab.js",
         "../js/headerBar.js",
-
         "../js/pdf-viewer.js",
         "../js/image-viewer.js",
         "../js/courseManagement.js",
@@ -54,7 +55,8 @@
         "../js/Quiz.js",
         "../js/Classroom.js",
         "../js/DuxChat.js",
-        "../js/Ebooks.js"
+        "../js/Ebooks.js",
+        "../js/exam.js"
     );
 
     foreach ($cssPaths as $path) {
