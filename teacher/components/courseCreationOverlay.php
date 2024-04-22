@@ -6,7 +6,7 @@
             </div>
             <h1 class="pop-up-title">
                 <text>Create Course</text>
-            </h1> 
+            </h1>
         </div>
 
         <div class="popup-body">
@@ -33,6 +33,22 @@
                 <div class="form-input-container">
                     <span class="form-input-label"><text>Course Name</text></span>
                     <input class="form-input course-name" placeholder="Course Name" type="text" required>
+                </div>
+                <div class="form-input-container">
+                    <span class="form-input-label"><text>Course Language</text></span>
+                    <select class="form-input course-language" placeholder="Course Language" required>
+                        <option selected value="turkish">Turkish</option>
+                        <option value="english">English</option>
+                        <option value="russian">Russian</option>
+                        <option value="ukrainian">Ukrainian</option>
+                    </select>
+                </div>
+                <div class="form-input-container">
+                    <span class="form-input-label"><text>Is thıs course a Language Course ?</text></span>
+                    <select class="form-input course-is-language" placeholder=" Is Language Course" required>
+                        <option selected value="no">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
                 </div>
             </form>
         </div>

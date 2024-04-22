@@ -106,19 +106,9 @@ class QuestionForExam {
   inputAnswer;
   hardness;
   marksWorth;
-  lockedQuestion;
-  lockedAnswer;
 
   constructor(questionObject) {
-    let {
-      question,
-      answerOptions,
-      answer,
-      type,
-      hardness,
-      lockedQuestion,
-      lockedAnswer,
-    } = questionObject;
+    let { question, answerOptions, answer, type, hardness } = questionObject;
 
     this.id = uniqueID(1);
     this.question = question;
@@ -126,8 +116,6 @@ class QuestionForExam {
     this.answer = answer;
     this.type = type;
     this.hardness = hardness;
-    this.lockedQuestion = lockedQuestion ?? false;
-    this.lockedAnswer = lockedAnswer ?? false;
 
     if (questionObject.inputAnswer != null)
       this.inputAnswer = questionObject.inputAnswer;
@@ -149,9 +137,6 @@ class EditMultipleChoiceForExam extends QuestionForExam {
   }
 
   render() {
-    let questionMainDiv = document.createElement("div");
-    let answerMainDiv = document.createElement("div");
-
     let question = document.createElement("div");
     question.setAttribute("contentEditable", "true");
     question.className = "question editable";
@@ -160,53 +145,6 @@ class EditMultipleChoiceForExam extends QuestionForExam {
     question.addEventListener("input", (event) => {
       this.question = event.target.textContent;
     });
-
-    const lockContainerQuestion = document.createElement("div");
-    lockContainerQuestion.classList.add("tooltip-container");
-
-    const lockSelectQuestion = document.createElement("select");
-    lockSelectQuestion.classList.add("tooltip-target");
-
-    lockSelectQuestion.addEventListener("change", () => {
-      this.lockedQuestion = lockSelectQuestion.value;
-    });
-
-    const currentLanguages = [
-      { lang: "Turkish" },
-      { lang: "English" },
-      { lang: "Russian" },
-      { lang: "Ukrainian" },
-    ];
-
-    for (let i = 0; i < currentLanguages.length; i++) {
-      const questionLock = document.createElement("option");
-      questionLock.textContent = currentLanguages[i].lang;
-      questionLock.value = currentLanguages[i].lang;
-      lockSelectQuestion.appendChild(questionLock);
-    }
-    lockSelectQuestion.value = this.lockedQuestion;
-
-    lockContainerQuestion.appendChild(lockSelectQuestion);
-
-    const lockContainerAnswer = document.createElement("div");
-    lockContainerAnswer.classList.add("tooltip-container");
-
-    const lockSelectAnswer = document.createElement("select");
-    lockSelectAnswer.classList.add("tooltip-target");
-
-    lockSelectAnswer.addEventListener("change", () => {
-      this.lockedAnswer = lockSelectAnswer.value;
-    });
-
-    for (let i = 0; i < currentLanguages.length; i++) {
-      const answerLock = document.createElement("option");
-      answerLock.textContent = currentLanguages[i].lang;
-      answerLock.value = currentLanguages[i].lang;
-      lockSelectAnswer.appendChild(answerLock);
-    }
-    lockSelectAnswer.value = this.lockedAnswer;
-
-    lockContainerAnswer.appendChild(lockSelectAnswer);
 
     let answerOptionsList = document.createElement("div");
     answerOptionsList.className = "answer-options-list";
@@ -280,13 +218,7 @@ class EditMultipleChoiceForExam extends QuestionForExam {
       );
     }
 
-    questionMainDiv.appendChild(lockContainerQuestion);
-    questionMainDiv.appendChild(question);
-
-    answerMainDiv.appendChild(lockContainerAnswer);
-    answerMainDiv.appendChild(answerOptionsList);
-
-    super.renderQuizArea(questionMainDiv, answerMainDiv);
+    super.renderQuizArea(question, answerOptionsList);
   }
 }
 
@@ -297,9 +229,6 @@ class EditTrueAndFalseExam extends QuestionForExam {
   }
 
   render() {
-    let questionMainDiv = document.createElement("div");
-    let answerMainDiv = document.createElement("div");
-
     let question = document.createElement("div");
     question.setAttribute("contentEditable", "true");
     question.className = "question editable";
@@ -308,53 +237,6 @@ class EditTrueAndFalseExam extends QuestionForExam {
     question.addEventListener("input", (event) => {
       this.question = event.target.textContent;
     });
-
-    const lockContainerQuestion = document.createElement("div");
-    lockContainerQuestion.classList.add("tooltip-container");
-
-    const lockSelectQuestion = document.createElement("select");
-    lockSelectQuestion.classList.add("tooltip-target");
-
-    lockSelectQuestion.addEventListener("change", () => {
-      this.lockedQuestion = lockSelectQuestion.value;
-    });
-
-    const currentLanguages = [
-      { lang: "Turkish" },
-      { lang: "English" },
-      { lang: "Russian" },
-      { lang: "Ukrainian" },
-    ];
-
-    for (let i = 0; i < currentLanguages.length; i++) {
-      const questionLock = document.createElement("option");
-      questionLock.textContent = currentLanguages[i].lang;
-      questionLock.value = currentLanguages[i].lang;
-      lockSelectQuestion.appendChild(questionLock);
-    }
-    lockSelectQuestion.value = this.lockedQuestion;
-
-    lockContainerQuestion.appendChild(lockSelectQuestion);
-
-    const lockContainerAnswer = document.createElement("div");
-    lockContainerAnswer.classList.add("tooltip-container");
-
-    const lockSelectAnswer = document.createElement("select");
-    lockSelectAnswer.classList.add("tooltip-target");
-
-    lockSelectAnswer.addEventListener("change", () => {
-      this.lockedAnswer = lockSelectAnswer.value;
-    });
-
-    for (let i = 0; i < currentLanguages.length; i++) {
-      const answerLock = document.createElement("option");
-      answerLock.textContent = currentLanguages[i].lang;
-      answerLock.value = currentLanguages[i].lang;
-      lockSelectAnswer.appendChild(answerLock);
-    }
-    lockSelectAnswer.value = this.lockedAnswer;
-
-    lockContainerAnswer.appendChild(lockSelectAnswer);
 
     let answerOptions = this.answerOptions || [];
 
@@ -410,12 +292,7 @@ class EditTrueAndFalseExam extends QuestionForExam {
       );
     }
 
-    questionMainDiv.appendChild(lockContainerQuestion);
-    questionMainDiv.appendChild(question);
-    answerMainDiv.appendChild(lockContainerAnswer);
-    answerMainDiv.appendChild(answerOptionsList);
-
-    super.renderQuizArea(questionMainDiv, answerMainDiv);
+    super.renderQuizArea(question, answerOptionsList);
   }
 }
 
@@ -426,9 +303,6 @@ class EditFillInTheBlankExam extends QuestionForExam {
   }
 
   render() {
-    let questionMainDiv = document.createElement("div");
-    let answerMainDiv = document.createElement("div");
-
     let question = document.createElement("div");
     question.setAttribute("contentEditable", "true");
     question.className = "question editable";
@@ -437,53 +311,6 @@ class EditFillInTheBlankExam extends QuestionForExam {
     question.addEventListener("input", (event) => {
       this.question = event.target.textContent;
     });
-
-    const lockContainerQuestion = document.createElement("div");
-    lockContainerQuestion.classList.add("tooltip-container");
-
-    const lockSelectQuestion = document.createElement("select");
-    lockSelectQuestion.classList.add("tooltip-target");
-
-    lockSelectQuestion.addEventListener("change", () => {
-      this.lockedQuestion = lockSelectQuestion.value;
-    });
-
-    const currentLanguages = [
-      { lang: "Turkish" },
-      { lang: "English" },
-      { lang: "Russian" },
-      { lang: "Ukrainian" },
-    ];
-
-    for (let i = 0; i < currentLanguages.length; i++) {
-      const questionLock = document.createElement("option");
-      questionLock.textContent = currentLanguages[i].lang;
-      questionLock.value = currentLanguages[i].lang;
-      lockSelectQuestion.appendChild(questionLock);
-    }
-    lockSelectQuestion.value = this.lockedQuestion;
-
-    lockContainerQuestion.appendChild(lockSelectQuestion);
-
-    const lockContainerAnswer = document.createElement("div");
-    lockContainerAnswer.classList.add("tooltip-container");
-
-    const lockSelectAnswer = document.createElement("select");
-    lockSelectAnswer.classList.add("tooltip-target");
-
-    lockSelectAnswer.addEventListener("change", () => {
-      this.lockedAnswer = lockSelectAnswer.value;
-    });
-
-    for (let i = 0; i < currentLanguages.length; i++) {
-      const answerLock = document.createElement("option");
-      answerLock.textContent = currentLanguages[i].lang;
-      answerLock.value = currentLanguages[i].lang;
-      lockSelectAnswer.appendChild(answerLock);
-    }
-    lockSelectAnswer.value = this.lockedAnswer;
-
-    lockContainerAnswer.appendChild(lockSelectAnswer);
 
     let blankTextContainer = document.createElement("div");
     blankTextContainer.className = "fitb-answer-option-container";
@@ -504,12 +331,7 @@ class EditFillInTheBlankExam extends QuestionForExam {
 
     blankTextContainer.appendChild(blankTextEditableField);
 
-    questionMainDiv.appendChild(lockContainerQuestion);
-    questionMainDiv.appendChild(question);
-    answerMainDiv.appendChild(lockContainerAnswer);
-    answerMainDiv.appendChild(blankTextContainer);
-
-    super.renderQuizArea(questionMainDiv, answerMainDiv);
+    super.renderQuizArea(question, blankTextContainer);
   }
 }
 
@@ -525,16 +347,20 @@ async function startEditingExam(filename, type = "teacher") {
   let questionsArray = questions.map((question) => {
     switch (question.type.toLowerCase()) {
       case "mcq":
+      case "choice":
       case "multiple choice":
       case "multiple choice question":
         return new EditMultipleChoiceForExam(question);
       case "true and false":
+      case "true-false":
       case "t and f":
       case "t/f":
       case "true/false":
       case "true-false":
+      case "truefalse":
       case "t-f":
         return new EditTrueAndFalseExam(question);
+      case "fill-in-the-blank":
       case "fill in the blank":
         return new EditFillInTheBlankExam(question);
       case "matching":

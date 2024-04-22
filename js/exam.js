@@ -517,7 +517,16 @@ async function generateExam(e) {
 
   const subtopicString = subtopicTitles.join(", ");
 
-  let language = "turkish"; //TODO: Toggle option.
+  const resultOfCourse = await AJAXCall({
+    phpFilePath: "../include/course/getSingleCourse.php",
+    rejectMessage: "Course Failed To Get",
+    params: `id=${courseID}`,
+    type: "post",
+  });
+
+  const resultOfCourseAsArray = JSON.parse(resultOfCourse);
+
+  let language = resultOfCourseAsArray[0].language; //TODO: Toggle option.
   let topic = subtopicString;
   let educationEnvironment = "college students";
 
@@ -554,18 +563,8 @@ async function generateExam(e) {
   let questions = await JSON.parse(unparsedJSONResponse);
   console.log("questions amount: ", questions.questions.length);
 
-  const newQuestions = [];
-
-  for (let i = 0; i < questions.questions.length; i++) {
-    newQuestions.push({
-      ...questions.questions[i],
-      lockedQuestion: "Turkish",
-      lockedAnswer: "Turkish",
-    });
-  }
-
   let filename = `Exam-${uniqueID(2)}.json`;
-  saveExamAsJSON(filename, newQuestions, "generated");
+  saveExamAsJSON(filename, questions.questions, "generated");
 
   let examID = uniqueID(1);
   let dateGenerated = getCurrentTimeInJSONFormat();
@@ -758,6 +757,15 @@ async function goToExamDetails(examID) {
   let mainContainer = document.querySelector(".main-container");
   const id = mainContainer.getAttribute("data-id");
 
+  const resultOfCourse = await AJAXCall({
+    phpFilePath: "../include/course/getSingleCourse.php",
+    rejectMessage: "Course Failed To Get",
+    params: `id=${id}`,
+    type: "post",
+  });
+
+  const resultOfCourseAsArray = JSON.parse(resultOfCourse);
+
   closePopup(".course-view-container");
 
   let popup = document.querySelector(".edit-course-container");
@@ -789,30 +797,40 @@ async function goToExamDetails(examID) {
   let secondBoxOfLanguages = "";
 
   for (let i = 0; i < resultAsArray.length; i++) {
-    if (resultAsArray[i].language === "turkish") {
-      firstBoxOfLanguages += `<div class="exam-item" onclick="openExamFileEditModal('${resultAsArray[i].filename}')" > Turkish File </div>`;
-    } else if (resultAsArray[i].language === "english") {
-      firstBoxOfLanguages += `<div class="exam-item" onclick="openExamFileEditModal('${resultAsArray[i].filename}')" > English File </div>`;
-    } else if (resultAsArray[i].language === "russian") {
-      secondBoxOfLanguages += `<div class="exam-item" onclick="openExamFileEditModal('${resultAsArray[i].filename}')" > Russian File </div>`;
-    } else if (resultAsArray[i].language === "ukrainian") {
-      secondBoxOfLanguages += `<div class="exam-item" onclick="openExamFileEditModal('${resultAsArray[i].filename}')" > Ukrainian File </div>`;
-    }
+    firstBoxOfLanguages += `<div class="exam-item" style="padding: 0px 20px; "  >
+    <p style="width:100%; height:50px; display:flex;align-items:center" onclick="openExamFileEditModal('${
+      resultAsArray[i].filename
+    }')" >
+    ${
+      resultAsArray[i].language.charAt(0).toUpperCase() +
+      resultAsArray[i].language.slice(1)
+    } File 
+    </p>
+    <p style="font-size:25px" onclick="deleteFile('${resultAsArray[i].id}', ${
+      resultOfCourseAsArray[0].language === resultAsArray[i].language
+    })"> &times;</p> 
+    </div>`;
   }
 
-  examsContainer.innerHTML = `
-  <div style="display:flex; justify-content:center;align-items:center;flex-direction:column" >
-  <form data-exam-id="${examID}" id="create-file-for-language" style="display:flex; justify-content:center;align-items:center;flex-direction:column; margin-bottom:40px" onsubmit="convertFileToSelectedLanguage(event)" >
+  let isLanguageString = "";
+  if (resultOfCourseAsArray[0].isLanguage === "true") {
+    isLanguageString = `
+    <h4  style="margin-bottom:40px; color: #6f2036;font-weight:600;font-size:17px">
+    This course is a Language Course. You cannot translate exam.
+    </h4>`;
+  } else {
+    isLanguageString = `
+    <form data-exam-id="${examID}" id="create-file-for-language" style="display:flex; justify-content:center;align-items:center;flex-direction:column; margin-bottom:40px" onsubmit="convertFileToSelectedLanguage(event)" >
   <h4  style="  color: #6f2036;font-weight:600;font-size:17px">
   Choose which language you want to create from which file
   </h4>
   <div style="display:flex; justify-content:center;align-items:center;flex-direction:row; margin-top:20px;" >
   <div>
   <select name="languages" default-value="turkish" id="languages-to" class="exam-item" style="margin:0px;padding:10px" >
-    <option value="turkish">Turkish File</option>
-    <option value="english">English File</option>
-    <option value="russian">Russian File</option>
-    <option value="ukrainian">Ukrainian File</option>
+    <option value="turkish">Turkish</option>
+    <option value="english">English</option>
+    <option value="russian">Russian</option>
+    <option value="ukrainian">Ukrainian</option>
   </select>
   </div>
 
@@ -822,10 +840,10 @@ async function goToExamDetails(examID) {
 
   <div style="margin-left:10px">
   <select name="languages" id="languages-from" default-value="turkish" class="exam-item" style="margin:0px;padding:10px" >
-   <option value="turkish">Turkish File</option>
-   <option value="english">English File</option>
-   <option value="russian">Russian File</option>
-   <option value="ukrainian">Ukrainian File</option>
+   <option value="${resultOfCourseAsArray[0].language}">${
+      resultOfCourseAsArray[0].language.charAt(0).toUpperCase() +
+      resultOfCourseAsArray[0].language.slice(1)
+    }</option>
   </select>
   </div>
   </div>
@@ -833,6 +851,12 @@ async function goToExamDetails(examID) {
   <button class="exam-modal-generate-button" style="width:120px; padding: 15px 10px; cursor:pointer" type="submit" > Convert </button>
 
   </form>
+    `;
+  }
+
+  examsContainer.innerHTML = `
+  <div style="display:flex; justify-content:center;align-items:center;flex-direction:column" >
+  ${isLanguageString}
 
   <div style="width:100%" >
     ${firstBoxOfLanguages}
@@ -851,69 +875,111 @@ async function convertFileToSelectedLanguage(event) {
 
   const languagesTo = document.getElementById("languages-to");
 
-  const languagesFrom = document.getElementById("languages-from");
-
-  const resultOfGetSingleFile = await AJAXCall({
-    phpFilePath: "../include/exam/getSingleFile.php",
+  const resultOfAllFiles = await AJAXCall({
+    phpFilePath: "../include/exam/getAllFiles.php",
     rejectMessage: "File Failed To Get",
-    params: `examID=${examID}&&language=${languagesFrom.value}`,
+    params: `examID=${examID}`,
     type: "post",
   });
 
-  const resultAsArray = JSON.parse(resultOfGetSingleFile);
+  const resultOfAllFilesAsArray = JSON.parse(resultOfAllFiles);
 
-  const result = await AJAXCall({
-    phpFilePath: "../include/readJSONData.php",
-    rejectMessage: "saving json file failed",
-    params: `filepath=../exam/generated/${resultAsArray[0].filename}`,
-    type: "post",
-  });
+  let isAlreadyExists = false;
 
-  const parsedResult = JSON.parse(result);
-
-  const newData = [];
-  for (let i = 0; i < parsedResult.length; i++) {
-    let query = `Translate answer=${parsedResult[i].answer} and answerOptions=${parsedResult[i].answerOptions} to ${parsedResult[i].lockedAnswer}. 
-    Return json like {answer:"",answerOptions:[""]}`;
-
-    let unparsedJSONResponse = await generateGPTResponseFor(query);
-    let answers = await JSON.parse(unparsedJSONResponse);
-
-    let queryQuestion = `Translate question=${parsedResult[i].question} to ${parsedResult[i].lockedQuestion}. 
-    Return json like {question:""}`;
-
-    let unparsedJSONResponseQuestion = await generateGPTResponseFor(
-      queryQuestion
-    );
-    let questions = await JSON.parse(unparsedJSONResponseQuestion);
-
-    newData.push({
-      id: parsedResult[i].id,
-      question: questions.question,
-      answer: answers.answer,
-      answerOptions: answers.answerOptions,
-      type: parsedResult[i].type,
-      hardness: parsedResult[i].hardness,
-      marksWorth: parsedResult[i].marksWorth,
-      lockedQuestion: parsedResult[i].lockedQuestion,
-      lockedAnswer: parsedResult[i].lockedAnswer,
-    });
+  for (let i = 0; i < resultOfAllFilesAsArray.length; i++) {
+    if (resultOfAllFilesAsArray[i].language === languagesTo.value) {
+      isAlreadyExists = true;
+      break;
+    }
   }
 
-  let newFilename = `Exam-${uniqueID(2)}.json`;
-  saveExamAsJSON(newFilename, newData, "generated");
+  if (!isAlreadyExists) {
+    let loader = loadLoader("Generating File");
 
-  let examFileID = uniqueID(1);
-  let dateGenerated = getCurrentTimeInJSONFormat();
+    const languagesFrom = document.getElementById("languages-from");
 
-  await AJAXCall({
-    phpFilePath: "../include/exam/addNewFile.php",
-    rejectMessage: "New File Failed To Add",
-    params: `id=${examFileID}&&filename=${newFilename}&&dateGenerated=${dateGenerated}&&examID=${examID}&&language=${languagesTo.value}`,
-    type: "post",
-  });
+    const resultOfGetSingleFile = await AJAXCall({
+      phpFilePath: "../include/exam/getSingleFile.php",
+      rejectMessage: "File Failed To Get",
+      params: `examID=${examID}&&language=${languagesFrom.value}`,
+      type: "post",
+    });
+
+    const resultAsArray = JSON.parse(resultOfGetSingleFile);
+
+    const result = await AJAXCall({
+      phpFilePath: "../include/readJSONData.php",
+      rejectMessage: "saving json file failed",
+      params: `filepath=../exam/generated/${resultAsArray[0].filename}`,
+      type: "post",
+    });
+
+    const parsedResult = JSON.parse(result);
+
+    const newData = [];
+    for (let i = 0; i < parsedResult.length; i++) {
+      let query = `Translate answer=${parsedResult[i].answer} and answerOptions=${parsedResult[i].answerOptions} to ${languagesTo.value}. 
+    Return json like {answer:"",answerOptions:[""]}`;
+
+      let unparsedJSONResponse = await generateGPTResponseFor(query);
+      let answers = await JSON.parse(unparsedJSONResponse);
+
+      let queryQuestion = `Translate question=${parsedResult[i].question} to ${languagesTo.value}. 
+    Return json like {question:""}`;
+
+      let unparsedJSONResponseQuestion = await generateGPTResponseFor(
+        queryQuestion
+      );
+      let questions = await JSON.parse(unparsedJSONResponseQuestion);
+
+      newData.push({
+        id: parsedResult[i].id,
+        question: questions.question,
+        answer: answers.answer,
+        answerOptions: answers.answerOptions,
+        type: parsedResult[i].type,
+        hardness: parsedResult[i].hardness,
+        marksWorth: parsedResult[i].marksWorth,
+      });
+    }
+
+    let newFilename = `Exam-${uniqueID(2)}.json`;
+    saveExamAsJSON(newFilename, newData, "generated");
+
+    let examFileID = uniqueID(1);
+    let dateGenerated = getCurrentTimeInJSONFormat();
+
+    await AJAXCall({
+      phpFilePath: "../include/exam/addNewFile.php",
+      rejectMessage: "New File Failed To Add",
+      params: `id=${examFileID}&&filename=${newFilename}&&dateGenerated=${dateGenerated}&&examID=${examID}&&language=${languagesTo.value}`,
+      type: "post",
+    });
+
+    setTimeout(() => {
+      removeLoader(loader);
+    }, 2000);
+  } else {
+    animateDialog("You already have a file with this language.");
+  }
 }
 
 async function openExamFileEditModal(filename) {
   await startEditingExam(filename);
+}
+
+async function deleteFile(id, isMainLanguageFile) {
+  if (!isMainLanguageFile) {
+    await AJAXCall({
+      phpFilePath: "../include/delete/deleteFile.php",
+      rejectMessage: "File Failed To Delete",
+      params: `id=${id}`,
+      type: "post",
+    });
+    animateDialog("This file has successfully deleted.");
+  } else {
+    animateDialog(
+      "This file has same language with course language. You cannot delete this exam."
+    );
+  }
 }
