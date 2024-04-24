@@ -23,6 +23,7 @@ class EditExam {
     this.filename = filename;
     this.questions = questions;
     this.maximumExamNumber = questions.length - 1;
+    this.currentExamNumber = 0;
     this.type = type;
 
     console.log("[1] filename: ", filename);
@@ -73,6 +74,11 @@ class EditExam {
       this.saveExam();
       closePopup(".edit-quiz-overlay");
     });
+  }
+
+  resetButtons() {
+    this.nextButton.removeAttribute("disabled");
+    this.previousButton.setAttribute("disabled", "true");
   }
 
   handleButtons() {
@@ -386,6 +392,7 @@ async function startEditingExam(filename, type = "teacher") {
   exam.setNextButton(nextButton);
   exam.setPreviousButton(previousButton);
   exam.setSaveButton(saveButton);
+  exam.resetButtons();
 
   exam.startEdittingExam();
   openPopup(".edit-quiz-overlay");

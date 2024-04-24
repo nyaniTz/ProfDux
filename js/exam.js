@@ -634,6 +634,38 @@ async function saveExamAsJSON(filename, ArrayContainingObjects, type) {
   }
 }
 
+async function deleteExamAsJSON(filename, type) {
+  let correctPath;
+
+  switch (type) {
+    case "student":
+    case "new":
+    case "resume":
+      correctPath = `../exam/taken/${filename}`;
+      break;
+    case "teacher":
+    case "generated":
+      correctPath = `../exam/generated/${filename}`;
+      break;
+  }
+
+  console.log("[3] correctPath: ", correctPath);
+
+  try {
+    let result = await AJAXCall({
+      phpFilePath: "../include/deleteJSONData.php",
+      rejectMessage: "deleting json file failed",
+      params: `filepath=${correctPath}`,
+      type: "post",
+    });
+
+    console.log("[5] async Result: ", result);
+  } catch (error) {
+    //TODO: bubbleUpError()
+    console.log(error);
+  }
+}
+
 async function fetchAllExam(id) {
   const examResponse = await AJAXCall({
     phpFilePath: "../include/exam/getAllExam.php",
@@ -655,14 +687,33 @@ async function fetchAllExam(id) {
     const newDiv = document.createElement("div");
     const newFirstP = document.createElement("p");
     const newSecondP = document.createElement("p");
+    const newThirdP = document.createElement("p");
 
     newDiv.className = "exam-item";
-    newDiv.onclick = () => goToExamDetails(examResponse[i].id);
+    newDiv.style.paddingBottom = "0px";
+    newDiv.style.paddingTop = "0px";
+
     newFirstP.innerHTML = examResponse[i].examName;
+    newFirstP.onclick = () => goToExamDetails(examResponse[i].id);
+    newFirstP.style.width = "100%";
+    newFirstP.style.height = "100%";
+    newFirstP.style.paddingBottom = "20px";
+    newFirstP.style.paddingTop = "20px";
+
     newSecondP.innerHTML = examResponse[i].examDate;
+    newSecondP.onclick = () => goToExamDetails(examResponse[i].id);
+    newSecondP.style.width = "100%";
+    newSecondP.style.height = "100%";
+    newSecondP.style.paddingBottom = "20px";
+    newSecondP.style.paddingTop = "20px";
+
+    newThirdP.innerHTML = "&times;";
+    newThirdP.style.fontSize = "25px";
+    newThirdP.onclick = () => deleteExam(examResponse[i].id);
 
     newDiv.appendChild(newFirstP);
     newDiv.appendChild(newSecondP);
+    newDiv.appendChild(newThirdP);
     examsContainer.appendChild(newDiv);
   }
 
@@ -793,24 +844,10 @@ async function goToExamDetails(examID) {
 
   const resultAsArray = JSON.parse(result);
 
-  let firstBoxOfLanguages = "";
-  let secondBoxOfLanguages = "";
-
-  for (let i = 0; i < resultAsArray.length; i++) {
-    firstBoxOfLanguages += `<div class="exam-item" style="padding: 0px 20px; "  >
-    <p style="width:100%; height:50px; display:flex;align-items:center" onclick="openExamFileEditModal('${
-      resultAsArray[i].filename
-    }')" >
-    ${
-      resultAsArray[i].language.charAt(0).toUpperCase() +
-      resultAsArray[i].language.slice(1)
-    } File 
-    </p>
-    <p style="font-size:25px" onclick="deleteFile('${resultAsArray[i].id}', ${
-      resultOfCourseAsArray[0].language === resultAsArray[i].language
-    })"> &times;</p> 
-    </div>`;
-  }
+  let firstBoxOfLanguages = await generateCurrentFilesOfExam(
+    resultAsArray,
+    resultOfCourseAsArray
+  );
 
   let isLanguageString = "";
   if (resultOfCourseAsArray[0].isLanguage === "true") {
@@ -858,12 +895,36 @@ async function goToExamDetails(examID) {
   <div style="display:flex; justify-content:center;align-items:center;flex-direction:column" >
   ${isLanguageString}
 
-  <div style="width:100%" >
+  <div style="width:100%" id="current-files-of-exam">
     ${firstBoxOfLanguages}
-    ${secondBoxOfLanguages}
   </div>
   </div>
   `;
+}
+
+async function generateCurrentFilesOfExam(
+  resultAsArray,
+  resultOfCourseAsArray
+) {
+  let firstBoxOfLanguages = "";
+
+  for (let i = 0; i < resultAsArray.length; i++) {
+    firstBoxOfLanguages += `<div class="exam-item" style="padding: 0px 20px; "  >
+    <p style="width:100%; height:50px; display:flex;align-items:center" onclick="openExamFileEditModal('${
+      resultAsArray[i].filename
+    }')" >
+    ${
+      resultAsArray[i].language.charAt(0).toUpperCase() +
+      resultAsArray[i].language.slice(1)
+    } File 
+    </p>
+    <p style="font-size:25px" onclick="deleteFile('${resultAsArray[i].id}', ${
+      resultOfCourseAsArray[0].language === resultAsArray[i].language
+    },'${resultAsArray[i].filename}')"> &times;</p> 
+    </div>`;
+  }
+
+  return firstBoxOfLanguages;
 }
 
 async function convertFileToSelectedLanguage(event) {
@@ -918,29 +979,41 @@ async function convertFileToSelectedLanguage(event) {
 
     const newData = [];
     for (let i = 0; i < parsedResult.length; i++) {
-      let query = `Translate answer=${parsedResult[i].answer} and answerOptions=${parsedResult[i].answerOptions} to ${languagesTo.value}. 
-    Return json like {answer:"",answerOptions:[""]}`;
+      let query = `Translate answer=${parsedResult[i].answer} to ${languagesTo.value}. Return json like {answer:""}`;
 
       let unparsedJSONResponse = await generateGPTResponseFor(query);
       let answers = await JSON.parse(unparsedJSONResponse);
 
-      let queryQuestion = `Translate question=${parsedResult[i].question} to ${languagesTo.value}. 
-    Return json like {question:""}`;
+      let answerOptions;
+      if (parsedResult[i].answerOptions) {
+        let queryForAnswerOptions = `Translate answerOptions=${parsedResult[i].answerOptions} to ${languagesTo.value}. Return json like {answerOptions:[""]}`;
+
+        let unparsedJSONResponseorAnswerOptions = await generateGPTResponseFor(
+          queryForAnswerOptions
+        );
+        answerOptions = await JSON.parse(unparsedJSONResponseorAnswerOptions);
+      }
+
+      let queryQuestion = `Translate question=${parsedResult[i].question} to ${languagesTo.value}. Return json like {question:""}`;
 
       let unparsedJSONResponseQuestion = await generateGPTResponseFor(
         queryQuestion
       );
       let questions = await JSON.parse(unparsedJSONResponseQuestion);
 
-      newData.push({
+      let data = {
         id: parsedResult[i].id,
         question: questions.question,
         answer: answers.answer,
-        answerOptions: answers.answerOptions,
         type: parsedResult[i].type,
         hardness: parsedResult[i].hardness,
         marksWorth: parsedResult[i].marksWorth,
-      });
+      };
+
+      if (answerOptions) {
+        data["answerOptions"] = answerOptions.answerOptions;
+      }
+      newData.push(data);
     }
 
     let newFilename = `Exam-${uniqueID(2)}.json`;
@@ -956,6 +1029,35 @@ async function convertFileToSelectedLanguage(event) {
       type: "post",
     });
 
+    let mainContainer = document.querySelector(".main-container");
+    const id = mainContainer.getAttribute("data-id");
+
+    const resultOfCourse = await AJAXCall({
+      phpFilePath: "../include/course/getSingleCourse.php",
+      rejectMessage: "Course Failed To Get",
+      params: `id=${id}`,
+      type: "post",
+    });
+
+    const resultOfCourseAsArray = JSON.parse(resultOfCourse);
+
+    const resultOfAllFiles = await AJAXCall({
+      phpFilePath: "../include/exam/getAllFiles.php",
+      rejectMessage: "File Failed To Get",
+      params: `examID=${examID}`,
+      type: "post",
+    });
+
+    const resultOfAllFilesAsArray = JSON.parse(resultOfAllFiles);
+
+    let firstBoxOfLanguages = await generateCurrentFilesOfExam(
+      resultOfAllFilesAsArray,
+      resultOfCourseAsArray
+    );
+
+    const currentFilesOfExam = document.getElementById("current-files-of-exam");
+    currentFilesOfExam.innerHTML = firstBoxOfLanguages;
+
     setTimeout(() => {
       removeLoader(loader);
     }, 2000);
@@ -968,18 +1070,89 @@ async function openExamFileEditModal(filename) {
   await startEditingExam(filename);
 }
 
-async function deleteFile(id, isMainLanguageFile) {
+async function deleteFile(fileId, isMainLanguageFile, filename) {
   if (!isMainLanguageFile) {
     await AJAXCall({
       phpFilePath: "../include/delete/deleteFile.php",
       rejectMessage: "File Failed To Delete",
+      params: `id=${fileId}`,
+      type: "post",
+    });
+
+    deleteExamAsJSON(filename, "generated");
+
+    let mainContainer = document.querySelector(".main-container");
+    const id = mainContainer.getAttribute("data-id");
+
+    const resultOfCourse = await AJAXCall({
+      phpFilePath: "../include/course/getSingleCourse.php",
+      rejectMessage: "Course Failed To Get",
       params: `id=${id}`,
       type: "post",
     });
-    animateDialog("This file has successfully deleted.");
+
+    const resultOfCourseAsArray = JSON.parse(resultOfCourse);
+
+    var examID = document
+      .getElementById("create-file-for-language")
+      .getAttribute("data-exam-id");
+
+    const resultOfAllFiles = await AJAXCall({
+      phpFilePath: "../include/exam/getAllFiles.php",
+      rejectMessage: "File Failed To Get",
+      params: `examID=${examID}`,
+      type: "post",
+    });
+
+    const resultOfAllFilesAsArray = JSON.parse(resultOfAllFiles);
+
+    let firstBoxOfLanguages = await generateCurrentFilesOfExam(
+      resultOfAllFilesAsArray,
+      resultOfCourseAsArray
+    );
+
+    const currentFilesOfExam = document.getElementById("current-files-of-exam");
+    currentFilesOfExam.innerHTML = firstBoxOfLanguages;
+    animateDialog("File successfully deleted!");
   } else {
     animateDialog(
       "This file has same language with course language. You cannot delete this exam."
     );
   }
+}
+
+async function deleteExam(examId) {
+  await AJAXCall({
+    phpFilePath: "../include/delete/deleteExam.php",
+    rejectMessage: "File Failed To Delete",
+    params: `id=${examId}`,
+    type: "post",
+  });
+
+  const allFilesResult = await AJAXCall({
+    phpFilePath: "../include/exam/getAllFiles.php",
+    rejectMessage: "File Failed To Get",
+    params: `examID=${examId}`,
+    type: "post",
+  });
+
+  const allFilesResultAsJson = JSON.parse(allFilesResult);
+
+  for (let i = 0; i < allFilesResultAsJson.length; i++) {
+    await AJAXCall({
+      phpFilePath: "../include/delete/deleteFile.php",
+      rejectMessage: "File Failed To Delete",
+      params: `id=${allFilesResultAsJson[i].id}`,
+      type: "post",
+    });
+
+    deleteExamAsJSON(allFilesResultAsJson[i].filename, "generated");
+  }
+
+  let mainContainer = document.querySelector(".main-container");
+  const courseID = mainContainer.getAttribute("data-id");
+
+  fetchAllExam(courseID);
+
+  animateDialog("Exam successfully deleted!");
 }
