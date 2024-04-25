@@ -290,7 +290,6 @@ async function fetchCourseWithIDForExam(givenID) {
   }, 2000);
 }
 
-
 function openExamModalTeacher() {
   var modal = document.getElementById("exam-modal");
   modal.style.display = "block";
@@ -302,7 +301,6 @@ function closeExamModalTeacher() {
 }
 
 async function openExamModal(exam) {
-
   let examGradeID = uniqueID(1);
 
   let examID = exam.id;
@@ -325,7 +323,7 @@ async function openExamModal(exam) {
 
   const result = await AJAXCall({
     phpFilePath: "../include/readJSONData.php",
-    rejectMessage: "saving json file failed",
+    rejectMessage: "read json file failed",
     params: `filepath=../exam/generated/${exam.filename}`,
     type: "post",
   });
@@ -519,7 +517,16 @@ async function generateExam(e) {
 
   const subtopicString = subtopicTitles.join(", ");
 
-  let language = "turkish"; //TODO: Toggle option.
+  const resultOfCourse = await AJAXCall({
+    phpFilePath: "../include/course/getSingleCourse.php",
+    rejectMessage: "Course Failed To Get",
+    params: `id=${courseID}`,
+    type: "post",
+  });
+
+  const resultOfCourseAsArray = JSON.parse(resultOfCourse);
+
+  let language = resultOfCourseAsArray[0].language; //TODO: Toggle option.
   let topic = subtopicString;
   let educationEnvironment = "college students";
 
@@ -562,9 +569,18 @@ async function generateExam(e) {
   let examID = uniqueID(1);
   let dateGenerated = getCurrentTimeInJSONFormat();
 
+  let examFileID = uniqueID(1);
+
+  await AJAXCall({
+    phpFilePath: "../include/exam/addNewFile.php",
+    rejectMessage: "New File Failed To Add",
+    params: `id=${examFileID}&&filename=${filename}&&dateGenerated=${dateGenerated}&&examID=${examID}&&language=${language}`,
+    type: "post",
+  });
+
   let params =
     `id=${examID}&&courseID=${courseID}&&examName=${examName.value}` +
-    `&&dateGenerated=${dateGenerated}&&filename=${filename}&&minutes=${examMinutes.value}&&examDate=${examDate.value}&&amountOfTrueFalseQuestions=${trueAndFalseCount}&&amountOfMultipleChoicesQuestions=${multipleChoiceCount}&&amountOfMatchingQuestions=${matchingCount}&&amountOfFillInTheBlankQuestions=${fillInTheBlankCount}&&hardQuestionsCount=${hardQuestionsCount}&&mediumQuestionsCount=${mediumQuestionsCount}&&easyQuestionsCount=${easyQuestionsCount}&&courseCode=${result[0].courseCode}`;
+    `&&dateGenerated=${dateGenerated}&&filename=${filename}&&fileID=${examFileID}&&minutes=${examMinutes.value}&&examDate=${examDate.value}&&amountOfTrueFalseQuestions=${trueAndFalseCount}&&amountOfMultipleChoicesQuestions=${multipleChoiceCount}&&amountOfMatchingQuestions=${matchingCount}&&amountOfFillInTheBlankQuestions=${fillInTheBlankCount}&&hardQuestionsCount=${hardQuestionsCount}&&mediumQuestionsCount=${mediumQuestionsCount}&&easyQuestionsCount=${easyQuestionsCount}&&courseCode=${result[0].courseCode}`;
 
   let response = await AJAXCall({
     phpFilePath: "../include/exam/addNewExam.php",
@@ -578,7 +594,7 @@ async function generateExam(e) {
   fetchAllExam(courseID);
 
   setTimeout(() => {
-    closeExamModal();
+    closeExamModalTeacher();
     removeLoader(loader);
   }, 2000);
 }
@@ -618,6 +634,38 @@ async function saveExamAsJSON(filename, ArrayContainingObjects, type) {
   }
 }
 
+async function deleteExamAsJSON(filename, type) {
+  let correctPath;
+
+  switch (type) {
+    case "student":
+    case "new":
+    case "resume":
+      correctPath = `../exam/taken/${filename}`;
+      break;
+    case "teacher":
+    case "generated":
+      correctPath = `../exam/generated/${filename}`;
+      break;
+  }
+
+  console.log("[3] correctPath: ", correctPath);
+
+  try {
+    let result = await AJAXCall({
+      phpFilePath: "../include/deleteJSONData.php",
+      rejectMessage: "deleting json file failed",
+      params: `filepath=${correctPath}`,
+      type: "post",
+    });
+
+    console.log("[5] async Result: ", result);
+  } catch (error) {
+    //TODO: bubbleUpError()
+    console.log(error);
+  }
+}
+
 async function fetchAllExam(id) {
   const examResponse = await AJAXCall({
     phpFilePath: "../include/exam/getAllExam.php",
@@ -629,18 +677,43 @@ async function fetchAllExam(id) {
   const examsContainer = document.getElementById("exams-container");
   examsContainer.innerHTML = "";
 
+  const teacherBackIcon = document.getElementById("teacher-back-icon");
+  teacherBackIcon.onclick = () => {
+    openPopup(".course-view-container");
+    closeEditCourseContainer();
+  };
+
   for (let i = 0; i < examResponse.length; i++) {
     const newDiv = document.createElement("div");
     const newFirstP = document.createElement("p");
     const newSecondP = document.createElement("p");
+    const newThirdP = document.createElement("p");
 
     newDiv.className = "exam-item";
+    newDiv.style.paddingBottom = "0px";
+    newDiv.style.paddingTop = "0px";
 
     newFirstP.innerHTML = examResponse[i].examName;
+    newFirstP.onclick = () => goToExamDetails(examResponse[i].id);
+    newFirstP.style.width = "100%";
+    newFirstP.style.height = "100%";
+    newFirstP.style.paddingBottom = "20px";
+    newFirstP.style.paddingTop = "20px";
+
     newSecondP.innerHTML = examResponse[i].examDate;
+    newSecondP.onclick = () => goToExamDetails(examResponse[i].id);
+    newSecondP.style.width = "100%";
+    newSecondP.style.height = "100%";
+    newSecondP.style.paddingBottom = "20px";
+    newSecondP.style.paddingTop = "20px";
+
+    newThirdP.innerHTML = "&times;";
+    newThirdP.style.fontSize = "25px";
+    newThirdP.onclick = () => deleteExam(examResponse[i].id);
 
     newDiv.appendChild(newFirstP);
     newDiv.appendChild(newSecondP);
+    newDiv.appendChild(newThirdP);
     examsContainer.appendChild(newDiv);
   }
 
@@ -658,7 +731,6 @@ async function fetchAllExam(id) {
 }
 
 async function getAllCoursesOfStudent() {
-
   let { id: globalUserID } = await getUserDetails();
 
   console.log("gus: ", globalUserID);
@@ -730,4 +802,357 @@ async function getAllCoursesOfStudent() {
 
     studentExamContainer.appendChild(mainDiv);
   }
+}
+
+async function goToExamDetails(examID) {
+  let mainContainer = document.querySelector(".main-container");
+  const id = mainContainer.getAttribute("data-id");
+
+  const resultOfCourse = await AJAXCall({
+    phpFilePath: "../include/course/getSingleCourse.php",
+    rejectMessage: "Course Failed To Get",
+    params: `id=${id}`,
+    type: "post",
+  });
+
+  const resultOfCourseAsArray = JSON.parse(resultOfCourse);
+
+  closePopup(".course-view-container");
+
+  let popup = document.querySelector(".edit-course-container");
+  popup.style.display = "flex";
+
+  const examsContainer = document.getElementById("exams-container");
+  examsContainer.innerHTML = "";
+
+  const teacherExamAddButton = document.getElementById(
+    "teacher-exam-add-button"
+  );
+  teacherExamAddButton.innerHTML = "";
+
+  const teacherBackIcon = document.getElementById("teacher-back-icon");
+  teacherBackIcon.onclick = () => {
+    fetchAllExam(id);
+  };
+
+  const result = await AJAXCall({
+    phpFilePath: "../include/exam/getAllFiles.php",
+    rejectMessage: "File Failed To Get",
+    params: `examID=${examID}`,
+    type: "post",
+  });
+
+  const resultAsArray = JSON.parse(result);
+
+  let firstBoxOfLanguages = await generateCurrentFilesOfExam(
+    resultAsArray,
+    resultOfCourseAsArray
+  );
+
+  let isLanguageString = "";
+  if (resultOfCourseAsArray[0].isLanguage === "true") {
+    isLanguageString = `
+    <h4  style="margin-bottom:40px; color: #6f2036;font-weight:600;font-size:17px">
+    This course is a Language Course. You cannot translate exam.
+    </h4>`;
+  } else {
+    isLanguageString = `
+    <form data-exam-id="${examID}" id="create-file-for-language" style="display:flex; justify-content:center;align-items:center;flex-direction:column; margin-bottom:40px" onsubmit="convertFileToSelectedLanguage(event)" >
+  <h4  style="  color: #6f2036;font-weight:600;font-size:17px">
+  Choose which language you want to create from which file
+  </h4>
+  <div style="display:flex; justify-content:center;align-items:center;flex-direction:row; margin-top:20px;" >
+  <div>
+  <select name="languages" default-value="turkish" id="languages-to" class="exam-item" style="margin:0px;padding:10px" >
+    <option value="turkish">Turkish</option>
+    <option value="english">English</option>
+    <option value="russian">Russian</option>
+    <option value="ukrainian">Ukrainian</option>
+  </select>
+  </div>
+
+  <div style="margin-left:10px;">
+  <img style="margin-bottom:-3px" class="icon" src="../assets/icons/fi/fi-rr-arrow-alt-left.svg" alt="">
+  </div>
+
+  <div style="margin-left:10px">
+  <select name="languages" id="languages-from" default-value="turkish" class="exam-item" style="margin:0px;padding:10px" >
+   <option value="${resultOfCourseAsArray[0].language}">${
+      resultOfCourseAsArray[0].language.charAt(0).toUpperCase() +
+      resultOfCourseAsArray[0].language.slice(1)
+    }</option>
+  </select>
+  </div>
+  </div>
+
+  <button class="exam-modal-generate-button" style="width:120px; padding: 15px 10px; cursor:pointer" type="submit" > Convert </button>
+
+  </form>
+    `;
+  }
+
+  examsContainer.innerHTML = `
+  <div style="display:flex; justify-content:center;align-items:center;flex-direction:column" >
+  ${isLanguageString}
+
+  <div style="width:100%" id="current-files-of-exam">
+    ${firstBoxOfLanguages}
+  </div>
+  </div>
+  `;
+}
+
+async function generateCurrentFilesOfExam(
+  resultAsArray,
+  resultOfCourseAsArray
+) {
+  let firstBoxOfLanguages = "";
+
+  for (let i = 0; i < resultAsArray.length; i++) {
+    firstBoxOfLanguages += `<div class="exam-item" style="padding: 0px 20px; "  >
+    <p style="width:100%; height:50px; display:flex;align-items:center" onclick="openExamFileEditModal('${
+      resultAsArray[i].filename
+    }')" >
+    ${
+      resultAsArray[i].language.charAt(0).toUpperCase() +
+      resultAsArray[i].language.slice(1)
+    } File 
+    </p>
+    <p style="font-size:25px" onclick="deleteFile('${resultAsArray[i].id}', ${
+      resultOfCourseAsArray[0].language === resultAsArray[i].language
+    },'${resultAsArray[i].filename}')"> &times;</p> 
+    </div>`;
+  }
+
+  return firstBoxOfLanguages;
+}
+
+async function convertFileToSelectedLanguage(event) {
+  event.preventDefault();
+
+  var examID = document
+    .getElementById("create-file-for-language")
+    .getAttribute("data-exam-id");
+
+  const languagesTo = document.getElementById("languages-to");
+
+  const resultOfAllFiles = await AJAXCall({
+    phpFilePath: "../include/exam/getAllFiles.php",
+    rejectMessage: "File Failed To Get",
+    params: `examID=${examID}`,
+    type: "post",
+  });
+
+  const resultOfAllFilesAsArray = JSON.parse(resultOfAllFiles);
+
+  let isAlreadyExists = false;
+
+  for (let i = 0; i < resultOfAllFilesAsArray.length; i++) {
+    if (resultOfAllFilesAsArray[i].language === languagesTo.value) {
+      isAlreadyExists = true;
+      break;
+    }
+  }
+
+  if (!isAlreadyExists) {
+    let loader = loadLoader("Generating File");
+
+    const languagesFrom = document.getElementById("languages-from");
+
+    const resultOfGetSingleFile = await AJAXCall({
+      phpFilePath: "../include/exam/getSingleFile.php",
+      rejectMessage: "File Failed To Get",
+      params: `examID=${examID}&&language=${languagesFrom.value}`,
+      type: "post",
+    });
+
+    const resultAsArray = JSON.parse(resultOfGetSingleFile);
+
+    const result = await AJAXCall({
+      phpFilePath: "../include/readJSONData.php",
+      rejectMessage: "saving json file failed",
+      params: `filepath=../exam/generated/${resultAsArray[0].filename}`,
+      type: "post",
+    });
+
+    const parsedResult = JSON.parse(result);
+
+    const newData = [];
+    for (let i = 0; i < parsedResult.length; i++) {
+      let query = `Translate answer=${parsedResult[i].answer} to ${languagesTo.value}. Return json like {answer:""}`;
+
+      let unparsedJSONResponse = await generateGPTResponseFor(query);
+      let answers = await JSON.parse(unparsedJSONResponse);
+
+      let answerOptions;
+      if (parsedResult[i].answerOptions) {
+        let queryForAnswerOptions = `Translate answerOptions=${parsedResult[i].answerOptions} to ${languagesTo.value}. Return json like {answerOptions:[""]}`;
+
+        let unparsedJSONResponseorAnswerOptions = await generateGPTResponseFor(
+          queryForAnswerOptions
+        );
+        answerOptions = await JSON.parse(unparsedJSONResponseorAnswerOptions);
+      }
+
+      let queryQuestion = `Translate question=${parsedResult[i].question} to ${languagesTo.value}. Return json like {question:""}`;
+
+      let unparsedJSONResponseQuestion = await generateGPTResponseFor(
+        queryQuestion
+      );
+      let questions = await JSON.parse(unparsedJSONResponseQuestion);
+
+      let data = {
+        id: parsedResult[i].id,
+        question: questions.question,
+        answer: answers.answer,
+        type: parsedResult[i].type,
+        hardness: parsedResult[i].hardness,
+        marksWorth: parsedResult[i].marksWorth,
+      };
+
+      if (answerOptions) {
+        data["answerOptions"] = answerOptions.answerOptions;
+      }
+      newData.push(data);
+    }
+
+    let newFilename = `Exam-${uniqueID(2)}.json`;
+    saveExamAsJSON(newFilename, newData, "generated");
+
+    let examFileID = uniqueID(1);
+    let dateGenerated = getCurrentTimeInJSONFormat();
+
+    await AJAXCall({
+      phpFilePath: "../include/exam/addNewFile.php",
+      rejectMessage: "New File Failed To Add",
+      params: `id=${examFileID}&&filename=${newFilename}&&dateGenerated=${dateGenerated}&&examID=${examID}&&language=${languagesTo.value}`,
+      type: "post",
+    });
+
+    let mainContainer = document.querySelector(".main-container");
+    const id = mainContainer.getAttribute("data-id");
+
+    const resultOfCourse = await AJAXCall({
+      phpFilePath: "../include/course/getSingleCourse.php",
+      rejectMessage: "Course Failed To Get",
+      params: `id=${id}`,
+      type: "post",
+    });
+
+    const resultOfCourseAsArray = JSON.parse(resultOfCourse);
+
+    const resultOfAllFiles = await AJAXCall({
+      phpFilePath: "../include/exam/getAllFiles.php",
+      rejectMessage: "File Failed To Get",
+      params: `examID=${examID}`,
+      type: "post",
+    });
+
+    const resultOfAllFilesAsArray = JSON.parse(resultOfAllFiles);
+
+    let firstBoxOfLanguages = await generateCurrentFilesOfExam(
+      resultOfAllFilesAsArray,
+      resultOfCourseAsArray
+    );
+
+    const currentFilesOfExam = document.getElementById("current-files-of-exam");
+    currentFilesOfExam.innerHTML = firstBoxOfLanguages;
+
+    setTimeout(() => {
+      removeLoader(loader);
+    }, 2000);
+  } else {
+    animateDialog("You already have a file with this language.");
+  }
+}
+
+async function openExamFileEditModal(filename) {
+  await startEditingExam(filename);
+}
+
+async function deleteFile(fileId, isMainLanguageFile, filename) {
+  if (!isMainLanguageFile) {
+    await AJAXCall({
+      phpFilePath: "../include/delete/deleteFile.php",
+      rejectMessage: "File Failed To Delete",
+      params: `id=${fileId}`,
+      type: "post",
+    });
+
+    deleteExamAsJSON(filename, "generated");
+
+    let mainContainer = document.querySelector(".main-container");
+    const id = mainContainer.getAttribute("data-id");
+
+    const resultOfCourse = await AJAXCall({
+      phpFilePath: "../include/course/getSingleCourse.php",
+      rejectMessage: "Course Failed To Get",
+      params: `id=${id}`,
+      type: "post",
+    });
+
+    const resultOfCourseAsArray = JSON.parse(resultOfCourse);
+
+    var examID = document
+      .getElementById("create-file-for-language")
+      .getAttribute("data-exam-id");
+
+    const resultOfAllFiles = await AJAXCall({
+      phpFilePath: "../include/exam/getAllFiles.php",
+      rejectMessage: "File Failed To Get",
+      params: `examID=${examID}`,
+      type: "post",
+    });
+
+    const resultOfAllFilesAsArray = JSON.parse(resultOfAllFiles);
+
+    let firstBoxOfLanguages = await generateCurrentFilesOfExam(
+      resultOfAllFilesAsArray,
+      resultOfCourseAsArray
+    );
+
+    const currentFilesOfExam = document.getElementById("current-files-of-exam");
+    currentFilesOfExam.innerHTML = firstBoxOfLanguages;
+    animateDialog("File successfully deleted!");
+  } else {
+    animateDialog(
+      "This file has same language with course language. You cannot delete this exam."
+    );
+  }
+}
+
+async function deleteExam(examId) {
+  await AJAXCall({
+    phpFilePath: "../include/delete/deleteExam.php",
+    rejectMessage: "File Failed To Delete",
+    params: `id=${examId}`,
+    type: "post",
+  });
+
+  const allFilesResult = await AJAXCall({
+    phpFilePath: "../include/exam/getAllFiles.php",
+    rejectMessage: "File Failed To Get",
+    params: `examID=${examId}`,
+    type: "post",
+  });
+
+  const allFilesResultAsJson = JSON.parse(allFilesResult);
+
+  for (let i = 0; i < allFilesResultAsJson.length; i++) {
+    await AJAXCall({
+      phpFilePath: "../include/delete/deleteFile.php",
+      rejectMessage: "File Failed To Delete",
+      params: `id=${allFilesResultAsJson[i].id}`,
+      type: "post",
+    });
+
+    deleteExamAsJSON(allFilesResultAsJson[i].filename, "generated");
+  }
+
+  let mainContainer = document.querySelector(".main-container");
+  const courseID = mainContainer.getAttribute("data-id");
+
+  fetchAllExam(courseID);
+
+  animateDialog("Exam successfully deleted!");
 }

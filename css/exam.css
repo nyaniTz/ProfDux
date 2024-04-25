@@ -166,6 +166,7 @@
   margin-top: 20px;
   border-radius: 10px;
   width: 100%;
+  cursor: pointer;
 }
 
 .exam-modal-minutes {
@@ -220,4 +221,43 @@
   border: none;
   margin-top: 15px;
   height: 40px;
+}
+
+.tooltip-container {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.tooltip {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 100;
+}
+
+.tooltip-target {
+  cursor: pointer;
+  background-color: #fff;
+  border: 2px solid var(--border-fade);
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: #6f2036;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: auto;
+}
+
+.tooltip-target-locked {
+  color: #fff;
+  background-color: #6f2036;
+  z-index: 100;
 }

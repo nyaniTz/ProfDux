@@ -1,0 +1,88 @@
+[
+  {
+    "id": "lv9k4cvj",
+    "question": "Böbrek yetmezliği hangi organ kaynaklıdır?",
+    "answerOptions": ["Karaciğer", "Kalp", "Böbrek", "Mide"],
+    "answer": "Böbrek",
+    "type": "multiple choice",
+    "hardness": "medium",
+    "marksWorth": 1,
+    "lockedQuestion": "Turkish",
+    "lockedAnswer": "English"
+  },
+  {
+    "id": "lv9k4alc",
+    "question": "Gemide piston sorunları hangi bölümde karşılaşılabilir?",
+    "answerOptions": ["Motor", "Armada", "Pupa", "Döviz"],
+    "answer": "Motor",
+    "type": "multiple choice",
+    "hardness": "medium",
+    "marksWorth": 1,
+    "lockedQuestion": "English",
+    "lockedAnswer": "English"
+  },
+  {
+    "id": "lv9k4elc",
+    "question": "Bir insan ne kadar süre susuz kalabilir?",
+    "answer": "3 gün",
+    "type": "fill in the blank",
+    "hardness": "easy",
+    "marksWorth": 1,
+    "lockedQuestion": "Ukrainian",
+    "lockedAnswer": "Ukrainian"
+  },
+  {
+    "id": "lv9k49od",
+    "question": "Böbrek yetmezliği kaç çeşittir?",
+    "answerOptions": ["1", "2", "3", "4"],
+    "answer": "2",
+    "type": "multiple choice",
+    "hardness": "hard",
+    "marksWorth": 1,
+    "lockedQuestion": "English",
+    "lockedAnswer": "English"
+  },
+  {
+    "id": "lv9k4gje",
+    "question": "Gemide piston sorunları nasıl çözülür?",
+    "answerOptions": ["Tamir", "Değişim", "Tampon", "Canlı"],
+    "answer": "Değişim",
+    "type": "multiple choice",
+    "hardness": "hard",
+    "marksWorth": 1,
+    "lockedQuestion": "English",
+    "lockedAnswer": "English"
+  },
+  {
+    "id": "lv9k4dh6",
+    "question": "Böbrek yetmezliği hangi durumda görülebilir?",
+    "answer": "Yüksek tansiyon",
+    "type": "fill in the blank",
+    "hardness": "easy",
+    "marksWorth": 1,
+    "lockedQuestion": "English",
+    "lockedAnswer": "English"
+  },
+  {
+    "id": "lv9k4d05",
+    "question": "Böbrek yetmezliği tedavi edilemez.",
+    "answerOptions": ["Doğru", "Yanlış"],
+    "answer": "Yanlış",
+    "type": "true and false",
+    "hardness": "medium",
+    "marksWorth": 1,
+    "lockedQuestion": "Russian",
+    "lockedAnswer": "English"
+  },
+  {
+    "id": "lv9k4duz",
+    "question": "Gemide piston sorunları her gemide yaşanır.",
+    "answerOptions": ["Doğru", "Yanlış"],
+    "answer": "Yanlış",
+    "type": "true and false",
+    "hardness": "easy",
+    "marksWorth": 1,
+    "lockedQuestion": "Russian",
+    "lockedAnswer": "Russian"
+  }
+]
