@@ -12,11 +12,18 @@ let globalUserDetails;
 function setHeaderInfo(userObject){
 
     let { role, name, image } = userObject;
+    let writtenRole = role;
 
+    let currentPath = window.location.pathname.includes("student");
+
+    if (currentPath){
+        writtenRole = "student"
+    }
+    
     let usernameFields = document.querySelectorAll(".username");
     let imageFields = document.querySelectorAll(".user-image img");
     let usernameInnerContainer = createLocalizedTextElement(name);
-    let roleAsTextElement = createLocalizedTextElement(role);
+    let roleAsTextElement = createLocalizedTextElement(writtenRole);
     
 
     usernameFields.forEach( username => {

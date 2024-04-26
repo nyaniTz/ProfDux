@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weights</title>
+
+    <link rel="stylesheet" href="../css/translation.css">
+    <link rel="stylesheet" href="../css/root.css">
+    <link rel="stylesheet" href="../css/pdf-viewer.css">
+    <link rel="stylesheet" href="../css/image-viewer.css">
+    <link rel="stylesheet" href="../css/classroom.css">
+    <link rel="stylesheet" href="../css/scheduling.css?1">
+    <link rel="stylesheet" href="../css/ebook.css?2">
+
+    <script src="../js/functions.js"></script>
+    <script src="../js/localize.js" defer></script>
+    <script src="../js/pdf-viewer.js" defer></script>
+    <script src="../js/image-viewer.js" defer></script>
+    <script src="../js/Course.js" defer></script>
+
+    <script src="../js/Classroom.js" defer></script>
+    <script src="../js/Weights.js"></script>
+
+    <link rel="stylesheet" href="../css/spinkit.css">
+    <link rel="stylesheet" href="../css/popup.css">
+
+    <link rel="stylesheet" href="../css/datepicker/datepicker.material.css">
+    <script src="../js/datepicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.5.141/build/pdf.min.js"></script>
+
+</head>
+<body>
+
+    <div></div>
+    <div class="weights-outer-container">
+    </div>
+
+    <style>
+
+        body {
+            display: grid;
+            height: 100vh;
+            grid-template-columns: 300px 1fr;
+        }
+
+    </style>
+
+    <script>
+
+        function fetchDataFromQuery(SQLQuery){
+
+            return AJAXCall({
+                phpFilePath: "../include/SQLRunner.php",
+                rejectMessage: "Running Query Failed",
+                params: `query=${SQLQuery}`,
+                type: "fetch"
+            });
+
+        }
+
+
+            ( async () => {
+
+                // let { id } = await getUserDetails();
+
+                // console.log(id);
+
+                // let resourcesResult = await AJAXCall({
+                //     phpFilePath: "../include/course/getResourcesForUser.php",
+                //     rejectMessage: "Running Query Failed",
+                //     params: `id=${id}`,
+                //     type: "fetch"
+                // });
+
+                // console.log(resourcesResult);
+
+                // let reMapped = resourcesResult.map( course => {
+
+                //     let ebooks = [];
+
+                //     course.lectures.forEach( lectures => 
+                        
+                //         lectures.subtopics.forEach( subtopic => 
+
+                //             subtopic.resources.forEach( resource => 
+                //                 resource.type == "application/pdf" ? ebooks.push({
+                //                     title: resource.title,
+                //                     value: resource.value
+                //                 }) : false
+                //             )
+
+                //         )
+
+                //     )
+                    
+                //     return {
+                //         title: course.title,
+                //         courseCode: course.courseCode,
+                //         ebooks
+                //     }
+                // })
+
+                // console.log("reMapped: ", reMapped);
+
+            //     let course = [{
+            //         title: "Introduction to C++",
+            //         courseCode: "C453",
+            //         weights: [
+            //             { id: "9f43t", value: "5", foreignID: "4535f", type: "quiz", title: "Quiz about water"},
+            //             { id: "f25245", value: "5", foreignID: "4535f", type: "quiz", title: "Quiz about fire"},
+            //             { id: "42545", value: "5", foreignID: "4535f", type: "quiz", title: "Quiz about earth"},
+            //             { id: "f24925", value: "60", foreignID: "4535f", type: "exam", title: "Quiz about air"},
+            //         ]
+            //     }
+            // ]
+
+            //     let weights = new Weights(course);
+            //     weights.renderWeights();
+
+            })();
+
+            // Viewer
+
+            let course = [{
+                    title: "Introduction to C++",
+                    courseCode: "C453",
+                    weights: [
+                        { id: "9f43t", value: "5", foreignID: "4535f", type: "quiz", title: "Quiz about water"},
+                        { id: "f25245", value: "5", foreignID: "4535f", type: "quiz", title: "Quiz about fire"},
+                        { id: "42545", value: "5", foreignID: "4535f", type: "quiz", title: "Quiz about earth"},
+                        { id: "f24925", value: "60", foreignID: "4535f", type: "exam", title: "Exam about Water"},
+                    ]
+                }
+            ]
+
+                let weights = new Weights(course);
+                weights.renderWeights();
+
+    </script>
+    
+</body>
+</html>

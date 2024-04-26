@@ -63,32 +63,59 @@
             <div class="main-container">
 
                 <div class="min-max-container">
-                    <div class="dashboard-card">
+                    <a class="dashboard-card" href="CourseManagement.php">
                         <img src="../assets/icons/fi/fi-rr-racquet.svg" alt="">
                         <p>Courses</p>
                         <span id="dashboard-courses-count">0</span>
-                    </div>
+                    </a>
 
-                    <div class="dashboard-card">
+                    <a class="dashboard-card" href="Stats.php">
                         <img src="../assets/icons/fi/fi-rr-racquet.svg" alt="">
                         <p>Total Students</p>
-                        <span id="dashboard-courses-count">0</span>
-                    </div>
+                        <span id="dashboard-students-count">0</span>
+                    </a>
 
                     <div class="dashboard-card">
                         <img src="../assets/icons/fi/fi-rr-racquet.svg" alt="">
                         <p>Unread Messages</p>
-                        <span id="dashboard-courses-count">0</span>
+                        <span id="dashboard-messages-count">...</span>
                     </div>
 
-                    <div class="dashboard-card">
+                    <a class="dashboard-card" href="Exam.php">
                         <img src="../assets/icons/fi/fi-rr-racquet.svg" alt="">
                         <p>Exams</p>
-                        <span id="dashboard-courses-count">0</span>
-                    </div>
+                        <span id="dashboard-exams-count">0</span>
+                    </a>
                 </div>
 
             </div>
         </div>
+
+        <script>
+
+            ( async() => {
+
+                let { id } = await getUserDetails();
+
+                let result = await AJAXCall({
+                    phpFilePath: "../include/dashboard/teacherCounts.php",
+                    rejectMessage: "Running Query Failed",
+                    params: `id=${id}`,
+                    type: "fetch"
+                });
+
+                console.log(result);
+
+                let coursesPlaceholder = document.querySelector("#dashboard-courses-count");
+                let studentsPlaceholder = document.querySelector("#dashboard-students-count");
+                let examsPlaceholder = document.querySelector("#dashboard-exams-count");
+
+                coursesPlaceholder.textContent = result.courses
+                studentsPlaceholder.textContent = result.students
+                examsPlaceholder.textContent = result.exams
+
+            })();
+
+        </script>
     </body>
 </html>

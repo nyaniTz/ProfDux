@@ -76,6 +76,7 @@
     align-items: start;
     grid-gap: 20px;
     position: relative;
+    grid-template-rows: auto 1fr;
 }
 
 .image-container-box {
@@ -101,6 +102,10 @@
     align-items: start;
 
     counter-reset: my-schedules-counter;
+}
+
+.lesson-right-pane.one-column{
+    grid-template-columns: 1fr;
 }
 
 .course-details-box{
