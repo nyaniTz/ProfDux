@@ -5,3 +5,4 @@ uploads/*
 !uploads/demoAccount.png
 quiz/*.json
 objectives/*json
+exam/*json
