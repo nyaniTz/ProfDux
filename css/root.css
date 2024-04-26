@@ -40,6 +40,10 @@ body {
     width: 100vw;
 }
 
+a {
+    text-decoration: none;
+}
+
 .large-title {
     color: var(--accent);
     font-weight: 600;
