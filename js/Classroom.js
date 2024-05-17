@@ -19,6 +19,7 @@ class Classroom {
     renderTitle(){
         let titleElement = findElement(".classroom-course-title");
         let textElement = document.createElement("div");
+
         textElement.textContent = this.title;
         titleElement.innerHTML = "";
         titleElement.appendChild(textElement);
@@ -42,7 +43,21 @@ class Classroom {
             let mainClassroomLectureHeader = createElement("div", "main-classroom-lecture-header");
             let mainClassroomLectureInnerContainer = createElement("div", "main-classroom-lecture-inner-container");
 
-            mainClassroomLectureHeader.textContent = lecture.title;
+            let lectureTitleContainer = createElement("div", "class-lecture-title");
+            let lectureTime = createElement("div", "class-lecture-time");
+
+            let lectureStartTime = lecture.time.timeStart; // check if null.
+            const isTimeReadyForLecture = testIfTimeIsReady(lectureStartTime);
+
+            if(!isTimeReadyForLecture){
+                mainClassroomLectureInnerContainer.className = "main-classroom-lecture-inner-container disable-cursor-for-children-elements"
+                mainClassroomLectureInnerContainer.style.opacity = 0.3;
+            }
+
+            lectureTitleContainer.textContent = lecture.title;
+            lectureTime.textContent = lectureStartTime;
+            mainClassroomLectureHeader.appendChild(lectureTitleContainer);
+            mainClassroomLectureHeader.appendChild(lectureTime);
 
             lecture.subtopics.forEach( subtopic => {
 
@@ -54,7 +69,7 @@ class Classroom {
 
                 subtopic.resources.forEach( resource => {
 
-                    let mainClassroomSubtopicItem = this.createSubtopicItem(resource);
+                    let mainClassroomSubtopicItem = this.createSubtopicItem(resource, isTimeReadyForLecture);
                     mainClassroomSubtopicContainer.appendChild(mainClassroomSubtopicItem);
 
                 })
@@ -63,85 +78,12 @@ class Classroom {
 
             });
 
-            lecture.quizzes.forEach( async(quiz,index) => {
+            lecture.quizzes.forEach( async (quiz,index) => {
 
                 const quizRowItemButton = document.createElement("button");
                 quizRowItemButton.className = "row-item-action quiz-action";
                 quizRowItemButton.textContent = "start";
 
-                // New Quiz
-                // courseID and lectureID are available here ...
-                let {
-                    id: quizID,
-                    filename: fromTeacherQuizFilename,
-                    // name,
-                } = quiz;
-                
-                let { id: globalUserID } = globalUserDetails;
-                console.log("user id: ", globalUserID);
-
-                const quizResponse = await AJAXCall({
-                    phpFilePath: "../include/quiz/getPersonalQuizGrades.php",
-                    rejectMessage: "Quiz Grades Failed To Be Fetched",
-                    params: `userID=${globalUserID}&&quizID=${quizID}`,
-                    type: "fetch",
-                }); // TODO:
-
-                console.log("quiz response: ", quizResponse);
-
-                if(quizResponse.length > 0){
-
-                    let {
-                        id: quizGradeID,
-                        filename: studentQuizFilename,
-                        status: quizStatus,
-                    } = quizResponse[0];
-
-                    const quizObjectRequired = {
-                            id: quizGradeID,
-                            userID: globalUserID,
-                            quizID,	
-                            fileToLoad: studentQuizFilename,
-                            fileToSave: studentQuizFilename,
-                    }
-    
-                    switch(quizStatus){
-                        case "started":
-                            quizRowItemButton.textContent = "Resume Quiz"; // TODO: Localize
-                            quizRowItemButton.addEventListener("click", () => {
-                                startQuiz(quizObjectRequired, "resume"); // Resume Quiz
-                                quizRowItemButton.setAttribute("disabled", true);
-                                quizRowItemButton.textContent = "started";
-                            })
-                        break;
-                        case "done":
-                            quizRowItemButton.textContent = "Review Results"; // TODO: Localize
-                            quizRowItemButton.addEventListener("click", () => {
-                                viewQuizResults(studentQuizFilename); // View Results
-                            });
-                        break;
-                    }
-                }else{
-
-                    const quizObjectRequired = {
-                        id: uniqueID(1),
-                        userID: globalUserID,	
-                        quizID,	
-                        fileToLoad: fromTeacherQuizFilename,
-                        fileToSave: `Quiz-${uniqueID(2)}.json`,
-                    }
-
-                    console.log("quizObjectRequired: ", quizObjectRequired);
-
-
-                    quizRowItemButton.textContent = "Start Quiz"; // TODO: Localize
-                    quizRowItemButton.addEventListener("click", () => {
-                        startQuiz(quizObjectRequired, "new"); // New Quiz
-                        quizRowItemButton.setAttribute("disabled", true);
-                        quizRowItemButton.textContent = "started";
-                    });
-                }
-                
                 const quizClassroomSubtopicContainer = document.createElement("div");
                 quizClassroomSubtopicContainer.className = "main-classroom-subtopic-container";
 
@@ -171,8 +113,14 @@ class Classroom {
                 quizSubtopicItem.appendChild(quizRowItemButton)
 
                 quizClassroomSubtopicContainer.appendChild(quizSubtopicItem);
-
                 mainClassroomLectureInnerContainer.appendChild(quizClassroomSubtopicContainer);
+
+
+                if(!isTimeReadyForLecture) {
+                    return;
+                }
+                
+                handleQuiz(quiz, quizRowItemButton)
 
             })
 
@@ -184,7 +132,9 @@ class Classroom {
 
     }
 
-    createSubtopicItem(resource){
+
+
+    createSubtopicItem(resource, isTimeReadyForLecture){
 
         let resourceType = extractType(resource.type);
         let { id, value } = resource;
@@ -203,13 +153,14 @@ class Classroom {
                 imageElement.src = "../assets/icons/image.png";
                 //TODO: change this textContent to a localizedTranslatableElement
                 rowItemAction.textContent = "view";
-                rowItemAction.addEventListener("click", () => openImageViewer(`../uploads/${value}`))
+                isTimeReadyForLecture && rowItemAction.addEventListener("click", () => openImageViewer(`../uploads/${value}`))
                 break;
             case "pdf":
                 imageElement.src = "../assets/icons/pdf.png";
                 rowItemAction.textContent = "view";
-                rowItemAction.addEventListener("click", () => openPDFViewer(`../uploads/${value}`))
+                isTimeReadyForLecture && rowItemAction.addEventListener("click", () => openPDFViewer(`../uploads/${value}`))
                 break;
+            //TODO: Video
             default:
                 throw new Error("Type has not been created yet!");
                 break;
@@ -246,7 +197,8 @@ async function renderCourseOutline(givenID){
 
     let courses = await getCourseDetails(givenID);
 
-    console.log("courses 0 :", courses[0], givenID);
+    globalCache.put("chosenCourseData", courses[0]);
+    globalCache.put("givenCourseID", givenID);
 
     const classroom = new Classroom(courses[0], givenID);
 
@@ -292,4 +244,15 @@ async function viewQuizResults(studentQuizFilename){
         quizResultsBody.style.display = "grid";
         reviewQuizLoader.style.display = "none";
     }, 1000);
+}
+
+function testIfTimeIsReady(lectureStartTime){
+
+    //TODO: make this work
+    let time = new Date(lectureStartTime);
+    let now = new Date();
+
+    console.log(`time: ${time} now: ${now}`);
+    if (time <= now ) return true
+    return false;
 }

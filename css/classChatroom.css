@@ -1,0 +1,214 @@
+.classchatroom-outer-container * {
+    outline: none;
+}
+
+.classchatroom-outer-container{
+    color: var(--accent);
+    display: grid;
+    grid-gap: 20px;
+}
+
+.classchatroom-course-title {
+    
+}
+
+.outer-main-classchatroom-container {
+    /* border: 1px solid red; */
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 20px;
+}
+
+.dux-class-chat-outer-container {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-gap: 20px;
+}
+
+.dux-class-chat-container.messages-container{
+    border: 2px solid var(--dark-gray);
+    border-radius: 10px;
+    height: 400px;
+    padding: 20px;
+    grid-gap: 20px;
+    grid-template-rows: repeat(auto-fit,minmax(50px, 300px));
+    align-items: end;
+}
+
+.foreign > .name-tag { left: -48px; background: var(--medium-gray);
+    box-shadow: rgba(0, 0, 0, 1) 0px 0px 0px 0px, rgba(0, 0, 0, 0.3) 0px 0px 0px 1px; 
+}
+
+.dux-class-chat-container.messages-container > li:first-child{
+    margin-top: 0px;
+}.dux-class-chat-container.messages-container > li:last-child{
+    margin-bottom: 0px;
+}
+
+.pdf-message {
+    width: 100%;
+    height: 300px;
+    display: grid;
+
+    position: relative;
+    padding: .8em 1em;
+    border-radius: 13px;
+    border: 1px solid rgb(227, 227, 227);
+    list-style: none;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    display: grid;
+}
+
+.image-message {
+    width: 100%;
+    height: 300px;
+    overflow: scroll;
+    position: relative;
+    padding: .8em 1em;
+    border-radius: 13px;
+    border: 1px solid rgb(227, 227, 227);
+    list-style: none;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    display: grid;
+
+}
+
+.image-message img, .image-frame {
+    width: inherit;
+    border-radius: 10px;
+}
+
+.messages-container > .center {
+    place-self: center;
+    background-color: transparent;
+    border-bottom-right-radius: 0px;
+    margin-right: 0px;
+    max-width: 90%;
+    display: grid;
+    width: 90%;
+    grid-gap: 20px;
+
+    padding: 0px 0px;
+    border-radius: 0px;
+    border: none;
+    box-shadow: none;
+
+}
+
+.finished-button{
+    padding: 13px;
+    color: white;
+    background: var(--accent);
+    justify-self: center;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}.finished-button:hover{
+    transform: scale(1.13);
+}
+
+.chat-input-container{
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 20px;
+}
+
+.class-chat-input-wrapper {
+    position: relative;
+    width: 100%;
+    display: grid;
+}
+
+.class-message-typing-input {
+    border: 2px solid var(--dark-gray);
+    border-radius: 10px;
+    font-size: 1em;
+    width: 100%;
+    min-height: 50px;
+    padding: 0px 50px 0px 0px;
+}
+
+.class-send-message-button {
+    border-radius: 50%;
+    background: var(--accent);
+    display: grid;
+    place-items: center;
+    height: 36px;
+    align-self: center;
+    justify-self: end;
+    aspect-ratio: 1/1;
+    position: absolute;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}.class-send-message-button:hover{ transform: scale(1.13);}
+
+.class-send-message-button img{
+    height: 13px;
+    filter: invert(100%);
+}
+
+.dux-chat-action-buttons-container {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: auto auto;
+    position: relative;
+}
+
+.chat-action-button {
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    height: 50px;
+    aspect-ratio: 1/1;
+}
+
+.chat-action-button img {
+    height: 20px;
+}
+
+
+.final-speech {
+    color: black;
+    display: inline;
+    float: left;
+    min-width: 50px;
+    padding: 13px 45px 13px 13px;
+}
+
+.interim-speech{
+    color: var(--medium-gray);
+    display: inline;
+    float: right;
+}
+
+#start_button img{
+    height: 40px;
+    width: 40px;
+    position: relative;
+}
+
+#duxAddPDF {
+    display: none;
+}
+
+.dux-right-side-pane {
+    /* border: 1px solid red; */
+    width: 300px;
+    align-self: start;
+}
+
+.dux-image-box{
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.dux-image-box img {
+    width: inherit;
+    height: 100%;
+}

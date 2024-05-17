@@ -128,6 +128,16 @@
 }
 
 
+.response-badge {
+    position: absolute;
+    bottom: calc(100% + 5px);
+    border: 1px solid var(--dark-gray);
+    color: var(--dark-gray);
+    border-radius: 5px;
+    padding: 2px 5px;
+    font-size: 9px;
+}
+
 
 @media screen and (max-width: 500px) {
     .main-container{

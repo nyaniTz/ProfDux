@@ -40,6 +40,16 @@
             foreach($lectures as $lecture){
 
                 $lectureID = $lecture['id'];
+
+                $timeQuery = "
+                    SELECT timeStart, timeFinish, hierarchy
+                    FROM schedules 
+                    INNER JOIN lectures ON schedules.foreignID = lectures.id
+                    WHERE lectures.id = '$lectureID'
+                ";
+
+                $lectureTimeResult = mysqli_query($conn,$timeQuery);
+                $lectureTime = mysqli_fetch_all($lectureTimeResult,MYSQLI_ASSOC);
                 
                 $subtopicQuery = "
                 SELECT *
@@ -84,6 +94,7 @@
                 $lectureArray[] = array(
                     "id" => $lectureID,
                     "title" => $lecture['title'],
+                    "time" => $lectureTime[0],
                     "hierarchy" => $lecture['hierarchy'],
                     "subtopics" => $subtopicArray,
                     "quizzes" => $quizzes

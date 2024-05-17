@@ -32,6 +32,10 @@
     -webkit-user-select: none;
 }
 
+.disable-cursor-for-children-elements div, .disable-cursor-for-children-elements button {
+    cursor: default;
+}
+
 .attachments-button:hover > .icon {
     filter: invert(100%);
 }

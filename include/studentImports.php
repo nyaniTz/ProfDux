@@ -24,6 +24,7 @@
         "../css/image-viewer.css",
         "../css/quiz.css",
         "../css/classroom.css",
+        "../css/classChatroom.css",
         "../css/DuxChat.css",
         "../css/ebook.css",
         "../css/exam.css",
@@ -35,7 +36,8 @@
     $jsPaths = array(
         "../js/dialogs.js",
         "../js/functions.js",
-        "../js/localize.js"
+        "../js/localize.js",
+        "../js/PDFSearch.js",
     );
 
     // These are for javascript files that you want
@@ -54,9 +56,13 @@
         "../js/Question.js",
         "../js/Quiz.js",
         "../js/Classroom.js",
+        "../js/ClassView.js",
+        "../js/GlobalCache.js",
         "../js/DuxChat.js",
         "../js/Ebooks.js",
-        "../js/exam.js"
+        "../js/exam.js",
+        "../js/DuxClassChat.js",
+        "../js/webSpeechAPI.js",
     );
 
     foreach ($cssPaths as $path) {
