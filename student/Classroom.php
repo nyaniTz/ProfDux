@@ -53,8 +53,6 @@
 
                             <div class="inner-right-wrapper">
                                 <div class="classroom-start-class-button button" onclick="renderClassView(this)">Start Class</div>
-                                <button class="next-button">next</button>
-                                <button class="quiz-button">quiz</button>
                             </div>
                         </div>
 

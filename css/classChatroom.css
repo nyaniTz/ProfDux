@@ -95,6 +95,23 @@
 
 }
 
+.messages-container > .left-container {
+    place-self: start;
+    background-color: transparent;
+    border-bottom-right-radius: 0px;
+    margin-right: 0px;
+    font-weight: 800;
+    display: grid;
+    padding: 7px;
+    border-radius: 5px;
+    border: 1px solid var(--dark-gray);
+    letter-spacing: 1.3px;
+    box-shadow: none;
+    color: black;
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
 .finished-button{
     padding: 13px;
     color: white;

@@ -9,7 +9,11 @@ function renderClassView(element){
     let duxInputText = document.querySelector("#final_speech");
     let duxMessagesView = document.querySelector(".dux-class-chat-container");
     let uploadPDF = document.querySelector("#duxAddPDF");
+    let classchatroomTitle = document.querySelector(".classchatroom-course-title");
+    let classchatroomCourseCode = document.querySelector(".classchatroom-course-code");
 
+    duxClassChat.addTitleElement(classchatroomTitle);
+    duxClassChat.addCourseCodeElement(classchatroomCourseCode);
     duxClassChat.addSendButtonElement(duxSendButton);
     duxClassChat.addTextBoxInputElement(duxInputText);
     duxClassChat.addMessagesView(duxMessagesView);
@@ -63,6 +67,8 @@ class DuxClassChat {
     }
 
     startChatEngine(){
+        this.renderTitle()
+        this.renderCourseCode()
         this.messagesView.innerHTML = "";
         this.renderDuxMessageFor(this.startMessage, null, "forced");
         this.next();
@@ -95,6 +101,8 @@ class DuxClassChat {
         if(this.lectureQueue.length > 0){
             this.currentLecture = this.lectureQueue.shift();
 
+            this.renderLectureTitle(this.currentLecture.title);
+
             if(this.currentLecture.quizzes.length > 0){
                 this.hasQuiz = true 
                 this.quizQueue = this.currentLecture.quizzes
@@ -117,6 +125,8 @@ class DuxClassChat {
 
         if(this.subtopicQueue.length > 0){
             this.currentSubtopic = this.subtopicQueue.shift();
+
+            this.renderSubtopicTitle(this.currentSubtopic.title);
 
             this.resourceQueue = this.currentSubtopic.resources;
             this.currentStep = "resource";
@@ -163,6 +173,7 @@ class DuxClassChat {
 
         if(this.quizQueue.length > 0){
             this.currentQuiz = this.quizQueue.shift();
+            this.quizButton = this.renderQuizButton();
             handleQuiz(this.currentQuiz, this.quizButton, "iterative"); // TODO: handle quiz finishing.
         } else {
             this.currentStep = "lecture";
@@ -171,22 +182,28 @@ class DuxClassChat {
 
     }
 
-
-
     renderTitle(){
-        // let titleElement = findElement(".classroom-course-title");
-        // let textElement = document.createElement("div");
-
-        // textElement.textContent = this.title;
-        // titleElement.innerHTML = "";
-        // titleElement.appendChild(textElement);
+        this.titleElement.textContent = this.title
     }
 
     renderCourseCode(){
-        // let titleElement = findElement(".classroom-course-code");
-        // let textElement = createLocalizedTextElement(this.courseCode);        
-        // titleElement.innerHTML = "";
-        // titleElement.appendChild(textElement);
+        this.courseCodeElement.textContent = this.courseCode
+    }
+
+    renderLectureTitle(title){
+        const leftMessageOuterContainer = document.createElement("li")
+        leftMessageOuterContainer.className = "left-container";
+        leftMessageOuterContainer.textContent = title;
+        leftMessageOuterContainer.style.marginLeft = "30px";
+        this.messagesView.append(leftMessageOuterContainer);
+    }
+
+    renderSubtopicTitle(title){
+        const leftMessageOuterContainer = document.createElement("li")
+        leftMessageOuterContainer.className = "left-container";
+        leftMessageOuterContainer.textContent = title;
+        leftMessageOuterContainer.style.marginLeft = "60px";
+        this.messagesView.append(leftMessageOuterContainer);
     }
 
     addTextBoxInputElement(textInput){
@@ -197,6 +214,16 @@ class DuxClassChat {
         //         this.initiateDuxResponse();
         //     }
         // })
+    }
+
+    addTitleElement(element){
+        this.titleElement = element
+        console.log("element: ", element)
+    }
+
+    addCourseCodeElement(element){
+        this.courseCodeElement = element
+        console.log("element: ", element)
     }
 
     addSendButtonElement(button){
@@ -249,7 +276,6 @@ class DuxClassChat {
             finishedReadingButton.addEventListener("click", () => {
                 this.next();
                 finishedReadingButton.remove();
-
             })
 
             centerMessageOuterContainer.appendChild(finishedReadingButton);
@@ -312,6 +338,28 @@ class DuxClassChat {
         centerMessageOuterContainer.appendChild(imageContainer);
         centerMessageOuterContainer.appendChild(finishedViewingButton);
         this.messagesView.append(centerMessageOuterContainer);
+
+    }
+
+    renderQuizButton(){
+
+        const centerMessageOuterContainer = document.createElement("li")
+        centerMessageOuterContainer.className = "center";
+
+        const quizButton = document.createElement("div");
+        quizButton.className = "row-item-action quiz-action";
+        quizButton.style.justifySelf = "center";
+
+        quizButton.addEventListener("click", () => {
+            this.next();
+            quizButton.remove();
+        })
+
+
+        centerMessageOuterContainer.appendChild(quizButton);
+        this.messagesView.append(centerMessageOuterContainer);
+
+        return quizButton;
 
     }
 
