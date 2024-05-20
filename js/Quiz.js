@@ -410,7 +410,7 @@ function mark(questions){
 
 }
 
-async function startQuiz(quizGradeObject, type="new"){
+async function startQuiz(quizGradeObject, type="new", mode){
 
     openPopup('.take-quiz-overlay');
     openPopup(".take-quiz-loader");
@@ -499,6 +499,80 @@ async function startQuiz(quizGradeObject, type="new"){
 
     // return quiz;
 
+}
+
+async function handleQuiz(quiz, quizButton, mode){
+
+    let {
+        id: quizID,
+        filename: fromTeacherQuizFilename,
+        // name,
+    } = quiz;
+
+    let { id: globalUserID } = globalUserDetails;
+    console.log("user id: ", globalUserID);
+
+    const quizResponse = await AJAXCall({
+        phpFilePath: "../include/quiz/getPersonalQuizGrades.php",
+        rejectMessage: "Quiz Grades Failed To Be Fetched",
+        params: `userID=${globalUserID}&&quizID=${quizID}`,
+        type: "fetch",
+    }); // TODO:
+
+    console.log("quiz response: ", quizResponse);
+
+    if(quizResponse.length > 0){
+
+        let {
+            id: quizGradeID,
+            filename: studentQuizFilename,
+            status: quizStatus,
+        } = quizResponse[0];
+
+        const quizObjectRequired = {
+                id: quizGradeID,
+                userID: globalUserID,
+                quizID,	
+                fileToLoad: studentQuizFilename,
+                fileToSave: studentQuizFilename,
+        }
+
+        switch(quizStatus){
+            case "started":
+                quizButton.textContent = "Resume Quiz"; // TODO: Localize
+                quizButton.addEventListener("click", () => {
+                    startQuiz(quizObjectRequired, "resume", mode); // Resume Quiz
+                    quizButton.setAttribute("disabled", true);
+                    quizButton.textContent = "started";
+                })
+            break;
+            case "done":
+                quizButton.textContent = "Review Results"; // TODO: Localize
+                quizButton.addEventListener("click", () => {
+                    viewQuizResults(studentQuizFilename); // View Results
+                });
+            break;
+        }
+    }else{
+
+        const quizObjectRequired = {
+            id: uniqueID(1),
+            userID: globalUserID,	
+            quizID,	
+            fileToLoad: fromTeacherQuizFilename,
+            fileToSave: `Quiz-${uniqueID(2)}.json`,
+        }
+
+        console.log("quizObjectRequired: ", quizObjectRequired);
+
+
+        quizButton.textContent = "Start Quiz"; // TODO: Localize
+        quizButton.addEventListener("click", () => {
+            startQuiz(quizObjectRequired, "new", mode); // New Quiz
+            quizButton.setAttribute("disabled", true);
+            quizButton.textContent = "started";
+        });
+    }
 }
 
 async function addNewQuizGradeRowInDatabase(quizGradeObject){

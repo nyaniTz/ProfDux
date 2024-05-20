@@ -22,6 +22,12 @@
     background: var(--off-white);
 }
 
+.classroom-header-elements-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 30px;
+}
+
 .main-classroom-lecture-inner-container{
     display: grid;
     width: 100%;
