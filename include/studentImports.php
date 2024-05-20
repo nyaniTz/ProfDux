@@ -56,7 +56,6 @@
         "../js/Question.js",
         "../js/Quiz.js",
         "../js/Classroom.js",
-        "../js/ClassView.js",
         "../js/GlobalCache.js",
         "../js/DuxChat.js",
         "../js/Ebooks.js",

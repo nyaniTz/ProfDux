@@ -1,23 +1,24 @@
 function renderClassView(element){
     const givenID = globalCache.get("givenCourseID");
     const courseData = globalCache.get("chosenCourseData");
-    const classView = new ClassView(courseData, givenID);
+    const duxClassChat = new DuxClassChat(courseData, givenID);
 
     openPopup('.class-chat-inner-overlay');
-    
-    document.querySelector(".next-button").addEventListener("click", () => {
-        classView.next();
-    })
 
-    classView.setQuizButton(document.querySelector(".quiz-button"));
+    let duxSendButton = document.querySelector(".class-send-message-button");
+    let duxInputText = document.querySelector("#final_speech");
+    let duxMessagesView = document.querySelector(".dux-class-chat-container");
+    let uploadPDF = document.querySelector("#duxAddPDF");
+
+    duxClassChat.addSendButtonElement(duxSendButton);
+    duxClassChat.addTextBoxInputElement(duxInputText);
+    duxClassChat.addMessagesView(duxMessagesView);
+    duxClassChat.setAddToDuxPDF(uploadPDF);
+
 }
 
 
 class ClassView {
-
-    setQuizButton(button){
-        this.quizButton = button;
-    }
 
     constructor(courseObject, courseID){
         

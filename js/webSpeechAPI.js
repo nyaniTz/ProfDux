@@ -1,7 +1,15 @@
 var langs =
 [['English',['en-US', 'United States']],
- ['Türkçe',          ['tr-TR']]
+ ['Türkçe', ['tr-TR']]
 ];
+
+let langlist = {
+  "tr" : "tr-TR",
+  "en" : "en-US"
+};
+
+let lang = document.querySelector("html").getAttribute("lang");
+let language = langlist[lang];
 
 let start_button = document.querySelector("#start_button")
 
@@ -133,7 +141,7 @@ var first_char = /\S/;
     }
 
     final_transcript = '';
-    recognition.lang = 'en-US';
+    recognition.lang = language;
     recognition.start();
     ignore_onend = false;
     final_speech.innerHTML = '';
