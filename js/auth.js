@@ -78,6 +78,8 @@ async function login(){
         let loginResult = JSON.parse(result);
 
         console.log(loginResult);
+        localStorage.setItem("id", loginResult.id)
+
 
         if (loginResult.state != "error") {
             let { role } = loginResult; 

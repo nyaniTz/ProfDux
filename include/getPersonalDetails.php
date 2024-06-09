@@ -10,7 +10,7 @@
         die("Connection failed: " . mysqli_connect_error());
     }
 
-    $userID = $_SESSION['id']; // Hapa kijana hapa.
+    $userID = $_POST['id']; // Hapa kijana hapa.
 
     if($userID){
 

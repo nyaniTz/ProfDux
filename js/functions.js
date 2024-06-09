@@ -277,11 +277,14 @@ async function uploadFile(file, scriptPath = "../include/upload.php"){
 
 async function getUserDetails(){
 
+    let id = localStorage.getItem("id");
+    console.log("logged id:", id);
+
     try{
         let result = await AJAXCall({
             phpFilePath: "../include/getPersonalDetails.php",
             rejectMessage: "Getting Personal Details Failed",
-            params: "",
+            params: `id=${id}`,
             type: "fetch"
         });
         

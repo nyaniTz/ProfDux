@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="../js/functions.js"></script>
 </head>
 <body>
 
@@ -11,15 +12,18 @@
 
     ( async () => {
 
-        let result = await testAJAX({
-            phpFilePath: "../include/course/getAllCourses.php",
-            rejectMessage: "something is really wrong",
-            params: '',
-            type: "fetch"
-        });
+        // let result = await testAJAX({
+        //     phpFilePath: "../include/getPersonalDetails.php",
+        //     rejectMessage: "Getting Personal Details Failed",
+        //     params: "",
+        //     type: "fetch"
+        // });
 
-        console.log(result)
-        console.log(JSON.parse(result))
+        // console.log(result)
+        // console.log(JSON.parse(result))
+
+        let result = await getUserDetails();
+        console.log(result);
 
     })()
 
