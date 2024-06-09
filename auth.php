@@ -22,7 +22,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/auth.css">
-    <script src="/js/auth.js?4" defer></script>
+    <script src="/js/auth.js?5" defer></script>
     <script src="/js/functions.js?4" defer></script>
     <script src="/js/weather.js" defer></script>
 
