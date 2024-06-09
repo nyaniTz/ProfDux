@@ -12,13 +12,14 @@
     ( async () => {
 
         let result = await testAJAX({
-            phpFilePath: "../include/test.php",
+            phpFilePath: "../include/course/getAllCourses.php",
             rejectMessage: "something is really wrong",
             params: '',
             type: "fetch"
         });
 
         console.log(result)
+        console.log(JSON.parse(result))
 
     })()
 
