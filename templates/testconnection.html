@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+
+    ( async () => {
+
+        let result = await testAJAX({
+            phpFilePath: "../include/test.php",
+            rejectMessage: "something is really wrong",
+            params: '',
+            type: "fetch"
+        });
+
+        console.log(result)
+
+    })()
+
+
+    function testAJAX(callObject){
+
+        let {
+            phpFilePath,
+            rejectMessage,
+            params,
+            type,
+        } = callObject;
+
+        return new Promise((resolve,reject) => {
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", phpFilePath, true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+            xhr.onload = function(){
+                if( this.status == 200 ){      
+                    let result = this.responseText;
+                    resolve(result)
+                }
+                else{
+                    reject("Error With PHP Script");
+                }
+            }
+
+            xhr.send(params);
+
+        });
+    }
+
+
+
+    </script>
+    
+</body>
+</html>
