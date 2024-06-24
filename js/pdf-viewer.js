@@ -1,5 +1,7 @@
 function openPDFViewer(pdfUrl) {
 
+    console.log("pdfURL: ", pdfUrl);
+
     let body = document.querySelector("body");
 
     let pdfViewerOverlay = document.createElement("div");
