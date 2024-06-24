@@ -36,6 +36,26 @@ function loadImageToSettingsView(event, outputElement){
 
 }
 
+async function haveDetailsChanged(){
+
+    let { id, name, phone, address } = await getGlobalDetails();
+
+    let inputtedName = document.querySelector(".person-name").value;
+    let inputtedPhone = document.querySelector(".person-phone").value;
+    let inputtedAddress = document.querySelector(".person-address").value;
+
+    if(name != inputtedName || phone != inputtedPhone || address != inputtedAddress) return { 
+        _haveDetailsChanged: true, 
+        details: { 
+            id,
+            name: inputtedName, 
+            phone:inputtedPhone, 
+            address: inputtedAddress
+        }
+    }
+
+}
+
 async function saveProfileSettings() {
 
     if(settingsImageObject){
@@ -64,5 +84,29 @@ async function saveProfileSettings() {
         catch(error){
             console.log(error);
         }
+    }
+
+    let { _haveDetailsChanged, details } = await haveDetailsChanged();
+
+    console.log("debug 3: ", _haveDetailsChanged, details);
+
+    if(_haveDetailsChanged){
+
+        const params = createParamatersFrom(details);
+
+        console.log(params);
+
+        let saveProfileDetails = await AJAXCall({
+            phpFilePath: "../include/saveProfileDetails.php",
+            rejectMessage: "Script Failed",
+            params,
+            type: "post"
+        });
+
+        console.log(saveProfileDetails);
+
+        let result = await getUserDetails();
+        setHeaderInfo(result);
+
     }
 }

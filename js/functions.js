@@ -514,3 +514,19 @@ async function getTitleAndFilename(givenID){
         type: "fetch"
     });
 }
+
+function createParamatersFrom(data){
+
+    let params = "";
+    let entries = Object.entries(data);
+
+    entries.forEach( ([key, value], index) => {
+        let parameter = `${key}=${value}`
+        index < (entries.length - 1) ? 
+        params += parameter + "&&": 
+        params += parameter;
+    })
+
+    return params
+
+}

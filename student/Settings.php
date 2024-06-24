@@ -30,12 +30,12 @@
                     <div class="setting-values">
                         <div class="form-input-container">
                             <span class="form-input-label">Name</span>
-                            <input class="form-input person-name" placeholder="Name" type="text" disabled>
+                            <input class="form-input person-name" placeholder="Name" type="text">
                         </div>
 
                         <div class="form-input-container">
                             <span class="form-input-label">Phone</span>
-                            <input class="form-input person-phone" placeholder="Phone" type="text" disabled>
+                            <input class="form-input person-phone" placeholder="Phone" type="text">
                         </div>
 
                         <div class="form-input-container">
@@ -50,7 +50,7 @@
 
                         <div class="form-input-container">
                             <span class="form-input-label">Address</span>
-                            <input class="form-input person-address" placeholder="Name" type="text" disabled>
+                            <input class="form-input person-address" placeholder="Name" type="text">
                         </div>
                     </div>
 

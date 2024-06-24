@@ -52,7 +52,7 @@
 }
 
 .course-card-image img{
-    aspect-ratio: 10/9; 
+    /* aspect-ratio: 10/9;  */
     min-width: 100%;
     height: 100%;
 }
