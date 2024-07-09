@@ -1,9 +1,12 @@
-<div class="overlay edit-quiz-overlay">
+<div class="overlay edit-assessment-overlay">
     <div class="popup quiz-popup">
         <div class="popup-header">
             <div class="button save-button">Save and Close</div>
             <h1 class="pop-up-title">
+            <div class="two-column-grid">
                 <div class="quiz-details">Quiz</div>
+                <div class="assessment-language-changer"></div>
+            </div> 
             </h1> 
         </div>
 
@@ -28,4 +31,22 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="overlay language-changer-overlay">
+
+    <div class="safe-element-padding">
+
+        <div class="close-button" onclick="
+            closePopup('.language-changer-overlay');
+            ">
+                <img src="../assets/icons/close.png" alt="">
+        </div>
+
+        <div class="language-changer-container">
+            <div class="language-changer-element" data-lang="english">English</div>
+            <div class="language-changer-element" data-lang="turkish">Turkish</div>
+        </div>
+    </div>
+
 </div>

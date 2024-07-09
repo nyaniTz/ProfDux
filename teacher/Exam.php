@@ -11,13 +11,12 @@
 
 </head>
 
-<style>
+<!-- <style>
     .full-width {
         height: 100%;
         width: 100%;
-
     }
-</style>
+</style> -->
 
 <body>
 
@@ -31,38 +30,9 @@
                     Exam
                 </h1>
             </div>
-
-            <div class="course-view-container">
-                <div class="container-message blank course-view-container-loader">
-                    <div class="sk-fold">
-                        <div class="sk-fold-cube"></div>
-                        <div class="sk-fold-cube"></div>
-                        <div class="sk-fold-cube"></div>
-                        <div class="sk-fold-cube"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="edit-course-container inner-overlay" style="justify-content: flex-start;flex-direction: column;">
-
-                <div class="back-arrow" id="teacher-back-icon" onclick="openPopup('.course-view-container'); closeEditCourseContainer()">
-                    <img class="icon" src="../assets/icons/fi/fi-rr-arrow-alt-left.svg" alt="">
-                </div>
-
-                <?php include 'components/Exams.php' ?>
-                <?php include 'components/examModal.php' ?>
-                <?php include 'components/editExamOverlay.php' ?>
-
-            </div>
-
         </div>
     </div>
-
-    <script>
-        window.addEventListener("load", function() {
-            loadCoursesForExam("id");
-        })
-    </script>
+    
 </body>
 
 </html>

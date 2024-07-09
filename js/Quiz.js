@@ -23,7 +23,7 @@ class Quiz {
 
     }
 
-    constructor(questions, quizGradeObject, type){
+    constructor({ questions, quizGradeObject, type, assessmentType, language = "english" }){
 
         this.filename = quizGradeObject.fileToSave; // ... TODO: write some documentation
         this.questions = questions; // randomize(questions);
@@ -31,6 +31,8 @@ class Quiz {
         this.type = type;
         this.currentQuizNumber = 0;
         this.quizGradeObject = quizGradeObject;
+        this.language = language;
+        this.assessmentType = assessmentType;
         
     }
 
@@ -40,7 +42,7 @@ class Quiz {
     }
 
     autoSave(){
-        saveQuizAsJSON(this.filename, this.questions, this.type);
+        saveAssessmentAsJSON(this.filename, this.questions, this.assessmentType, this.type);
     }
 
     endQuiz(){
@@ -51,7 +53,8 @@ class Quiz {
             filename: this.filename,
             questions: this.questions,
             type: this.type,
-            quizGradeObject: this.quizGradeObject
+            quizGradeObject: this.quizGradeObject,
+            language: this.language
         });
     }
 
@@ -64,8 +67,7 @@ class Quiz {
     
     renderQuestion(){
         this.renderQuestionNumber(this.currentQuizNumber);
-        this.questions[this.currentQuizNumber].render();
-
+        this.questions[this.currentQuizNumber].render(this.language);
         console.log("current question index: ", this.currentQuizNumber);
     }
 
@@ -120,182 +122,6 @@ class Quiz {
 
 }
 
-class MultipleChoice extends Question {
-
-    constructor(questionObject, marksWorth = 1){
-        // randomize answer options
-        super(questionObject);
-        this.marksWorth = marksWorth;
-    }
-
-    render(){
-
-        let question = document.createElement("div");
-        question.className = "question";
-        question.textContent = this.question;
-
-        let answerOptionsList = document.createElement("div");
-        answerOptionsList.className = "answer-options-list";
-
-        let answerOptionMap = this.answerOptions.map( ( option, index ) => {
-            
-            let answerOptionContainer = document.createElement("div");
-
-            if(this.inputAnswer == this.answerOptions[index]){
-                answerOptionContainer.className = "answer-option-container active";
-            }else{
-                answerOptionContainer.className = "answer-option-container";
-            }
-
-            let letterOption = document.createElement("div");
-            letterOption.className = "letter-option";
-            letterOption.textContent = letters[index];
-    
-            let answerOption = document.createElement("div");
-            answerOption.className = "answer-option";
-            answerOption.textContent = option;
-
-            answerOptionContainer.addEventListener("click", () => {
-
-                disableOtherOptions();
-                answerOptionContainer.className = "answer-option-container active";
-
-                this.inputAnswer = option;
-
-            });
-
-            answerOptionContainer.appendChild(letterOption);
-            answerOptionContainer.appendChild(answerOption);
-            answerOptionsList.appendChild(answerOptionContainer);
-            return answerOptionContainer;
-
-        });
-
-        function disableOtherOptions(){
-            answerOptionMap.forEach( option => option.className = "answer-option-container")
-        }
-
-        super.renderQuizArea(question, answerOptionsList);
-    }
-}
-
-class TrueAndFalse extends Question {
-
-    constructor(questionObject, marksWorth = 1){
-        super(questionObject);
-        this.marksWorth = marksWorth;
-    }
-
-    render(){
-
-        let question = document.createElement("div");
-        question.className = "question";
-        question.textContent = this.question;
-
-        let answerOptions = this.answerOptions || [];
-
-        if(this.answerOptions.length == 0){
-            switch(this.answer){
-                case "Yes":
-                    answerOptions = ["Yes", "No"] //TODO: Match for other languages
-                    break;
-                case "True":
-                    answerOptions = ["True", "False"]
-                    break;
-                case "False":
-                    answerOptions = ["True", "False"]
-                    break;
-                case "No":
-                answerOptions = ["Yes", "No"]
-                break;
-            }
-        }
-
-        let answerOptionsList = document.createElement("div");
-        answerOptionsList.className = "tf-options-list";
-
-        let answerOptionMap = answerOptions.map( ( option, index ) => {
-            
-            let answerOptionContainer = document.createElement("div");
-            answerOptionContainer.className = "tf-answer-option-container";
-
-
-            let answerOption = document.createElement("div");
-            answerOption.textContent = option;
-
-            if(this.inputAnswer == answerOptions[index]){
-                answerOption.className = "button tf-answer-option active";
-            }else{
-                answerOption.className = "button tf-answer-option";
-            }
-    
-
-            answerOption.addEventListener("click", () => {
-
-                disableOtherOptions();
-                answerOption.className = "button tf-answer-option active";
-
-                this.inputAnswer = option;
-
-            });
-
-            answerOptionContainer.appendChild(answerOption);
-            answerOptionsList.appendChild(answerOptionContainer);
-            return answerOption;
-
-        });
-
-        function disableOtherOptions(){
-            answerOptionMap.forEach( option => option.className = "button tf-answer-option")
-        }
-
-        super.renderQuizArea(question, answerOptionsList);
-    }
-}
-
-class FillInTheBlank extends Question {
-
-    constructor(questionObject, marksWorth = 1){
-        super(questionObject);
-        this.marksWorth = marksWorth;
-    }
-
-    render(){
-
-        let question = document.createElement("div");
-        question.className = "question";
-        question.textContent = this.question;
-        
- 
-            
-            let blankTextContainer = document.createElement("div");
-            blankTextContainer.className = "fitb-answer-option-container";
-
-            // blankTextEditableField.setAttribute("contentEditable","true");
-
-
-            let blankTextEditableField = document.createElement("input");
-            blankTextEditableField.className = "fitb-answer-input";
-            blankTextEditableField.placeholder = "Enter You Answer Here";
-
-            if(this.inputAnswer){
-                blankTextEditableField.className = "fitb-answer-input active";
-                blankTextEditableField.value = this.inputAnswer;
-            }
-        
-            blankTextEditableField.addEventListener("input", () => {
-
-                blankTextEditableField.className = "fitb-answer-input active";
-                this.inputAnswer = blankTextEditableField.value ;
-
-            });
-
-            blankTextContainer.appendChild(blankTextEditableField);
-
-        super.renderQuizArea(question, blankTextContainer);
-    }
-}
-
 async function handleEndQuiz(quizObject){
 
     openPopup('.take-quiz-loader');
@@ -304,12 +130,13 @@ async function handleEndQuiz(quizObject){
         filename,
         questions,
         type,
-        quizGradeObject
+        quizGradeObject,
+        language
     } = quizObject;
 
-    saveQuizAsJSON(filename, questions, type);
+    saveAssessmentAsJSON(filename, questions, "quiz", type);
 
-    let { result, totalMarks } = mark(questions);
+    let { result, totalMarks } = mark(questions, language);
 
     let quizBody = document.querySelector(".quiz-popup-body");
     let resultsBody = document.querySelector(".quiz-results-body");
@@ -327,14 +154,14 @@ async function handleEndQuiz(quizObject){
 
     switch(type) {
         case "new":
-            await updateNewQuizGrade(quizGradeObject, result);
+            await updateNewQuizGrade(quizGradeObject, result, totalMarks);
             break;
         case "resume":
-            await updateOldQuizGrade(quizGradeObject, result);
+            await updateOldQuizGrade(quizGradeObject, result, totalMarks);
             break;
     }
 
-    async function updateNewQuizGrade(quizGradeObject, marks){
+    async function updateNewQuizGrade(quizGradeObject, marks, totalMarks){
 
         let value = marks;
 
@@ -351,7 +178,7 @@ async function handleEndQuiz(quizObject){
 
         let params = `id=${id}&&userID=${userID}&&quizID=${quizID}`+
         `&&filename=${fileToSave}&&status=${status}&&value=${value}`+
-        `&&timeEnded=${timeEnded}`;
+        `&&timeEnded=${timeEnded}&&totalMarks=${totalMarks}`;
 
         console.log("params to save: ", params);
 
@@ -366,7 +193,7 @@ async function handleEndQuiz(quizObject){
 
     }
 
-    async function updateOldQuizGrade(quizGradeObject, marks){
+    async function updateOldQuizGrade(quizGradeObject, marks, totalMarks){
 
         let value = marks;
         let { id } = quizGradeObject;
@@ -375,7 +202,7 @@ async function handleEndQuiz(quizObject){
 
         console.log("finalTime: ", timeEnded);
 
-        let params = `id=${id}&&value=${value}&&timeEnded=${timeEnded}`;
+        let params = `id=${id}&&value=${value}&&timeEnded=${timeEnded}&&totalMarks=${totalMarks}`;
 
         let response = await AJAXCall({
             phpFilePath: "../include/quiz/updateOldQuizGrade.php",
@@ -395,27 +222,12 @@ async function handleEndQuiz(quizObject){
 
 }
 
-function mark(questions){
-
-    let result = 0;
-    let totalMarks = 0;
-
-    questions.forEach( question => {
-        if(question.answer == question.inputAnswer)
-            result += question.marksWorth;
-        totalMarks += question.marksWorth;
-    })
-
-    return { result, totalMarks };
-
-}
-
 async function startQuiz(quizGradeObject, type="new", mode){
 
     openPopup('.take-quiz-overlay');
     openPopup(".take-quiz-loader");
 
-    let { fileToLoad, fileToSave } = quizGradeObject;
+    let { fileToLoad, fileToSave, hierarchy } = quizGradeObject;
 
     console.log("fileToLoad: ", fileToLoad);
     console.log("fileToSave: ", fileToSave);
@@ -432,41 +244,33 @@ async function startQuiz(quizGradeObject, type="new", mode){
     }
 
     let quizFileResponse = await fetch(correctPath, {cache: "reload"});
-    console.log("correctPath: ", correctPath);
+    console.log("quizFileResponse:", quizFileResponse);
     let questions = await quizFileResponse.json();
-    console.log("quizResponseNow: ", quizFileResponse.json());
 
-    let questionsArray = questions.map( question => {
-        switch(question.type.toLowerCase()){
-            case "mcq":
-            case "multiple choice":
-            case "multiple choice question":
-                return new MultipleChoice(question);
-            case "true and false":
-            case "t and f":
-            case "t/f":
-            case "true/false":
-            case "true-false":
-            case "t-f":
-                return new TrueAndFalse(question);
-            case "fill in the blank":
-                return new FillInTheBlank(question);
-            default:
-                throw new Error("Not Made Yet");
-        }
-    });
+
+    let questionsArray = questions.map( question => 
+        questionMapSwitch(question)
+    );
 
     //TODO: start by saving the filename with the id of the quizGradeObject
     // if the type is new
 
-    let quiz;
+    const language = extrapolateLanguage();
+    
+    const quizObject = {
+        questionsArray, 
+        quizGradeObject, 
+        type, 
+        language, 
+        assessmentType: "quiz",
+        hierarchy
+    }
+    const quiz = new Quiz(quizObject)
 
     switch(type){
         case "resume":
-            quiz = new Quiz(questionsArray, quizGradeObject, type)
             break;
         case "new":
-            quiz = new Quiz(questionsArray, quizGradeObject, type)
             await addNewQuizGradeRowInDatabase(quizGradeObject);
             break;
     }
@@ -496,7 +300,6 @@ async function startQuiz(quizGradeObject, type="new", mode){
         closePopup('.take-quiz-loader');
     }, 2000);
 
-
     // return quiz;
 
 }
@@ -506,6 +309,8 @@ async function handleQuiz(quiz, quizButton, mode){
     let {
         id: quizID,
         filename: fromTeacherQuizFilename,
+        courseID,
+        hierarchy
         // name,
     } = quiz;
 
@@ -535,6 +340,8 @@ async function handleQuiz(quiz, quizButton, mode){
                 quizID,	
                 fileToLoad: studentQuizFilename,
                 fileToSave: studentQuizFilename,
+                courseID,
+                hierarchy
         }
 
         switch(quizStatus){
@@ -561,6 +368,8 @@ async function handleQuiz(quiz, quizButton, mode){
             quizID,	
             fileToLoad: fromTeacherQuizFilename,
             fileToSave: `Quiz-${uniqueID(2)}.json`,
+            courseID,
+            hierarchy
         }
 
         console.log("quizObjectRequired: ", quizObjectRequired);
@@ -582,12 +391,15 @@ async function addNewQuizGradeRowInDatabase(quizGradeObject){
         userID,	
         quizID,	
         fileToSave,
+        courseID,
+        hierarchy
     } = quizGradeObject;
 
     let timeStarted = getCurrentTimeInJSONFormat();
 
     let params = `id=${id}&&userID=${userID}&&quizID=${quizID}`+
-    `&&filename=${fileToSave}&&timeStarted=${timeStarted}&&status=started`;
+    `&&filename=${fileToSave}&&timeStarted=${timeStarted}&&status=started`
+    + `&&courseID=${courseID}&&hierarchy=${hierarchy}`;
 
     let response = await AJAXCall({
         phpFilePath: "../include/quiz/addNewQuizGradeRow.php",

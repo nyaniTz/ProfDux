@@ -399,9 +399,19 @@ async function generateGPTResponseFor(prompt) {
     }
 }
 
-async function saveQuizAsJSON(filename, ArrayContainingObjects, type){
+function getRandomElement(arr) {
+    if (arr.length === 0) {
+      return undefined;
+    }
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
+  }
+
+async function saveAssessmentAsJSON(filename, ArrayContainingObjects, assessmentType, type){
 
     let JSONString = JSON.stringify(ArrayContainingObjects);
+
+    console.log("assessment type: ", assessmentType);
 
     let correctPath;
 
@@ -409,11 +419,11 @@ async function saveQuizAsJSON(filename, ArrayContainingObjects, type){
         case "student":
         case "new":
         case "resume":
-            correctPath = `../quiz/taken/${filename}`;
+            correctPath = `../${assessmentType}/taken/${filename}`;
             break;
         case "teacher":
         case "generated":
-            correctPath = `../quiz/generated/${filename}`;
+            correctPath = `../${assessmentType}/generated/${filename}`;
             break;
     }
 
@@ -529,4 +539,65 @@ function createParamatersFrom(data){
 
     return params
 
+}
+
+function extractType(type){
+    
+    switch(type){
+        //TODO: refactor so that any image types can be accepted
+        case "image/png":
+        case "image/jpg":
+        case "image/jpeg":    
+            return "image";
+        case "application/pdf":
+            return "pdf";
+    }
+}
+
+function questionMapSwitch(question){
+    switch(question.type.toLowerCase()){
+        case "mcq":
+        case "multiple choice":
+        case "multiple choice question":
+        case "multiple choice questions":
+            return new MultipleChoice(question);
+        case "true and false":
+        case "true or false":
+        case "t and f":
+        case "t/f":
+        case "true/false":
+        case "true-false":
+        case "true_false":
+        case "t-f":
+        case "trueFalse":
+            return new TrueAndFalse(question);
+        case "fill in the blank":
+            return new FillInTheBlank(question);
+        default:
+            throw new Error(`Not Made Yet: ${question.type.toLowerCase()}`);
+    }
+}
+
+function questionEditMapSwitch(question){
+    switch(question.type.toLowerCase()){
+        case "mcq":
+        case "multiple choice":
+        case "multiple choice question":
+        case "multiple choice questions":
+            return new EditMultipleChoice(question);
+        case "true and false":
+        case "true or false":
+        case "t and f":
+        case "t/f":
+        case "true/false":
+        case "true-false":
+        case "true_false":
+        case "t-f":
+        case "truefalse":
+            return new EditTrueAndFalse(question);
+        case "fill in the blank":
+            return new EditFillInTheBlank(question);
+        default:
+            throw new Error(`Not Made Yet: ${question.type.toLowerCase()}`);
+    }
 }

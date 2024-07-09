@@ -24,6 +24,7 @@
     color: var(--accent);
     font-weight: 500;
     font-size: 1.3em;
+    background: #C7003710;
 }
 
 .quiz-popup-body {

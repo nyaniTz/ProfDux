@@ -28,7 +28,9 @@
         "../css/DuxChat.css",
         "../css/ebook.css",
         "../css/exam.css",
-        "../css/examStudent.css"
+        "../css/examStudent.css",
+        "../css/scheduling.css",
+        "../css/grades.css"
     );
 
     // These are for javascript files that you want
@@ -61,7 +63,7 @@
         "../js/Ebooks.js",
         "../js/exam.js",
         "../js/DuxClassChat.js",
-        "../js/webSpeechAPI.js",
+        "../js/GradesView.js",
     );
 
     foreach ($cssPaths as $path) {

@@ -51,7 +51,7 @@
             console.log(questions);
 
             let filename = `Quiz-${uniqueID(2)}.json`;
-            saveQuizAsJSON(filename, questions.questions, "generated");
+            saveAssessmentAsJSON(filename, questions.questions, "generated");
 
             let quizID = uniqueID(1);
             let courseID = "lshj44zm";
@@ -131,7 +131,7 @@
     </div>
 
     <div class="centered-container">
-        <div class="button" onclick="startEditingQuiz('Quiz-evhnwmhzlsrlqwqz.json')">Edit Quiz</div>
+        <div class="button" onclick="startEdittingAssessment('Quiz-evhnwmhzlsrlqwqz.json')">Edit Quiz</div>
     </div>
 
     <?php include '../teacher/components/editQuizOverlay.php'; ?>

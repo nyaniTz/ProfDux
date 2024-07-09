@@ -8,3 +8,40 @@ text::before,
     content: attr(data-en);
     position: relative;
 }
+
+.language-changer-container{
+    display: grid;
+    width: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.assessment-language-changer{
+    padding: 0px 13px;
+    color: white;
+    background-color: var(--accent);
+    font-size: 7px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.language-changer-element {
+    display: grid;
+    place-content: center;
+    color: var(--accent);
+    background: white;
+    cursor: pointer;
+    transition: 0.3s all;
+    border-bottom: 1px solid var(--dark-gray);
+    padding: 13px;
+}
+
+.language-changer-element:last-child{
+    border-bottom: none;
+}
+
+.language-changer-element:hover, .language-changer-element.active {
+    color: white;
+    background: var(--accent);
+}

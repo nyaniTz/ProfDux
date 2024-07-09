@@ -80,6 +80,8 @@ class Course {
 
         this.lectures.forEach( lecture => {
 
+            console.log("lectures object: ", JSON.stringify(lecture))
+
             this.lectureIndex = lecture.hierarchy;
 
             let lectureSection = document.createElement("div");
@@ -132,10 +134,10 @@ class Course {
             generateQuizButton.addEventListener("click", () => {
                switch(from){
                 case "object": 
-                    generateQuiz(lecture);
+                    generateQuiz({ courseID: this.id, ...lecture });
                     break;
                 case "excel": 
-                    generateQuiz(lecture, false);
+                    generateQuiz({ courseID: this.id, ...lecture }, false);
                     this.save();
                     break;
                }
@@ -154,6 +156,9 @@ class Course {
 
             lecture.subtopics.forEach( subtopic => {
 
+                let subtopicWrapper = document.createElement("div");
+                subtopicWrapper.className = "subtopics-wrapper";
+
                 const attachButton = this.createAttachButton(subtopic.id);
 
                 subtopicIndex = subtopic.hierarchy;
@@ -170,7 +175,20 @@ class Course {
                 let subtopicInputElement = this.createInputElement(inputElementObject);
                 subtopicInputElement.appendChild(attachButton);
 
-                subtopicsContainer.appendChild(subtopicInputElement);
+                subtopicWrapper.appendChild(subtopicInputElement);
+
+                let subtopicResourceWrapper = document.createElement("div");
+                subtopicResourceWrapper.className = "subtopics-resource-wrapper";
+
+                subtopic.resources.forEach( resource => {
+
+                    const resourceElement = this.createSubtopicItem(resource);
+                    subtopicResourceWrapper.appendChild(resourceElement);
+
+                })
+
+                subtopicWrapper.appendChild(subtopicResourceWrapper);
+                subtopicsContainer.appendChild(subtopicWrapper);
             })
 
             addSubtopicButton.addEventListener("click", () => {
@@ -226,6 +244,50 @@ class Course {
 
     }
 
+    createSubtopicItem(resource){
+
+        let resourceType = extractType(resource.type);
+        let { id, value } = resource;
+
+        let mainClassroomSubtopicItem = createElement("div", "main-classroom-subtopic-item");
+        mainClassroomSubtopicItem.setAttribute("id", id);
+
+        let rowItemIcon = createElement("div", "row-item-icon")
+        let rowItemText = createElement("div", "row-item-text")
+        let rowItemAction = createElement("div", "row-item-action");
+
+        let imageElement = document.createElement("img");
+
+        switch(resourceType){
+            case "image":
+                imageElement.src = "../assets/icons/image.png";
+                //TODO: change this textContent to a localizedTranslatableElement
+                rowItemAction.textContent = "view";
+                rowItemAction.addEventListener("click", () => openImageViewer(`../uploads/${value}`))
+                break;
+            case "pdf":
+                imageElement.src = "../assets/icons/pdf.png";
+                rowItemAction.textContent = "view";
+                rowItemAction.addEventListener("click", () => openPDFViewer(`../uploads/${value}`))
+                break;
+            //TODO: Video
+            default:
+                throw new Error("Type has not been created yet!");
+                break;
+        }
+
+        //TODO: This should be changed to the title of the resource;
+        rowItemText.textContent = value;
+
+        rowItemIcon.appendChild(imageElement);
+        mainClassroomSubtopicItem.appendChild(rowItemIcon)
+        mainClassroomSubtopicItem.appendChild(rowItemText)
+        mainClassroomSubtopicItem.appendChild(rowItemAction)
+
+        return mainClassroomSubtopicItem;
+
+    }
+
     createQuizRow(quizObject){
 
         let {
@@ -250,7 +312,7 @@ class Course {
         editButton.className = "button green-button quiz-edit-button";
         editButton.textContent = "edit quiz";
 
-        editButton.addEventListener("click", () => startEditingQuiz(filename))
+        editButton.addEventListener("click", () => startEdittingAssessment(filename, "quiz"))
 
         quizRowContainer.appendChild(quizFilename);
         quizRowContainer.appendChild(editButton);
@@ -611,65 +673,62 @@ class Course {
 
 // TODO: Get Course class lines under 500
 
-async function generateQuiz(lectureObject, refresh = true){
-
+async function generateQuiz(lectureObject, refresh = true, language="english"){
     let loader = loadLoader("Generating Quiz");
 
-    let lectureID = lectureObject.id;
-    let lectureTitle = lectureObject.title;
-    let courseID = lectureObject.courseID;
-    let subtopicTitles = lectureObject.subtopics
+    const languages = ["english", "turkish"];
+    const educationEnvironment = "college students";
+    const types = ["multiple choice questions", "fill in the blanks", "true and false"];
+    const levels = ["easy", "medium", "hard", "difficult", "extremely difficult"];
+
+    const lectureID = lectureObject.id;
+    const lectureTitle = lectureObject.title;
+    const courseID = lectureObject.courseID;
+
+    console.log("courseID: ", courseID);
+
+    const topics = lectureObject.subtopics
     .map( subtopic => subtopic.title ).join(", ");
 
+    let quizQuestions = [];
 
-    let language = "turkish"; //TODO: Toggle option.
-    let topic = subtopicTitles;
-    let educationEnvironment = "college students";
 
-    //TODO: question count is going to 9 and not the intended maximum
-    let multipleChoiceCount = 10; //10
-    let fillInTheBlankCount = 2; //2
-    let trueAndFalseCount = 5; //5
+    for await(const type of types){
+        console.log("type: ", type);
 
-    //TODO: figure out logic
-    let hardQuestionsCount = 2;
-    let mediumQuestionsCount = 2;
-    let easyQuestionsCount = 1;
+        const generateQuestionObject = { 
+            type,
+            languages,
+            subtopics: lectureObject.subtopics,
+            educationEnvironment,
+            topics,
+            level: getRandomElement(levels)
+        };
 
-    let query = 
-    `create for me in valid json format using ISO encoding, 
-    a series of new questions in the ${language} language as well as their answers 
-    in the ${language} language in the topics of ${topic} 
-    for ${educationEnvironment}. 
-    There should be ${multipleChoiceCount} choice questions
-    with a minimum of 4 answers that do not include letters
-    at the beginning. 
-    There should be ${fillInTheBlankCount} fill in the blank questions and 
-    ${trueAndFalseCount} true and false questions with their answer options. 
-    ${hardQuestionsCount} of those questions should be hard, 
-    ${mediumQuestionsCount} should be medium and 
-    ${easyQuestionsCount} should be easy. 
-    The json format should have the following keys, 
-    "question, answerOptions, answer, type, hardness". 
-    The answerOptions should only be available if the 
-    question type is multiple choice or true and false.
-    Do not add any invalid characters in the result please.`;
+        console.log("generateQuestionObject: ", generateQuestionObject)
 
-    let unparsedJSONResponse = await generateGPTResponseFor(query);
-    let questions = await JSON.parse(unparsedJSONResponse);
-    console.log("questions amount: ", questions.questions.length);
+        let result = await generateQuestion(generateQuestionObject, 2);
+        console.log("result: ", result);
+        quizQuestions = [ ...quizQuestions, ...result ];
+
+    }
+
+    console.log("quizQuestions: ", quizQuestions);
+
 
     let filename = `Quiz-${uniqueID(2)}.json`;
-    saveQuizAsJSON(filename, questions.questions, "generated");
+    saveAssessmentAsJSON(filename, quizQuestions,"quiz","generated");
 
     let quizID = uniqueID(1);
-    let name = `Quiz on ${subtopicTitles}`; // ...
+    let name = `Quiz on ${topics}`; // ...
     let dateGenerated = getCurrentTimeInJSONFormat();
     let hierarchy = ""; // ...
-    let totalMarks = questions.questions.length; //TODO: figure out the marks properly...
+    let totalMarks = quizQuestions.length; //TODO: figure out the marks properly...
 
+    console.log("hierarchy: ", lectureObject.hierarchy);
+    
     let params = `id=${quizID}&&courseID=${courseID}&&lectureID=${lectureID}&&name=${name}`+
-    `&&dateGenerated=${dateGenerated}&&filename=${filename}&&totalMarks=${totalMarks}`;
+    `&&dateGenerated=${dateGenerated}&&filename=${filename}&&totalMarks=${totalMarks}&&hierarchy=${lectureObject.hierarchy}`;
 
     let response = await AJAXCall({
         phpFilePath: "../include/quiz/addNewQuiz.php",
@@ -684,6 +743,45 @@ async function generateQuiz(lectureObject, refresh = true){
         if(refresh) refreshTeacherCourseOutline(); //Bugs???
         removeLoader(loader);
     }, 2000);
+    
+}
+
+async function generateQuestion(generateQuestionObject, amount){
+
+    const { 
+        type,
+        languages,
+        subtopics,
+        educationEnvironment,
+        level,
+        topics
+    } = generateQuestionObject;
+
+    let query = 
+    `create for me in valid json format using ISO encoding, ${amount} questions with the keywords 'questions' in the ${languages.map( language => `${language} language`).join("and ")} as well as their answers 
+    in the ${languages.map( language => `${language} language`).join("and ")} with those exact key names in the topics of ${topics} 
+    for ${educationEnvironment}. 
+
+    The questions should be ${type} with its respective answer choices as well 
+    as the correct answer option.
+
+    The questions should be ${level}.
+
+    The json format should have the following keys, 
+    "question, answerOptions, answer, type, hardness". 
+
+    The answerOptions should only be available if the 
+    question type is multiple choice or true and false.
+
+    Do not add any invalid characters in the result please.`;
+
+    let unparsedJSONResponse = await generateGPTResponseFor(query);
+    let result = await JSON.parse(unparsedJSONResponse);
+
+    if(result.questions.questions) return result.questions.questions
+    if(result.questions) return result.questions
+    else if(result.question) return result.question
+    else return result
     
 }
 

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grades</title>
+
+    <link rel="stylesheet" href="../css/root.css">
+</head>
+<body>
+
+
+    <style>
+
+        .grade-element-container {
+            display: grid;
+            border: 2px solid var(--accent);
+            border-radius: 5px;
+            padding: 13px;
+            grid-template-columns: 1fr auto;
+            grid-gap: 20px;
+            max-width: 200px;
+            color: var(--accent);
+        }
+
+        .grade-element-title{
+
+        }
+
+        .grade-element-result-container{
+            display: grid;
+            grid-template-columns: auto auto auto;
+            grid-gap: 3px;
+            font-weight: 800;
+        }
+
+    </style>
+
+    <div class="grade-element-container">
+        <div class="grade-element-title">Quiz 1</div>
+        <div class="grade-element-result-container">
+            <div class="grade-element-result-value">2</div>
+            <div class="delimeter">/</div>
+            <div class="grade-element-total">3</div>
+        </div>
+    </div>
+    
+</body>
+</html>

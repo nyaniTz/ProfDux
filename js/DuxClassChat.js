@@ -52,6 +52,7 @@ class DuxClassChat {
         this.id = id;
         this.currentStep = "lecture";
         this.courseID = courseID;
+        this.currentHierarchy = 0;
 
         ( async() => {
             try{
@@ -100,7 +101,8 @@ class DuxClassChat {
 
         if(this.lectureQueue.length > 0){
             this.currentLecture = this.lectureQueue.shift();
-
+            this.currentHierarchy = this.currentLecture.hierarchy;
+            
             this.renderLectureTitle(this.currentLecture.title);
 
             if(this.currentLecture.quizzes.length > 0){
@@ -172,9 +174,11 @@ class DuxClassChat {
     getCurrentQuiz(){
 
         if(this.quizQueue.length > 0){
+
             this.currentQuiz = this.quizQueue.shift();
+            const quizObject = { hierarchy: this.currentHierarchy, ...this.currentQuiz };
             this.quizButton = this.renderQuizButton();
-            handleQuiz(this.currentQuiz, this.quizButton, "iterative"); // TODO: handle quiz finishing.
+            handleQuiz({ courseID: this.courseID , ...quizObject }, this.quizButton, "iterative"); // TODO: handle quiz finishing.
         } else {
             this.currentStep = "lecture";
             this.next();

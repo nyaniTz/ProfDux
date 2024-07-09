@@ -20,6 +20,7 @@
     $status = $_POST['status'];
     $value = $_POST['value'];
     $timeEnded = $_POST['timeEnded'];
+    $totalMarks = $_POST['totalMarks'];
 
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
@@ -28,7 +29,7 @@
     $query = "
         UPDATE quizGrades
         SET filename='$filename', status = '$status', timeEnded = '$timeEnded',
-        value = '$value', quizID = '$quizID', userID = '$userID'
+        value = '$value', quizID = '$quizID', userID = '$userID', totalMarks = '$totalMarks'
         WHERE id='$id'
     ";
 

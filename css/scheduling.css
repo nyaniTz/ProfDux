@@ -108,6 +108,11 @@
     grid-template-columns: 1fr;
 }
 
+.lesson-right-pane.adjustable{
+    grid-template-columns: 1fr;
+    /* grid-template-columns: repeat(auto-fit,minmax(100px, 200px)); */
+}
+
 .course-details-box{
     position: absolute;
     top: 0px;

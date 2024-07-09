@@ -16,8 +16,35 @@
         <div class="outer-container">
             <?php include 'components/sidebar.php'; ?>
             <div class="main-container">
-                <?php include 'components/dashboard.php'; ?>
+                <h1 class="large-title">Grades</h1>
+
+                <div class="personal-grades-outer-container">
+
+                </div>
             </div>
         </div>
+
+        <script>
+
+            ( async () => {
+
+                let { id } = await getUserDetails();
+                let params = `id=${id}`;
+
+                let result = await AJAXCall({
+                    phpFilePath: "../include/grades/getPersonalGrades.php",
+                    rejectMessage: "Getting Grades Failed",
+                    params,
+                    type: "fetch"
+                });
+
+                console.log("grades", result);
+
+                const grades = new GradesView(result);
+                grades.renderGrades();
+
+            })();
+
+        </script>
     </body>
 </html>

@@ -298,3 +298,16 @@ a {
     grid-gap: 40px;
     place-items: center;
 }
+
+.safe-element-padding .close-button{
+    position: relative;
+    top: unset;
+    right: unset;
+}
+
+.safe-element-padding {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    grid-gap: 20px;
+}

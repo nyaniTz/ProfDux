@@ -515,6 +515,7 @@ function startTranslation() {
         if (gt_float_open) gt_hide_float_switcher();
     });
     if (detect_browser_language && window.sessionStorage && window.navigator && sessionStorage.getItem("gt_autoswitch") == null && !/bot|spider|slurp|facebook/i.test(navigator.userAgent)) {
+
         var accept_language = (navigator.language || navigator.userLanguage).toLowerCase();
         switch (accept_language) {
             case "zh":

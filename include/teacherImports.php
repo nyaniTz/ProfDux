@@ -23,7 +23,9 @@
         "../css/settings.css",
         "../css/quiz.css",
         "../css/scheduling.css",
-        "../css/exam.css"
+        "../css/exam.css",
+        "../css/classroom.css",
+        "../css/image-viewer.css",
     );
 
     // These are for javascript files that you want
@@ -47,16 +49,13 @@
         "../js/pdf-viewer.js",
         "../js/tab.js",
         "../js/headerBar.js",
-
         "../js/pdf-viewer.js",
         "../js/image-viewer.js",
         "../js/courseManagement.js",
         "../js/Course.js",
         "../js/Question.js",
         "../js/Quiz.js",
-        "../js/EditQuiz.js",
-        "../js/exam.js",
-        "../js/EditExam.js",
+        "../js/EditAssessment.js",
     );
 
     foreach ($cssPaths as $path) {

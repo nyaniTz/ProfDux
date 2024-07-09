@@ -43,6 +43,7 @@ class ClassView {
         this.id = id;
         this.currentStep = "lecture";
         this.courseID = courseID;
+        this.currentHierarchy = 0;
         this.next();
     }
 
@@ -72,7 +73,8 @@ class ClassView {
 
         if(this.lectureQueue.length > 0){
             this.currentLecture = this.lectureQueue.shift();
-
+            this.currentHierarchy = this.currentLecture.hierarchy;
+            
             if(this.currentLecture.quizzes.length > 0){
                 this.hasQuiz = true 
                 this.quizQueue = this.currentLecture.quizzes
@@ -124,7 +126,8 @@ class ClassView {
 
         if(this.quizQueue.length > 0){
             this.currentQuiz = this.quizQueue.shift();
-            handleQuiz(this.currentQuiz, this.quizButton, "iterative"); // TODO: handle quiz finishing.
+            const quizObject = { hierarchy: this.currentHierarchy, ...this.currentQuiz };
+            handleQuiz({ courseID: this.courseID ,...quizObject }, this.quizButton, "iterative"); // TODO: handle quiz finishing.
         } else {
             this.currentStep = "lecture";
             this.next();

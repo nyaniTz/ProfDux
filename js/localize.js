@@ -58,6 +58,13 @@ function fetchLocalization(text){
         "total quiz marks": {"en": "Total Quiz Marks", "tr": "Toplam Doğru Sayısı"},
         "score": {"en": "Score", "tr": "Puan"},
         "create course": {"en": "Create Course", "tr": "Kurs Oluştur"},
+        "excel upload": {"en": "Excel Upload", "tr": "Excel Yükle"},
+        "edit learning objectives": {"en": "Edit Learning Objectives", "tr": "Öğrenim Hedeflerini Düzenle"},
+        "delete course" : {"en": "Delete Course", "tr": "Kursu Sil"},
+        "add new lecture" : {"en": "Add New Lecture", "tr": "Yeni Ders Ekle"},
+        "attach" : { "en": "attach", "tr" : "Ekle"},
+        "cancel" : { "en": "cancel", "tr" : "İptal"},
+        "upload resource" : { "en": "Upload Resource", "tr" : "Kaynağı Yükle"},
     }
 
     let escape =  { "en" : text, "tr" : text }

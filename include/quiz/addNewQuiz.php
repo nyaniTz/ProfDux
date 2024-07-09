@@ -11,6 +11,7 @@
     $dateGenerated = $_POST['dateGenerated'];
     $filename = $_POST['filename'];
     $totalMarks = $_POST['totalMarks'];
+    $hierarchy = $_POST['hierarchy'];
 
 
     if (!$conn) {
@@ -18,8 +19,8 @@
     }
 
     $query = "
-        INSERT INTO quiz (id, name, courseID, lectureID, dateGenerated, filename, totalMarks)
-        VALUES ('$id', '$name', '$courseID', '$lectureID', '$dateGenerated', '$filename', '$totalMarks')
+        INSERT INTO quiz (id, name, courseID, lectureID, dateGenerated, filename, totalMarks, hierarchy)
+        VALUES ('$id', '$name', '$courseID', '$lectureID', '$dateGenerated', '$filename', '$totalMarks', '$hierarchy')
     ";
 
     $result = mysqli_query($conn,$query);

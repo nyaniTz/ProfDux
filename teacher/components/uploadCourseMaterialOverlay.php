@@ -4,7 +4,7 @@
             <div class="close-button" onclick="closeUploadOverlay()">
                 <img src="../assets/icons/close.png" alt="">
             </div>
-            <h1 class="pop-up-title">Upload Resource</h1> 
+            <h1 class="pop-up-title"><text>Upload Resource</text></h1> 
         </div>
 
         <div class="popup-body">
@@ -54,8 +54,12 @@
 
         <div class="popup-footer">
             <div class="button-group">
-                <div class="button secondary-button" onclick="revertUploadChoice()">Cancel</div>
-                <div class="button" onclick="startUploading()">Attach</div>
+                <div class="button secondary-button" onclick="revertUploadChoice()">
+                    <text>Cancel</text>
+                </div>
+                <div class="button" onclick="startUploading()">
+                    <text>Attach</text>
+                </div>
             </div>
         </div>
     </div>

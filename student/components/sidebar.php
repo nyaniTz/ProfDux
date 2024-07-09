@@ -61,11 +61,11 @@
 
     </div>
 
-    <div class="gtranslate_wrapper"></div>
+    <div class="gtranslate_wrapper" onclick="setCurrentLanguage()"></div>
     <script>
         window.gtranslateSettings = {
             "default_language": "en",
-            "languages": ["en", "tr", "fr", "de", "it", "es"],
+            "languages": ["en", "tr"],
             "wrapper_selector": ".gtranslate_wrapper",
             "switcher_horizontal_position": "left",
             "switcher_vertical_position": "bottom",

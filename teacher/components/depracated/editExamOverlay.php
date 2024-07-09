@@ -1,4 +1,4 @@
-<div class="overlay edit-quiz-overlay">
+<div class="overlay edit-assessment-overlay">
     <div class="popup quiz-popup">
         <div class="popup-header">
             <div class="button save-button">Save and Close</div>

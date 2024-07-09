@@ -17,6 +17,11 @@
   border-radius: 10px;
   overflow: hidden;
   place-self: center;
+  height: 500px;
+}
+
+.image-viewer > img {
+  height: inherit;
 }
 
 .image-viewer-overlay .close-button {

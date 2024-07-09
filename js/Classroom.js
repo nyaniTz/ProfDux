@@ -120,7 +120,8 @@ class Classroom {
                     return;
                 }
                 
-                handleQuiz(quiz, quizRowItemButton)
+                const quizObject = { hierarchy: lecture.hierarchy, ...quiz };
+                handleQuiz({courseID: this.courseID, ...quizObject }, quizRowItemButton)
 
             })
 
@@ -178,19 +179,6 @@ class Classroom {
 
     }
 
-}
-
-function extractType(type){
-    
-    switch(type){
-        //TODO: refactor so that any image types can be accepted
-        case "image/png":
-        case "image/jpg":
-        case "image/jpeg":    
-            return "image";
-        case "application/pdf":
-            return "pdf";
-    }
 }
 
 async function renderCourseOutline(givenID){

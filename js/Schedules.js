@@ -32,7 +32,8 @@ class Schedules {
             lessonImageBox.appendChild(courseDetails);
 
             const saveButton = document.createElement("button");
-            saveButton.textContent = "Save";
+            const innerButtonText = createLocalizedTextElement("Save");
+            saveButton.appendChild(innerButtonText);
             saveButton.className = "button save-schedule-button";
 
             lessonLeftPane.appendChild(lessonImageBox);

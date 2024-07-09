@@ -16,8 +16,38 @@
         <div class="outer-container">
             <?php include 'components/sidebar.php'; ?>
             <div class="main-container">
-                <?php include 'components/dashboard.php'; ?>
+                <h1 class="large-title">Grades</h1>
             </div>
         </div>
+
+        <script>
+
+            const id = "lth0xgwp";
+
+            ( async () => {
+
+                try {
+                    
+                    let result = await AJAXCall({
+                        phpFilePath: "../include/quiz/getCourseGrades.php",
+                        rejectMessage: "Getting Timetable Failed",
+                        params: `id=${id}`,
+                        type: "fetch"
+                    });
+
+                    // console.log(result);
+
+                    const quizGrades = result.quizGrades[0]
+                    console.log("quizGrades: ", quizGrades);
+
+                    let objectEntries = Object.entries(quizGrades)
+                    console.log(objectEntries[0][1]);
+
+                }catch(error){
+                    console.log(error)
+                }
+
+            })()
+        </script>
     </body>
 </html>

@@ -5,10 +5,10 @@
         <h1 class="medium-title" id="course-title"></h1>
         <p class="small-title" id="course-code"></p>
         <div class="button" id="editLearningObjectives" style="justify-self:start;">
-            Edit Learning Objectives  
+            <text>Edit Learning Objectives</text> 
         </div>
         <div class="button" id="deleteCourseButton" style="justify-self:start;">
-            Delete Course  
+            <text>Delete Course</text> 
         </div>
     </div>
 
@@ -25,7 +25,7 @@
             <text>Save</text>
         </div>
         <div class="button" id="addNewLecture">
-            <p>Add New Lecture</p>
+            <text>Add New Lecture</text>
         </div>
     </div>
 </div>
