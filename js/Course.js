@@ -758,19 +758,19 @@ async function generateQuestion(generateQuestionObject, amount){
     } = generateQuestionObject;
 
     let query = 
-    `create for me in valid json format using ISO encoding, ${amount} questions with the keywords 'questions' in the ${languages.map( language => `${language} language`).join("and ")} as well as their answers 
-    in the ${languages.map( language => `${language} language`).join("and ")} with those exact key names in the topics of ${topics} 
+    `create for me in valid json format using ISO encoding, ${amount} questions with the keywords 'questions' in the ${languages.map( language => `${language}`).join("and ")} as well as their answers 
+    in the ${languages.map( language => `${language}`).join("and ")} with those exact key names in the topics of ${topics} 
     for ${educationEnvironment}. 
 
-    The questions should be ${type} with its respective answer choices as well in the languages types ${languages.map( language => `${language} language`).join("and ")}
-    as well as the correct answer option in ${languages.map( language => `${language} language`).join("and ")}.
+    The questions should be ${type} with its respective answer choices as well in the languages types ${languages.map( language => `${language}`).join("and ")}
+    as well as the correct answer option in ${languages.map( language => `${language}`).join("and ")}.
 
     The questions should be ${level}.
 
     The json format should have the following keys, 
     "question, answerOptions, answer, type, hardness". 
 
-    question, answerOptions and answer should all come with the languages ${languages.map( language => `${language} language`).join("and ")}
+    question, answerOptions and answer should all come with the ${languages.map( language => `${language}`).join("and ")}
 
     The answerOptions should only be available if the 
     question type is multiple choice or true and false.
