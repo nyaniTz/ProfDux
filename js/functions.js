@@ -569,9 +569,24 @@ function questionMapSwitch(question){
         case "true-false":
         case "true_false":
         case "t-f":
-        case "trueFalse":
+        case "truefalse":
             return new TrueAndFalse(question);
         case "fill in the blank":
+        case "fill_in_the_blank":
+        case "fill in the blanks":
+        case "fill_in_the_blanks":
+        case "fillintheblank":
+        case "fillintheblanks":
+        case "fill/in/the/blank":
+        case "fill/in/the/blanks":
+        case "fill-in-the-blank":
+        case "fill-in-the-blanks":
+        case "fitb":
+        case "fitbs":
+        case "f-i-t-b":
+        case "f-i-t-b-s":
+        case "blank":
+        case "blanks":
             return new FillInTheBlank(question);
         default:
             throw new Error(`Not Made Yet: ${question.type.toLowerCase()}`);
@@ -596,6 +611,21 @@ function questionEditMapSwitch(question){
         case "truefalse":
             return new EditTrueAndFalse(question);
         case "fill in the blank":
+        case "fill_in_the_blank":
+        case "fill in the blanks":
+        case "fill_in_the_blanks":
+        case "fillintheblank":
+        case "fillintheblanks":
+        case "fill/in/the/blank":
+        case "fill/in/the/blanks":
+        case "fill-in-the-blank":
+        case "fill-in-the-blanks":
+        case "fitb":
+        case "fitbs":
+        case "f-i-t-b":
+        case "f-i-t-b-s":
+        case "blank":
+        case "blanks":
             return new EditFillInTheBlank(question);
         default:
             throw new Error(`Not Made Yet: ${question.type.toLowerCase()}`);
