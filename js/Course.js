@@ -762,13 +762,15 @@ async function generateQuestion(generateQuestionObject, amount){
     in the ${languages.map( language => `${language} language`).join("and ")} with those exact key names in the topics of ${topics} 
     for ${educationEnvironment}. 
 
-    The questions should be ${type} with its respective answer choices as well 
-    as the correct answer option.
+    The questions should be ${type} with its respective answer choices as well in the languages types ${languages.map( language => `${language} language`).join("and ")}
+    as well as the correct answer option in ${languages.map( language => `${language} language`).join("and ")}.
 
     The questions should be ${level}.
 
     The json format should have the following keys, 
     "question, answerOptions, answer, type, hardness". 
+
+    question, answerOptions and answer should all come with the languages ${languages.map( language => `${language} language`).join("and ")}
 
     The answerOptions should only be available if the 
     question type is multiple choice or true and false.
