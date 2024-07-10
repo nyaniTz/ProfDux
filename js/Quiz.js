@@ -23,11 +23,14 @@ class Quiz {
 
     }
 
-    constructor({ questions, quizGradeObject, type, assessmentType, language = "english" }){
+    constructor({ questionsArray, quizGradeObject, type, assessmentType, language = "english" }){
 
         this.filename = quizGradeObject.fileToSave; // ... TODO: write some documentation
-        this.questions = questions; // randomize(questions);
-        this.maximumQuizNumber = questions.length - 1;
+        this.questions = questionsArray; // randomize(questions);
+
+        console.log("questions: ", this.questions);
+
+        this.maximumQuizNumber = this.questions.length - 1;
         this.type = type;
         this.currentQuizNumber = 0;
         this.quizGradeObject = quizGradeObject;
