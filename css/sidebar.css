@@ -16,6 +16,9 @@
     overflow: scroll;
     padding-bottom: 100px;
 
+    z-index: 1;
+    background: white;
+
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }

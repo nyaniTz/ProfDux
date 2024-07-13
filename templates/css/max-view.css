@@ -1,0 +1,35 @@
+.max-view{
+    position: relative;
+    top: 0px;
+    right: 0px;
+    width: 100%;
+    /* border: 1px solid red; */
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.max-view > .view-icon {
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    justify-self: end;
+    transition: 0.3s all;
+    cursor: pointer;
+}
+
+.min-screen-icon {
+    display: none;
+}
+
+.view-icon > .icon {
+    height: 100%;
+    transition: 0.5s all;
+}
+
+.hover-enlarge:hover {
+    transform: scale(1.2);
+}

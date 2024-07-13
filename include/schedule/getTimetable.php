@@ -13,9 +13,10 @@
     if($id){
 
         $query = "
-            SELECT courses.id, courses.courseCode, courses.title, courses.image FROM subscriptions
+            SELECT courses.id, courses.courseCode, courses.title, courses.image, userDetails.name FROM subscriptions
             INNER JOIN courses ON courses.id = subscriptions.courseID
             INNER JOIN users ON subscriptions.userID = users.id
+            INNER JOIN userDetails ON courses.creatorID = userDetails.id
             WHERE users.id = '$id'
         ";
 
@@ -66,7 +67,9 @@
                 "id" => $course['id'],
                 "title" => $course['title'],
                 "courseCode" => $course['courseCode'],
-                "lectures" => $lectureArray
+                "lectures" => $lectureArray,
+                "image" => $course['image'],
+                "courseInstructor" => $course['name']
             );
 
             $finalResult[] = $resultA;

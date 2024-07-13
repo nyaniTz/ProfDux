@@ -1,0 +1,68 @@
+* {
+    font-family: 'sofiapro';
+    margin: 0 0;
+    padding: 0 0;
+    letter-spacing: -0.2px;
+    line-height: 1.4em;
+}
+
+.initial-loader{
+    place-self: center;
+    padding: 50px 0px;
+}
+
+.display-none { display: none;}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.close-pop-up{
+    display: grid;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    height: 26px;
+    width: 26px;
+    background-image: url("../images/close.png");
+    background-size: 10px 10px;
+    background-repeat: no-repeat;
+    background-position: 8px 8px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    transition: 0.1s;
+    cursor: pointer;
+}
+
+.close-pop-up:hover{ transform: scale(1.2); }
+
+
+*::-webkit-scrollbar
+{
+	width: 5px;
+	background-color: transparent;
+}
+
+
+*::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	/* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3); */
+	background-color: var(--primary-color);
+}
+
+.select-none {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+small {
+  font-size: 9px;
+}

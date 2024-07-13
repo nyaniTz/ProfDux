@@ -57,6 +57,7 @@
     <?php include 'components/editLearningObjectivesOverlay.php' ?>
 
     <script>
+        
         window.addEventListener("load", function() {
             loadCourses("id");
         })

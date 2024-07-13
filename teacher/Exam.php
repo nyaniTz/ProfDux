@@ -8,6 +8,7 @@
     <page data-id="Exam"></page>
 
     <?php include '../include/teacherImports.php'; ?>
+    <script src="../js/UILoaders.js?1"></script>
 
 </head>
 
@@ -30,8 +31,27 @@
                     Exam
                 </h1>
             </div>
+
+            <div class="course-view-container" id="student-exam-container" style="margin-top:10px">
+                <div class="container-message blank course-view-container-loader">
+                    <div class="sk-fold">
+                        <div class="sk-fold-cube"></div>
+                        <div class="sk-fold-cube"></div>
+                        <div class="sk-fold-cube"></div>
+                        <div class="sk-fold-cube"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+
+        ( async () => {
+            await loadCourses("id");
+        })();
+
+    </script>
     
 </body>
 

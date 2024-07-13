@@ -8,7 +8,7 @@
     <page data-id="Exam"></page>
 
     <?php include '../include/studentImports.php'; ?>
-
+    
 </head>
 
 <body>
@@ -21,6 +21,7 @@
             <h1 class="large-title">
                 Your Exams
             </h1>
+
             <!-- <div class="course-view-container">
                 <div class="container-message blank course-view-container-loader">
                     <div class="sk-fold">
@@ -31,6 +32,7 @@
                     </div>
                 </div>
             </div> -->
+
             <div>
                 <h2 class="large-title">
                     Upcoming Exams

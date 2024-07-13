@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Row</title>
+</head>
+<body>
+
+    <div class="container">
+        <div class="column-element fixed">1</div>
+        <div class="column-element fixed">2</div>
+        <div class="column-element">3</div>
+        <div class="column-element">4</div>
+        <div class="column-element">5</div>
+        <div class="column-element">6</div>
+        <div class="column-element">7</div>
+        <div class="column-element">8</div>
+        <div class="column-element">9</div>
+        <div class="column-element fixed">10</div>
+    </div>
+
+    <style>
+
+        *{
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: calc(100px + 100px + (7 * 50px) + 100px);
+            border: 2px solid red;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: 100px 100px repeat(7, auto) 100px;
+        }
+
+        .column-element {
+            width: 50px;
+            border: 1px solid green;
+        }
+
+        .column-element.fixed { 
+            width: 100px;
+        }
+
+    </style>
+    
+</body>
+</html>

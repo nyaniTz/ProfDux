@@ -1,0 +1,37 @@
+.inner-timetable-container{
+    width: 100%;
+    /* border: 1px solid red; */
+}
+
+
+.timetable-row{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 20px;
+    border: 2px solid var(--accent);
+    padding: 20px;
+    border-radius: 10px;
+    
+}
+
+.course-image{
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.course-image img {
+    height: inherit;
+}
+
+.timetable-row-details{
+    /* border: 1px solid black; */
+    display: grid;
+    align-items: start;
+    grid-gap: 10px;
+    color: var(--accent);
+}
+
+.timetable-row-details * {
+    /* border: 1px solid purple; */
+}

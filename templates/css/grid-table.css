@@ -1,0 +1,207 @@
+.section-title{
+    color: black;
+    margin-bottom: 30px;
+}
+
+/* TODO: Get rid of scrollbars on table */
+:root {
+    --number-cols: 12;
+}
+
+.main-container {
+    /* border: 10px solid green; */
+    max-height: 100vh;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: grid;
+    align-items: start;
+    grid-template-rows: auto 1fr;
+}
+
+.grades-stats-review-container{
+    border: 1px solid red;
+}
+
+.center-content {
+    /* display: grid; */
+    align-items: start;
+    overflow: scroll;
+    /* border: 5px solid pink; */
+    height: 100%;
+    grid-template-rows: auto auto;
+}
+
+.extended-wrapper{
+    /* display: grid; */
+    width: 100%;
+    overflow: scroll;
+    height: 100%;
+    /* border: 3px solid blue; */
+}
+
+.grid-table-section {
+    --table-color: #babababa;
+    --table-border-width: 2px;
+    --min-width: calc(100px * var(--number-cols));
+    counter-reset: section;
+    width: var(--min-width);
+}
+
+.grid-table-section.tasks-grid-table > .grid-header,
+.grid-table-section.tasks-grid-table > .grid-row
+{
+    grid-template-columns: repeat(var(--number-cols), auto);
+}
+
+.grid-header, .grid-row {
+    display: grid;
+    list-style: none;
+    grid-template-columns: repeat(var(--number-cols), auto);
+}
+
+.grid-header {
+    width: var(--min-width);
+    background: #ffe5e5;
+}
+
+.grid-header > *, .grid-row > * {
+    border: var(--table-border-width) solid var(--table-color);
+    border-bottom: none;
+    border-right: none;
+    padding: 10px;
+}
+
+.grid-header > *:last-child, .grid-row > *:last-child {
+    border-right: var(--table-border-width) solid var(--table-color);
+}
+
+.grid-row:last-child > * {
+    border-bottom: var(--table-border-width) solid var(--table-color);
+}
+
+.grid-header > *:first-child {
+    display: grid;
+    border-top-left-radius: 10px;
+    justify-items: center;
+}.grid-header > *:last-child {
+    border-top-right-radius: 10px;
+    display: grid;
+    justify-items: center;
+}
+
+.grid-row:last-child > *:first-child{
+    border-bottom-left-radius: 10px;
+}.grid-row:last-child > *:last-child{
+    border-bottom-right-radius: 10px;
+}
+
+.grid-row {
+    height: 100%;
+    counter-increment: section;
+}
+
+.grid-row > * {
+    display: grid;
+    align-items: center;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+}
+
+.grid-row:last-child {
+    border-bottom: none;
+}
+
+.grid-row > *:first-child, .grid-row > *:last-child  {
+    justify-items: center;
+}
+.slide-to-scroll {
+    position: absolute;
+    right: calc(40px);
+    /* margin-right: 7.5px; */
+    margin-top: 13px;
+    font-size: 13px;
+    display: none;
+}
+
+.small-tc-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+}
+
+.small-icon{
+    height: 13px;
+    width: 13px;
+    display: grid;
+    position: relative;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-sizing: content-box;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0,0.06) 0px 0px 0px 1px;
+    background: var(--dark-accent);
+}
+
+.small-icon img {
+    height: 100%;
+    width: 100%;
+}
+
+.delete {
+    color: white;
+    background: var(--error);
+}
+
+/* .itemization-badge{
+    background-color: var(--light-gray);
+} */
+
+.itemization-badge::after {
+    position: relative;
+    content: counter(section);
+}
+
+.slider{
+    /* border: 1px solid red; */
+    width: 100%;
+    position: relative;
+}
+
+.slider > p {
+    position: relative;
+    font-weight: 600;
+    display: inline-block;
+    left: 6px;
+    top: -5px;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: default;
+}
+
+.slider > p:hover {
+    background: #e0e0e05b;
+}
+
+.slider > p::after {
+    content: "";
+    position: absolute;
+    height: 2px;
+    background: #000;
+    width: 100%;
+    bottom: calc(-5px - 2px);
+    left: 0px;
+    border-top-left-radius: 100px;
+}
+
+@media screen and (max-width:1400px) {
+    .slide-to-scroll{
+        display: block;
+    }
+}
+
+.fixed50{
+    width: 50px;
+}
+
+.fixed100{
+    width: 100px;
+}

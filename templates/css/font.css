@@ -1,0 +1,122 @@
+/* @font-face {
+    font-family: 'sofiapro';
+    src: url('fonts/SofiaProUltraLight.woff2') format('woff2'),
+         url('fonts/SofiaProUltraLight.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sofiapro';
+    src: url('fonts/SofiaProExtraLight.woff2') format('woff2'),
+         url('fonts/SofiaProExtraLight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sofiapro';
+    src: url('fonts/SofiaProLight.woff2') format('woff2'),
+         url('fonts/SofiaProLight.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sofiapro';
+    src: url('fonts/SofiaProRegular.woff2') format('woff2'),
+         url('fonts/SofiaProRegular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sofiapro';
+    src: url('fonts/SofiaProMedium.woff2') format('woff2'),
+         url('fonts/SofiaProMedium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sofiapro';
+    src: url('fonts/SofiaProSemiBold.woff2') format('woff2'),
+         url('fonts/SofiaProSemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sofiapro';
+    src: url('fonts/SofiaProBold.woff2') format('woff2'),
+         url('fonts/SofiaProBold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'sofiapro';
+    src: url('fonts/SofiaProBlack.woff2') format('woff2'),
+         url('fonts/SofiaProBlack.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+} */
+
+/* AVERTA */
+
+
+@font-face {
+    font-family: 'Averta';
+    src: url('fonts/Averta/AvertaStd-Extrathin.ttf');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta';
+    src: url('fonts/Averta/AvertaStd-Thin.ttf');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta';
+    src: url('fonts/Averta/AvertaStd-Light.ttf');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta';
+    src: url('fonts/Averta/AvertaStd-Regular.ttf');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta';
+    src: url('fonts/Averta/AvertaStd-Semibold.ttf');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta';
+    src: url('fonts/Averta/AvertaStd-Bold.ttf');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta';
+    src: url('fonts/Averta/AvertaStd-ExtraBold.ttf');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averta';
+    src: url('fonts/Averta/AvertaStd-Black.ttf');
+    font-weight: 800;
+    font-style: normal;
+}

@@ -1,0 +1,89 @@
+.filter-list {
+    width: 100%;
+    border-radius: 5px;
+    position: absolute;
+    top: calc(100% + 10px);
+    display: none;
+    z-index: 2;
+    border: 1px solid var(--accent);
+    overflow: hidden;
+}
+
+.filter-item {
+    background: var(--light-accent);
+    padding: 13px;
+    align-self: start;
+    border-bottom: 1.5px dashed var(--accent);
+    color: var(--accent);
+    cursor: pointer;
+    transition: 0.2s all;
+}.filter-item:hover {
+    background-color: var(--dark-accent);
+}
+
+.filter-item:last-child {
+    border-bottom: none;
+}
+
+*:valid ~ .filter-list, 
+*:valid ~ .input-close-button {
+    display: grid;
+}
+
+.span-height-width {
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    place-content: center;
+    color: var(--light-accent);
+    font-size: 48px;
+    display: grid;
+}
+
+.disabled-item {
+    background: gainsboro;
+    color: grey;
+}
+
+.disabled-item::before {
+    position: absolute;
+    right: 13px;
+    width: auto;
+    content: "added";
+}
+
+.disabled-item.no-result::before {
+    content: "";
+}
+
+.disabled-item:hover{
+    background-color:gainsboro;
+    cursor: default;
+}
+
+
+.loader-view {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    --sk-color: var(--accent);
+    --sk-size: 50px;
+    background: var(--light-accent);
+    z-index: 10;
+    display: none;
+    place-items: center;
+}
+.loader-view > * {
+    display: grid;
+    place-items: center;
+    grid-gap: 40px;
+}
+
+.loader-view p {
+    color: var(--accent);
+}
+
+/* .span-height-width > * {
+    display: grid;
+} */

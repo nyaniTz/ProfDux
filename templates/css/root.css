@@ -1,0 +1,50 @@
+*,
+*::after,
+*::before{
+    padding: 0 0;
+    margin: 0 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+:root{
+    --boxshadowA: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+    --boxshadowB: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    --boxshadowC: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+    --boxshadowD: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0,0.06) 0px 0px 0px 1px;
+    --boxshadowE: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+
+    /* --accent: #1E5AD9; */
+    --accent: #42952F;
+    --approved: #42952F;
+    --error: #FC6D64;
+    --gray: #959393;
+    --light-gray: #E6E8E8;
+
+    --pale-background: #F9F9F5;
+    --light-accent: #E7EDE6 ;
+    --light-error: #f8dbd9 ;
+    --dark-accent: #CDD9CA ;
+
+    --orange: #F9A05F;
+    --orange: #FC6D64;
+    --orange-gradient: linear-gradient(255deg, #FC6D64, #fbd6b4, transparent);
+
+
+    --blue: #297CF6;
+    --blue-gradient: linear-gradient(255deg, #297CF6, #95BCF6, transparent);
+    --black-gradient: linear-gradient(255deg, black, #000000A0, transparent);
+}
+
+* {
+    font-family: "Averta";
+}
+
+.icon{
+    height: 11px;
+    filter: invert(41%) sepia(98%) saturate(368%) hue-rotate(63deg) brightness(97%) contrast(84%);
+}

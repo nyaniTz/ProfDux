@@ -1,0 +1,238 @@
+.popup {
+    position: relative;
+    box-shadow: var(--boxshadowD);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+    box-sizing: border-box;
+    border-radius: 20px;
+    background: var(--pale-background);
+    min-width: 450px;
+    transition: 0.4s;
+}
+
+.overlay{
+    position: fixed;
+    background: #000000D0;
+    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    top: 0px;
+    left: 0px;
+    display: none;
+    place-items: center;
+    z-index: 10;
+}
+
+.confirm-add-overlay{
+    display: none;
+    position: absolute;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background: #000000d5;
+    border-radius: 20px;
+
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+}
+
+.popup.confirm-popup-view{
+    grid-gap: 13px;
+    padding: 26px;
+}
+
+.popup-message{
+    max-width: 300px;
+    display: grid;
+    place-items: center;
+    grid-gap: 20px;
+}
+
+.popup-message > span{ text-align: center; }
+
+.popup.add-to-blockchain-view{
+    position: relative;
+    display: grid;
+    grid-gap: 50px;
+}
+
+.pop-up-title{
+    font-size: 1.3em;
+    color: black;
+    font-weight: 400;
+    justify-self: start;
+    padding: 0.2em 0em;
+}
+
+.overlay.report-review-overlay{
+    align-items: center;
+    padding: 200px 0px;
+    display: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.overlay.report-review-overlay::-webkit-scrollbar { display: none; }
+  
+.popup.report-review-popup{ 
+    position: relative;
+    padding: 0px;
+    width: 60vw;
+    left: 20vw; 
+}
+
+.change-permissions-view{
+    padding: 0px;
+}
+
+.popup-header, .popup-body, .popup-footer{
+    position: relative;
+    padding: 1em 2em;
+    margin: 0px;
+    border-bottom: 1px solid var(--accent);
+    width: 100%;
+    display: grid;
+    place-items: center;
+    grid-gap: 50px;
+    box-sizing: border-box;
+}
+
+.popup-body { border-bottom: none; padding: 2em; }
+
+.popup-footer { 
+    border-bottom: none;
+    place-items: end;
+    padding: 1em;
+}
+
+.popup-header h3 {
+    transform: translateY(2px);
+    color: #0E0E0E;
+    font-weight: 400;
+}
+
+.close-button{
+    position: absolute;
+    background: black;
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    display: grid;
+    place-items: center;
+    right: 1em;
+    cursor: pointer;
+    transition: 0.3s all;
+}
+
+.close-button:hover { transform: scale(1.15); }
+
+.close-button:hover > img { height: 15px; }
+.close-button > img {
+    height: 20px;
+    filter: invert(100%);
+    transition: 0.3s all;
+}
+
+/* NEW STYLES */
+
+.collaborators-slide-popup{
+    position: absolute;
+    top: 100%;
+    height: 70%;
+    z-index: 10;
+    align-items: start;
+    transition: 0.5s;
+    grid-template-rows: auto 1fr;
+}
+
+.collaborators-slide-popup > .popup-body {
+    padding: 0em 0em;
+    /* border: 1px solid red; */
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+.collaborator-list {
+    display: block;
+    /* border: 1px solid blue; */
+    position: relative;
+    width: 100%;
+    height: 100%;
+    list-style: none;
+    overflow: scroll;
+    align-items: start;
+}
+
+.collaborator-row {
+    display: grid;
+    padding: 1em 1em 1em 2em;
+    grid-template-columns: 1fr auto;
+    border-bottom: 1px solid var(--dark-accent);
+}
+/* .collaborator-row:last-child{ border-bottom: none; } */
+
+.collaborator-row > p {
+    border-radius: 10px;
+}
+
+.collaborator-row > span {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    transition: 0.3s;
+    background: var(--light-gray);
+}
+.collaborator-row > span:hover{
+    cursor: pointer;
+    transform: scale(0.90);
+    background-color: var(--error);
+}
+
+.collaborator-row > span > img{
+    height: 20px;
+}
+
+
+/* DELETE POPUP STYLES */
+
+.delete-employee-overlay .popup-header {
+    background: var(--error);
+    border-bottom-color: var(--error);
+    justify-content: center;
+}
+
+.delete-employee-overlay .pop-up-title {
+    color: white;
+}
+
+.delete-employee-overlay .delete-view{
+    --sk-color: var(--error);
+    background: var(--light-error);
+}
+
+.delete-employee-overlay .popup-message{
+    justify-content: center;
+    text-align: center;
+}
+
+.delete-employee-overlay .button-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+
+.delete-employee-overlay .button-container button{
+    --accent: var(--error);
+    place-self: unset;
+}
+
+.delete-employee-overlay  .loader-view p {
+    color: var(--error);
+}
