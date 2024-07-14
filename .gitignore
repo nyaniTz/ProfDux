@@ -6,3 +6,4 @@ uploads/*
 quiz/*.json
 objectives/*json
 exam/*json
+templates/longGenerations.js
