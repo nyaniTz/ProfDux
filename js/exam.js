@@ -181,11 +181,57 @@ class ExamsView{
     }
 
 
-    handleEditExam(rowObject){
+    async handleEditExam(rowObject){
+
         const { id } = rowObject;
 
-        openPopup(".edit-exam-popup");
-        const editExam = new EditExam(id);
+        let currentLanguage = extrapolateLanguage();
+        const assessmentType = "exam";
+        const type = "teacher";
+
+        let result = await AJAXCall({
+            phpFilePath: "../include/exam/getExamDetails.php",
+            rejectMessage: "Getting Exam Details Failed",
+            type: "fetch",
+            params: createParamatersFrom({ id })
+        });
+
+        let { filename } = result[0];
+
+        let correctPath = `../exam/generated/${filename}`;
+        let quizFileResponse = await fetch(correctPath, {cache: "reload"});
+        let questions = await quizFileResponse.json();
+
+        let questionsArray = questions.map( question =>
+            questionEditMapSwitch(question)
+        );
+
+        let assessment = new EditAssessment(questionsArray, type, filename, assessmentType, currentLanguage);
+
+        openPopup('.edit-assessment-overlay');
+
+        let editAssessmentOverlay = document.querySelector(".edit-assessment-overlay");
+        let previousButton = editAssessmentOverlay.querySelector(".previous-question");
+        let nextButton = editAssessmentOverlay.querySelector(".next-question");
+        let saveButton = editAssessmentOverlay.querySelector(".save-button");
+        let languageChangerElement = editAssessmentOverlay.querySelector(".assessment-language-changer");
+
+        console.log(previousButton,
+            nextButton,
+            saveButton,
+            languageChangerElement);
+            
+        previousButton = clearEventListenersFor(previousButton);
+        nextButton = clearEventListenersFor(nextButton);
+        saveButton = clearEventListenersFor(saveButton);
+        languageChangerElement = clearEventListenersFor(languageChangerElement);
+
+        assessment.setNextButton(nextButton);
+        assessment.setPreviousButton(previousButton);
+        assessment.setSaveButton(saveButton);
+        assessment.setAssessmentLanguageChangerElement(languageChangerElement, () => closePopup('.language-changer-overlay'));
+
+        assessment.startEdittingAssessment();
     }
 
     handleCreateExam(metadata){

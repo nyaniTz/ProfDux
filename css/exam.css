@@ -135,3 +135,7 @@
   justify-self: center;
   border-radius: 10px;
 }
+
+.popup.exam-popup{
+  width: 900px;
+}

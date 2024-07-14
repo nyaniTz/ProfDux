@@ -54,7 +54,6 @@
 
         <script>
 
-            const id = "ef87w9r42rbw";
 
             const timetableFilterButtons = document.querySelector(".timetable-filter.buttons-array");
 
@@ -67,6 +66,8 @@
             ( async () => {
 
                 try {
+
+                    const { id } = await getGlobalDetails;
                     
                     let result = await AJAXCall({
                         phpFilePath: "../include/schedule/getTimetable.php",
