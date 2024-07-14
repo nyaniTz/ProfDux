@@ -1,6 +1,11 @@
+.timetable-container{
+}
+
 .inner-timetable-container{
     width: 100%;
     /* border: 1px solid red; */
+    display: grid;
+    grid-gap: 20px;
 }
 
 

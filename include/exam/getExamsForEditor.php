@@ -4,7 +4,7 @@
 
     $conn = OpenConnection();
 
-    $examID = $_POST['examID'];
+    $id = $_POST['id'];
 
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
@@ -12,11 +12,11 @@
 
     $query = "
     SELECT *
-    FROM `files`
-    WHERE examID='$examID'
+    FROM `exam` WHERE courseID = '$id'
     ";
 
-    $examResults = mysqli_query($conn,$query);
-    $exams = mysqli_fetch_all($examResults,MYSQLI_ASSOC);
+    $examsResult = mysqli_query($conn,$query);
+    $exams = mysqli_fetch_all($examsResult,MYSQLI_ASSOC);
+
     echo json_encode($exams);
 

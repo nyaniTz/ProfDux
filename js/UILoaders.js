@@ -1,4 +1,4 @@
-async function loadCourses(options = "id"){
+async function loadCoursesGeneric(options = "id", eventListener){
 
     let courseViewContainer = document.querySelector(".course-view-container");
     let loader = courseViewContainer.querySelector(".course-view-container-loader");
@@ -70,7 +70,7 @@ async function loadCourses(options = "id"){
 
             if(result && result.length > 0) {
                 // console.log("so far so good.");
-                loadCoursesUI(result, options, userID);
+                loadCoursesUI(result, userID, eventListener);
                 resolve();
             }
             else {
@@ -133,7 +133,7 @@ async function loadCourses(options = "id"){
             courseCard.appendChild(cardText);
             courseCard.appendChild(cardOverlay);
 
-            courseCard.addEventListener("click", () => eventListener());
+            courseCard.addEventListener("click", () => eventListener(course));
             
             if( showSubscription ){
                 let subscriptionResult = await getCourseSubscriptionStatus(id, userID);
@@ -171,3 +171,4 @@ async function loadCourses(options = "id"){
     }
 
 }
+

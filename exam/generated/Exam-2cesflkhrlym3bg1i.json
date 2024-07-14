@@ -1,0 +1,145 @@
+[
+    {
+        "question": {
+            "english": "What is the chemical formula for water?",
+            "turkish": "Suyun kimyasal formülü nedir?"
+        },
+        "answerOptions": {
+            "english": [
+                "H2O",
+                "CO2",
+                "NaCl",
+                "O2"
+            ],
+            "turkish": [
+                "H2O",
+                "CO2",
+                "NaCl",
+                "O2"
+            ]
+        },
+        "answer": {
+            "english": "H2O",
+            "turkish": "H2O"
+        },
+        "type": "multiple choice",
+        "hardness": "easy",
+        "topic": "Water basics"
+    },
+    {
+        "question": {
+            "english": "What type of rock is formed from cooled magma?",
+            "turkish": "Soğuyan magma taneciklerinden hangi türde kaya oluşur?"
+        },
+        "answerOptions": {
+            "english": [
+                "Igneous",
+                "Sedimentary",
+                "Metamorphic",
+                "Volcanic"
+            ],
+            "turkish": [
+                "Igneous",
+                "Sedimentary",
+                "Metamorphic",
+                "Volkanik"
+            ]
+        },
+        "answer": {
+            "english": "Igneous",
+            "turkish": "Igneous"
+        },
+        "type": "multiple choice",
+        "hardness": "easy",
+        "topic": "Rocks"
+    },
+    {
+        "question": {
+            "english": "water is made up of ________ and ________.",
+            "turkish": "Su ________ ve ________ tarafından olu??turulmuştur."
+        },
+        "answerOptions": null,
+        "answer": {
+            "english": "hydrogen, oxygen",
+            "turkish": "hidrojen, oksijen"
+        },
+        "type": "fill-in-the-blank",
+        "hardness": "easy"
+    },
+    {
+        "question": {
+            "english": "What is the ________ of water?",
+            "turkish": "Su'nun ________ nedir?"
+        },
+        "answerOptions": {
+            "english": [
+                "solid form",
+                "liquid form",
+                "gas form"
+            ],
+            "turkish": [
+                "katı form",
+                "sıvı form",
+                "gaz formu"
+            ]
+        },
+        "answer": {
+            "english": "liquid form",
+            "turkish": "sıvı form"
+        },
+        "type": "multiple choice",
+        "hardness": "easy"
+    },
+    {
+        "question": {
+            "english": "Water freezes at 0 degrees Celsius.",
+            "turkish": "Su, 0 derece Celsius'da donar."
+        },
+        "answerOptions": {
+            "english": [
+                "True",
+                "False"
+            ],
+            "turkish": [
+                "Doğru",
+                "Yanlış"
+            ]
+        },
+        "answer": {
+            "english": "True",
+            "turkish": "Doğru"
+        },
+        "type": "trueFalse",
+        "hardness": "hard",
+        "topic": {
+            "english": "Water basics",
+            "turkish": "Su Temelleri"
+        }
+    },
+    {
+        "question": {
+            "english": "Fire spreads faster in windy conditions.",
+            "turkish": "Rüzgarlı havalarda yangın daha hızlı yayılır."
+        },
+        "answerOptions": {
+            "english": [
+                "True",
+                "False"
+            ],
+            "turkish": [
+                "Doğru",
+                "Yanlış"
+            ]
+        },
+        "answer": {
+            "english": "True",
+            "turkish": "Doğru"
+        },
+        "type": "trueFalse",
+        "hardness": "hard",
+        "topic": {
+            "english": "What is fire?",
+            "turkish": "Ateş Nedir?"
+        }
+    }
+]

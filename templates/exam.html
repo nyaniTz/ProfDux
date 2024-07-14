@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam</title>
+    <link rel="stylesheet" href="../css/root.css">
+    <link rel="stylesheet" href="../css/popup.css">
+    <link rel="stylesheet" href="../css/inputs.css">
+    <link rel="stylesheet" href="../css/spinkit.css">
+
+    <script src="../js/functions.js"></script>
+</head>
+<body>
+
+    <style>
+
+        .exam-row:first-child{
+            border-top-right-radius: 10px;
+            border-top-left-radius: 10px;
+        }
+
+        .exam-row{
+            border: 2px solid var(--medium-gray);
+            border-bottom: none;
+            display: grid;
+            grid-template-columns: auto 1fr auto auto auto;
+            grid-gap: 15px;
+            padding: 13px;
+            font-size: 16px;
+            color: var(--accent);
+            counter-increment: exam-counter;
+            align-items: center;
+        }
+
+        .exam-row:last-child {
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border-bottom: 2px solid var(--medium-gray);
+        }
+
+        .outer-container {
+            padding: 20px;
+            width: 100%;
+            counter-reset: exam-counter;
+        }   
+
+        .exam-row .exam-count::after{
+            content: counter(exam-counter) ".";
+        }
+
+        .exam-edit-button {
+            cursor: pointer;
+            background: #000000;
+            height: 30px;
+            aspect-ratio: 1/1;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+        }
+
+        .exam-edit-button img {
+            height: 13px;
+            filter: invert(100%);
+        }
+
+        .zoom-effect{
+            transition: 0.3s all;
+        }
+
+        .zoom-effect:hover {
+            transform: scale(1.13);
+        }
+
+        .edit-exam-button{
+            background: #2b6ce3;
+        }
+
+        .delete-exam-button{
+            background: #f53a3a;
+        }
+
+    </style>
+
+    <div class="outer-container">
+        <div class="exam-row">
+            <div class="exam-count"></div>
+            <div class="exam-name">Exam 1</div>
+            <div class="exam-date">@( 12/09/20 )</div>
+            <div class="exam-edit-button edit-exam-button zoom-effect">
+                <img src="../assets/icons/fi/fi-rr-pencil.svg" alt="">
+            </div>
+            <div class="exam-edit-button delete-exam-button zoom-effect">
+                <img src="../assets/icons/delete.png" alt="">
+            </div>
+        </div>
+        <div class="exam-row">
+            <div class="exam-count"></div>
+            <div class="exam-name">Exam 1</div>
+            <div class="exam-date">@( 12/09/20 )</div>
+            <div class="exam-edit-button edit-exam-button zoom-effect">
+                <img src="../assets/icons/fi/fi-rr-pencil.svg" alt="">
+            </div>
+            <div class="exam-edit-button delete-exam-button zoom-effect">
+                <img src="../assets/icons/delete.png" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay create-exam-overlay" style="display: grid;">
+        <div class="popup">
+            <div class="popup-header">
+                <div class="close-button" onclick="closePopup('.create-exam-overlay')">
+                    <img src="../assets/icons/close.png" alt="">
+                </div>
+                <h1 class="pop-up-title">
+                    <text>Create Exam</text>
+                </h1>
+            </div>
+    
+            <div class="popup-body">
+                <form class="course-form simple-grid" style="width: 100%;">
+                    <div class="form-input-container">
+                        <span class="form-input-label"><text>Exam Name</text></span>
+                        <input class="form-input exam-name" placeholder="Exam Name" type="text" required>
+                    </div>
+
+                    <div class="two-column-grid">
+                        <div class="form-input-container">
+                            <span class="form-input-label"><text>Number of Multiple Choice Questions</text></span>
+                            <input class="form-input multiple-choice-questions" value="20" placeholder="Number of Multiple Choice Questions" min=0 max=20 type="number" required>
+                        </div>
+    
+                        <div class="form-input-container">
+                            <span class="form-input-label"><text>Number of Fill In The Blanks</text></span>
+                            <input class="form-input fill-in-the-blanks" value="20" placeholder="Number of Fill In The Blanks" min=0 max=20 type="number" required>
+                        </div>
+    
+                        <div class="form-input-container">
+                            <span class="form-input-label"><text>Number of True and False</text></span>
+                            <input class="form-input true-and-false" value="20" placeholder="Number of True and False" min=0 max=20 type="number" required>
+                        </div>
+                    </div>
+
+                    <div class="two-column-grid">
+                        <div class="form-input-container">
+                            <span class="form-input-label"><text>Exam Duration In Minutes</text></span>
+                            <input class="form-input exam-duration" value="60" placeholder="Exam Duration In Minutes" min=0 max=60 type="number" required>
+                        </div>
+    
+                        <div class="form-input-container">
+                            <span class="form-input-label"><text>Hardness Level</text></span>
+                            <input class="form-input hardness-level" placeholder="Hardness Level" value="Automatic" type="text" disabled required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="create-exam-loader" style="display: grid;">
+                <div class="sk-fold">
+                    <div class="sk-fold-cube"></div>
+                    <div class="sk-fold-cube"></div>
+                    <div class="sk-fold-cube"></div>
+                    <div class="sk-fold-cube"></div>
+                </div>
+
+                <div class="loader-message">
+                    creating exam questions
+                </div>
+
+                <div class="outer-loading-bar-container">
+                    <div class="bar-loader-container">
+                        <div class="bar-loader-background"></div>
+                        <div class="bar-loader"></div>
+                    </div>
+                </div>
+
+                <div class="bar-loader-counter">0 / 0</div>
+
+            </div>
+    
+            <div class="popup-footer">
+                <div type="submit" class="button create-exam-button">
+                    <text>Create Exam</text>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+
+    .create-exam-loader {
+        display: grid;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        border: 2px solid var(--accent);
+        place-items: center;
+        border-radius: 10px;
+        background: #FFF7F9;
+        z-index: 30;
+        left: 0px;
+        align-self: center;
+        grid-template-rows: 2fr auto auto 2fr;
+        grid-gap: 20px;
+    }
+
+    .loader-message{
+        color: var(--accent);
+        opacity: 0.7;
+    }
+
+    .bar-loader-container {
+        width: 300px;
+        height: 5px;
+        background-color: var(--medium-gray);
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .bar-loader{
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: inherit;
+        background-color: var(--accent);
+        border-radius: inherit;
+    }
+
+    .outer-loading-bar-container{
+        position: relative;
+        display: grid;
+        grid-gap: 40px;
+    }
+
+    .bar-loader-counter {
+        /* position: absolute;
+        bottom: -50px; */
+        font-size: 13px;
+        color: white;
+        background-color: var(--accent);
+        padding: 13px;
+        justify-self: center;
+        border-radius: 10px;
+    }
+
+    </style>
+    
+</body>
+</html>

@@ -17,8 +17,8 @@
     WHERE subscriptions.userID = '$id'
     ";
 
-    $coursesResult = mysqli_query($conn,$query);
-    $courses = mysqli_fetch_all($coursesResult,MYSQLI_ASSOC);
+    $examsResult = mysqli_query($conn,$query);
+    $exams = mysqli_fetch_all($examsResult,MYSQLI_ASSOC);
 
-    echo json_encode($courses);
+    echo json_encode($exams);
 

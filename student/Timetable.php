@@ -7,21 +7,47 @@
         <page data-id="Timetable"></page> 
 
         <?php include '../include/studentImports.php'; ?>
-        <link rel="stylesheet" href="../css/timetable.css?2">
+        <link rel="stylesheet" href="../css/timetable.css?3">
 
     </head>
     <body>
 
         <?php include 'components/header.php'; ?>
 
+        <style>
+
+            .buttons-array{
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-gap: 20px;
+            }
+
+            .button.inactive:hover{
+                opacity: 1;
+            }
+
+            .main-container {
+                align-items: start;
+            }
+
+        </style>
         <div class="outer-container">
             <?php include 'components/sidebar.php'; ?>
             <div class="main-container">
                 <h1 class="large-title">
                     Timetable
                 </h1>
-                <div class="timetable-container">
 
+                <div class="simple-grid">
+                    <div class="timetable-filter buttons-array">
+                        <div class="button active this-week">This Week</div>
+                        <div class="button inactive next-week">Next Week</div>
+                        <div class="button inactive this-month">This Month</div>
+                    </div>
+
+                    <div class="timetable-container">
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -29,6 +55,14 @@
         <script>
 
             const id = "ef87w9r42rbw";
+
+            const timetableFilterButtons = document.querySelector(".timetable-filter.buttons-array");
+
+            const thisWeekButton = document.querySelector(".this-week");
+            const nextWeekButton = document.querySelector(".next-week");
+            const thisMonthButton = document.querySelector(".this-month");
+
+            console.log("button: ", thisWeekButton);
 
             ( async () => {
 
@@ -45,6 +79,11 @@
 
                     const timetable = new Timetable(result);
                     timetable.setTimetableContainer(timetableContainer);
+                    timetable.setTimetableFilterButtons({
+                        thisWeekButton: thisWeekButton,
+                        nextWeekButton: nextWeekButton,
+                        thisMonthButton:thisMonthButton
+                    })
 
                     timetable.render();
 
@@ -63,19 +102,56 @@
 
                 constructor(timeObject){
                     this.timeObject = timeObject;
-                    this.sort();
+                    this.sortParameter = "this-week";
                 }
 
                 setTimetableContainer(element){
                     this.timetableContainer = element;
                 }
 
+                setTimetableFilterButtons({ thisWeekButton, nextWeekButton, thisMonthButton}){
+                    this.thisWeekButton = thisWeekButton;
+                    this.nextWeekButton = nextWeekButton;
+                    this.thisMonthButton = thisMonthButton;
+
+                    console.log("here: ", this.thisWeekButton)
+
+                    let outerScopedSortParameter = this.sortParameter;
+                    let outerScopedRender = this.render;
+
+                    this.thisWeekButton.addEventListener("click", () => {
+                        this.sortParameter = "this-week";
+                        this.render();
+                        this.inactivateButtons();
+                        this.thisWeekButton.className = "button active this-week";
+                    });
+
+                    this.nextWeekButton.addEventListener("click", () => {
+                        this.sortParameter = "next-week";
+                        this.render();
+                        this.inactivateButtons();
+                        this.nextWeekButton.className = "button active next-week";
+                    });
+
+                    this.thisMonthButton.addEventListener("click", () => {
+                        this.sortParameter = "this-month";
+                        this.render();
+                        this.inactivateButtons();
+                        this.thisMonthButton.className = "button active this-month";
+                    });
+
+                }
+
+                inactivateButtons(){
+                    this.thisWeekButton.className = "button inactive this-week";
+                    this.nextWeekButton.className = "button inactive next-week";
+                    this.thisMonthButton.className = "button inactive this-month";
+                }
+
                 sort(timeObject){
 
                     this.timeObject.forEach( row => {
                         // Append course details ...
-
-                        console.log("row", row);
 
                         const metadata = {
                             courseID: row.id,
@@ -85,17 +161,31 @@
                             courseInstructor: row.courseInstructor,
                         }
 
-                        this.thisWeek = [ ...this.thisWeek, ...filterLecturesWithinRange(row.lectures, metadata)];
+                        this.thisWeek = [ ...this.thisWeek, ...filterLecturesWithinRange(row.lectures, metadata, this.sortParameter)];
                         console.log("thisWeek: ", this.thisWeek);
                     });
 
-                    function filterLecturesWithinRange(lectures, metadata){
+                    function filterLecturesWithinRange(lectures, metadata, parameter){
 
                         let lecturesWithinRange = [];
 
                         lectures.forEach( lecture => {
                             if(lecture.time != null){
-                                const result = isNowWithinThisWeek(new Date(lecture.time.timeStart));
+                                let result;
+                                switch(parameter){
+                                    case 'this-week':
+                                        result = isNowWithinThisWeek(new Date(lecture.time.timeStart));
+                                        break;
+                                    case 'next-week':
+                                        result = isWithinNextWeek(new Date(lecture.time.timeStart));
+                                        break;
+                                    case 'this-month':
+                                        result = isWithinThisMonth(new Date(lecture.time.timeStart));
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                
                                 // console.log("lecture: ", lecture);
                                 // console.log("result: ", lecture.time.timeStart, result);
                                 if (result == true){
@@ -114,28 +204,32 @@
 
                 render(){
 
+                    this.thisWeek = [];
+                    this.sort();
+                    this.timetableContainer.innerHTML = "";
+
                     const innerTimetableContainerForThisWeek = document.createElement("div");
                     innerTimetableContainerForThisWeek.className = "inner-timetable-container";
 
                     // TODO: headers
 
-                    this.thisWeek.forEach( row => {
-                        const rowElement = this.createTimetableRow(row);
-                        innerTimetableContainerForThisWeek.appendChild(rowElement);
-                    });
+                    if(this.thisWeek.length > 0){
+                        this.thisWeek.forEach( row => {
+                            const rowElement = this.createTimetableRow(row);
+                            innerTimetableContainerForThisWeek.appendChild(rowElement);
+                        });
 
-                    // const innerTimetableContainerForNextWeek = document.createElement("div");
-                    // innerTimetableContainerForNextWeek.className = "inner-timetable-container";
+                        this.timetableContainer.append(innerTimetableContainerForThisWeek);
+                    }else{
+                        this.timetableContainer.append(this.createEmptyView("No classes for this time period"))
+                    }
+                }
 
-                    // // TODO: headers
-
-                    // this.nextWeek.forEach( row => {
-                    //     const rowElement = this.createTimetableRow(row);
-                    //     innerTimetableContainerForNextWeek.appendChild(rowElement);
-                    // });
-
-                    this.timetableContainer.append(innerTimetableContainerForThisWeek);
-                    // this.timetableContainer.append(innerTimetableContainerForNextWeek);
+                createEmptyView(text){
+                    const emptyView = document.createElement("div");
+                    emptyView.className = "empty-view";
+                    emptyView.textContent = text;
+                    return emptyView;
                 }
 
                 createTimetableRow(rowObject){
@@ -202,8 +296,40 @@
                 startOfWeek.setHours(0, 0, 0, 0);
                 endOfWeek.setHours(23, 59, 59, 999);
 
-                return givenDate >= startOfWeek && givenDate <= endOfWeek;
+                return givenDate >= now && givenDate <= endOfWeek;
             }
+
+            function isWithinNextWeek(date) {
+                const now = new Date();
+                const startOfNextWeek = new Date(now);
+                const endOfNextWeek = new Date(now);
+
+                // Set startOfNextWeek to the next Sunday's date
+                startOfNextWeek.setDate(now.getDate() + (7 - now.getDay()));
+
+                // Set endOfNextWeek to the next Saturday after the next Sunday
+                endOfNextWeek.setDate(startOfNextWeek.getDate() + 6);
+
+                // Set times to start and end of days
+                startOfNextWeek.setHours(0, 0, 0, 0);
+                endOfNextWeek.setHours(23, 59, 59, 999);
+
+                return date >= startOfNextWeek && date <= endOfNextWeek;
+            }
+
+            function isWithinThisMonth(date) {
+                const now = new Date();
+                const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+                const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+                // Set times to start and end of days
+                startOfMonth.setHours(0, 0, 0, 0);
+                endOfMonth.setHours(23, 59, 59, 999);
+
+                return date >= startOfMonth && date <= endOfMonth;
+                
+            }
+
         </script>
     </body>
 </html>

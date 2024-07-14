@@ -20,11 +20,11 @@
         ";
 
         $result = mysqli_query($conn,$query);
-        $courses = mysqli_fetch_all($result,MYSQLI_ASSOC);
+        $exams = mysqli_fetch_all($result,MYSQLI_ASSOC);
 
         $finalResult = array();
 
-        foreach($courses as $course) {
+        foreach($exams as $course) {
 
             $courseID = $course['id'];
             
