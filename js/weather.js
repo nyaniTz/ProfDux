@@ -6,8 +6,6 @@ let weatherColors = [
 
     function pick(){
         let picked = weatherColors[random(0,weatherColors.length)];
-        console.log(random(0,weatherColors.length));
-        console.log(picked);
         return picked;
     }
 

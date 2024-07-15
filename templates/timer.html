@@ -53,9 +53,9 @@
             reduceTimer(){
                 const hours = Math.floor(this.seconds / 60 / 60);
                 const minutes =  Math.floor(this.seconds / 60) % 60;
-                // console.log("minutes: ", minutes);
+
                 const seconds = this.seconds % 60;
-                // console.log("seconds: ", seconds);
+
                 if(this.seconds > 0) this.seconds--;
                 else {
                     this.clearTimerInterval();

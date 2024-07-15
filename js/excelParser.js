@@ -4,7 +4,6 @@ async function parseExcelForCourseObject(url){
 
     const workbook = XLSX.read(file);
     const worksheetsObject = workbook.Sheets;
-    // console.log("hello", worksheetsObject);
 
     let entries = Object.entries(worksheetsObject);
         
@@ -22,9 +21,6 @@ async function parseExcelForCourseObject(url){
             return key
         }catch(error){ return false }
     }
-
-    // let result = checkIfExistsInObject(lessonStructuredObjects[0], "#", "##", "###");
-    // console.log(result);
 
     let currentPosition = null;
     let resultObjectArray = [];

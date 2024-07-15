@@ -12,8 +12,8 @@
         SELECT * FROM `courses`
     ";
 
-    $examsResult = mysqli_query($conn,$query);
-    $exams = mysqli_fetch_all($examsResult,MYSQLI_ASSOC);
+    $coursesResult = mysqli_query($conn,$query);
+    $courses = mysqli_fetch_all($coursesResult,MYSQLI_ASSOC);
 
-    echo json_encode($exams);
+    echo json_encode($courses);
 

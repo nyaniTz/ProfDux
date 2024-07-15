@@ -212,8 +212,6 @@ function AJAXCall(callObject){
                 let result = type == "fetch" ? 
                 JSON.parse(this.responseText) : this.responseText ;
 
-                // console.log("look: ", result);
-
                 //TODO: Take a look one more time
                 if(result.length < 1 && type != "fetch") reject(rejectMessage || "SQLError");
                 else { resolve(result) }
@@ -278,7 +276,6 @@ async function uploadFile(file, scriptPath = "../include/upload.php"){
 async function getUserDetails(){
 
     let id = localStorage.getItem("id");
-    console.log("logged id:", id);
 
     try{
         let result = await AJAXCall({

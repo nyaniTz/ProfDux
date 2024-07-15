@@ -9,7 +9,7 @@ class Schedules {
         const schedulesOuterContainer = document.querySelector(".schedules-outer-container");
 
         // const entries = Object.entries(this.schedulesArray);
-    
+
         this.schedulesArray.forEach( course => {
 
             const lessonPlanContainer = document.createElement("div");
@@ -44,6 +44,13 @@ class Schedules {
 
             saveButton.addEventListener("click", () => saveSchedulesFor(lessonRightPane) );
 
+            if(course.lectures.length > 0){
+                const miniLectureTitle = document.createElement("div");
+                miniLectureTitle.className = "mini-title";
+                miniLectureTitle.textContent = "Lecture Times";
+                lessonRightPane.appendChild(miniLectureTitle);
+            }
+
             course.lectures.forEach( lecture => {
                 
                 const lessonItemContainer = document.createElement("div");
@@ -77,6 +84,70 @@ class Schedules {
                 }
 
                 lessonTimeInput.setAttribute("lectureID", lecture.id)
+                
+
+                lessonTime.appendChild(lessonTimeInput);
+
+                lessonItemInnerContainer.appendChild(lessonTitle)
+                lessonItemInnerContainer.appendChild(lessonTime)
+
+                lessonItemContainer.appendChild(lessonNumbering);
+                lessonItemContainer.appendChild(lessonItemInnerContainer);
+
+                lessonRightPane.appendChild(lessonItemContainer);
+
+            });
+
+            if(course.exams.length > 0){
+                const divider = document.createElement("div");
+                divider.className = "line-divider";
+                lessonRightPane.appendChild(divider);
+    
+                const miniExamTitle = document.createElement("div");
+                miniExamTitle.className = "mini-title";
+                miniExamTitle.textContent = "Exam Times";
+                lessonRightPane.appendChild(miniExamTitle);
+            }
+
+            course.exams.forEach( exam => {
+                
+                const lessonItemContainer = document.createElement("div");
+                lessonItemContainer.className = "lesson-item-container";
+
+                const lessonNumbering = document.createElement("div");
+                lessonNumbering.className = "numbering";
+
+                const lessonItemInnerContainer = document.createElement("div");
+                lessonItemInnerContainer.className = "lesson-item-inner-container";
+
+
+                const lessonTitle = document.createElement("div");
+                lessonTitle.className = "lesson-title";
+                lessonTitle.textContent = exam.title
+
+                const lessonTime = document.createElement("div");
+                lessonTime.className = "lesson-time";
+
+                const lessonTimeInput = document.createElement("input");
+                lessonTimeInput.setAttribute("type", "date");
+                lessonTimeInput.className = "date-input";
+
+                if(exam.time.length > 0){
+                    let date = exam.time[0].timeStart.split("T");
+                    lessonTimeInput.value = date[0];
+                    console.log(date);
+                    lessonTimeInput.setAttribute("isScheduleSet", "true")
+                }else{
+                    lessonTimeInput.setAttribute("isScheduleSet", "false")
+                    lessonTitle.innerHTML = `
+                        <div class="two-column-grid">
+                            <p>${exam.title}</p>
+                            <div class="alert-badge" style="justify-self:end;">time not set</div>
+                        </div>
+                    `
+                }
+
+                lessonTimeInput.setAttribute("lectureID", exam.id)
                 
 
                 lessonTime.appendChild(lessonTimeInput);

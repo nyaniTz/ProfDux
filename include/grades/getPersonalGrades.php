@@ -28,7 +28,7 @@
         // ";
 
         // $examResult = mysqli_query($conn,$examQuery);
-        // $exams = mysqli_fetch_all($examResult,MYSQLI_ASSOC);
+        // $courses = mysqli_fetch_all($examResult,MYSQLI_ASSOC);
 
         $quizGradesArray = [];
 

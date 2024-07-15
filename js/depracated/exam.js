@@ -67,17 +67,14 @@ async function loadCoursesForExam(options = "id") {
       });
 
       setTimeout(() => {
-        // console.log("result", result);
 
         if (result && result.length > 0) {
-          // console.log("so far so good.");
+
           loadCoursesUIForExam(result, options, userID);
           resolve();
         } else {
           //TODO: This part might cause bugs in future versions
           courseViewContainer.innerHTML = "";
-
-          // console.log("options: ", options);
 
           switch (options) {
             case "id": // Refactor this to be "teacher"
@@ -200,7 +197,6 @@ async function loadCoursesForExam(options = "id") {
   }
 
   function goToCourse(id) {
-    console.log("curent id:", id);
     openPopup(".classroom-inner-overlay");
     let classRoomOverlay = document.querySelector(".classroom-inner-overlay");
     classRoomOverlay.setAttribute("id", id);
@@ -273,8 +269,6 @@ async function fetchCourseWithIDForExam(givenID) {
     findElement("#excelCourseFileUpload").addEventListener(
       "change",
       async (event) => {
-        console.log("clickeddddd");
-
         try {
           let file = event.target.files[0];
           const objectURL = window.URL.createObjectURL(file);
@@ -616,9 +610,6 @@ async function saveExamAsJSON(filename, ArrayContainingObjects, type) {
       break;
   }
 
-  console.log("[3] correctPath: ", correctPath);
-  console.log("[4] jsonString: ", JSONString);
-
   try {
     let result = await AJAXCall({
       phpFilePath: "../include/saveJSONData.php",
@@ -627,7 +618,6 @@ async function saveExamAsJSON(filename, ArrayContainingObjects, type) {
       type: "post",
     });
 
-    console.log("[5] async Result: ", result);
   } catch (error) {
     //TODO: bubbleUpError()
     console.log(error);
@@ -649,8 +639,6 @@ async function deleteExamAsJSON(filename, type) {
       break;
   }
 
-  console.log("[3] correctPath: ", correctPath);
-
   try {
     let result = await AJAXCall({
       phpFilePath: "../include/deleteJSONData.php",
@@ -659,7 +647,6 @@ async function deleteExamAsJSON(filename, type) {
       type: "post",
     });
 
-    console.log("[5] async Result: ", result);
   } catch (error) {
     //TODO: bubbleUpError()
     console.log(error);
@@ -745,8 +732,6 @@ async function fetchAllExam(id) {
 async function getAllCoursesOfStudent() {
   let { id: globalUserID } = await getUserDetails();
 
-  console.log("gus: ", globalUserID);
-
   const subscriptions = await AJAXCall({
     phpFilePath: "../include/exam/getAllSubscriptions.php",
     rejectMessage: "Get All Subscriptions Failed To Be Fetched",
@@ -766,8 +751,6 @@ async function getAllCoursesOfStudent() {
 
     exams.push(...exam);
   }
-
-  console.log("exams: ", exams);
 
   const studentExamContainer = document.getElementById(
     "student-exam-container"

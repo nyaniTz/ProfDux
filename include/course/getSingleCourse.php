@@ -15,8 +15,8 @@
     FROM `courses` WHERE id = '$id'
     ";
 
-    $examsResult = mysqli_query($conn,$query);
-    $course = mysqli_fetch_all($examsResult,MYSQLI_ASSOC);
+    $coursesResult = mysqli_query($conn,$query);
+    $course = mysqli_fetch_all($coursesResult,MYSQLI_ASSOC);
 
     echo json_encode($course);
 

@@ -158,8 +158,6 @@ async function updateScheduleTime(params){
 
     return new Promise( async (resolve) => {
 
-        console.log("updated schedule for: ", params)
-
         await AJAXCall({
             phpFilePath: "../include/schedule/updateSchedule.php",
             rejectMessage: "Updating Schedule Failed",
@@ -175,8 +173,6 @@ async function updateScheduleTime(params){
 async function newScheduleTime(params){
     
     return new Promise( async (resolve) => {
-
-        console.log("updated schedule for: ", params)
 
         await AJAXCall({
             phpFilePath: "../include/schedule/newSchedule.php",

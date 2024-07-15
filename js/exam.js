@@ -462,15 +462,7 @@ async function editExam(courseObject){
 
     const { id } = courseObject;
 
-    console.log("id: ", courseObject);
-
-    // const examsObject = await fetchExamsForEditor(id);
-
-    // console.log("exams: ", examsObject);
-
-    const metadata = {
-        id
-    }
+    const metadata = { id }
 
     const examsView = new ExamsView(metadata);
     examsView.setExamsListContainer(document.querySelector(".exam-grid-container"));

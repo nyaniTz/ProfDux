@@ -19,7 +19,6 @@ function loadImageToPopupView(event, outputElement) {
 
     setUploadImageObject(event.target.files[0]);
 
-    // console.log("upload event: ", imageName, imageType, truncatedImagedString);
 
     
     
@@ -47,14 +46,6 @@ function loadPDFToPopupView(event, outputElement) {
 
     setUploadPDFObject(event.target.files[0]);
 
-    // console.log("upload event: ", imageName, imageType, truncatedImagedString);
-
-
-
-    // output.src = URL.createObjectURL(event.target.files[0]);
-    // output.onload = function() {
-    // URL.revokeObjectURL(output.src) // free memory
-    // }
     }
 
 function revertUploadChoice(){
@@ -75,8 +66,6 @@ function startUploading(){
     uploadWithObject(globalPDFObject);
 
     async function uploadWithObject(fileObject){
-
-        // console.log("fileObject", fileObject);
 
         if(fileObject && subtopicID){
 
@@ -135,7 +124,6 @@ function openUploadOverlay(id){
 
     let uploadOverlay = document.querySelector(".upload-overlay");
     uploadOverlay.style.display = "grid";
-    // console.log("subtopic ID:", id);
     uploadOverlay.setAttribute('data-id', id);
 
 }
@@ -213,10 +201,8 @@ async function loadCourses(options = "id"){
         });
 
         setTimeout(() => {
-            // console.log("result", result);
 
             if(result && result.length > 0) {
-                // console.log("so far so good.");
                 loadCoursesUI(result, options, userID);
                 resolve();
             }
@@ -224,8 +210,6 @@ async function loadCourses(options = "id"){
 
                 //TODO: This part might cause bugs in future versions
                 courseViewContainer.innerHTML = "";
-
-                // console.log("options: ", options);
 
                 switch(options){
                     case "id":  // Refactor this to be "teacher"

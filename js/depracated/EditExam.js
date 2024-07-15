@@ -26,7 +26,6 @@ class EditExam {
     this.currentExamNumber = 0;
     this.type = type;
 
-    console.log("[1] filename: ", filename);
   }
 
   startEdittingExam() {
@@ -343,11 +342,8 @@ class EditFillInTheBlankExam extends QuestionForExam {
 
 async function startEditingExam(filename, type = "teacher") {
   let correctPath = `../exam/generated/${filename}`;
-  console.log("correctPath:", correctPath);
 
   let examFileResponse = await fetch(correctPath, { cache: "reload" });
-  console.log("examFileResponse:", examFileResponse);
-
   let questions = await examFileResponse.json();
 
   let questionsArray = questions.map((question) => {
@@ -375,8 +371,6 @@ async function startEditingExam(filename, type = "teacher") {
         throw new Error("Not Made Yet");
     }
   });
-
-  // console.log("qa: ", questionsArray);
 
   let exam = new EditExam(questionsArray, type, filename);
 

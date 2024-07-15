@@ -66,10 +66,8 @@ async function loadCoursesGeneric(options = "id", eventListener){
         });
 
         setTimeout(() => {
-            // console.log("result", result);
 
             if(result && result.length > 0) {
-                // console.log("so far so good.");
                 loadCoursesUI(result, userID, eventListener);
                 resolve();
             }
@@ -77,8 +75,6 @@ async function loadCoursesGeneric(options = "id", eventListener){
 
                 //TODO: This part might cause bugs in future versions
                 courseViewContainer.innerHTML = "";
-
-                // console.log("options: ", options);
 
                 switch(options){
                     case "id":  // Refactor this to be "teacher"

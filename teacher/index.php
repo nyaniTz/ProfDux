@@ -104,8 +104,6 @@
                     type: "fetch"
                 });
 
-                console.log(result);
-
                 let coursesPlaceholder = document.querySelector("#dashboard-courses-count");
                 let studentsPlaceholder = document.querySelector("#dashboard-students-count");
                 let examsPlaceholder = document.querySelector("#dashboard-exams-count");

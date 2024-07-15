@@ -104,8 +104,6 @@
                         type: "fetch"
                     });
 
-                    // console.log(result);
-
                     const quizGrades = result.quizGrades
                     console.log("quizGrades: ", quizGrades);
                     console.log("structure: ", quizStructure);

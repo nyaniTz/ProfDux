@@ -61,13 +61,11 @@
             const nextWeekButton = document.querySelector(".next-week");
             const thisMonthButton = document.querySelector(".this-month");
 
-            console.log("button: ", thisWeekButton);
-
             ( async () => {
 
                 try {
 
-                    const { id } = await getGlobalDetails;
+                    const { id } = await getGlobalDetails();
                     
                     let result = await AJAXCall({
                         phpFilePath: "../include/schedule/getTimetable.php",
@@ -87,8 +85,6 @@
                     })
 
                     timetable.render();
-
-                    console.log(result);
 
                 }catch(error){
                     console.log(error)
@@ -114,8 +110,6 @@
                     this.thisWeekButton = thisWeekButton;
                     this.nextWeekButton = nextWeekButton;
                     this.thisMonthButton = thisMonthButton;
-
-                    console.log("here: ", this.thisWeekButton)
 
                     let outerScopedSortParameter = this.sortParameter;
                     let outerScopedRender = this.render;
@@ -163,7 +157,7 @@
                         }
 
                         this.thisWeek = [ ...this.thisWeek, ...filterLecturesWithinRange(row.lectures, metadata, this.sortParameter)];
-                        console.log("thisWeek: ", this.thisWeek);
+
                     });
 
                     function filterLecturesWithinRange(lectures, metadata, parameter){
@@ -186,9 +180,7 @@
                                     default:
                                         break;
                                 }
-                                
-                                // console.log("lecture: ", lecture);
-                                // console.log("result: ", lecture.time.timeStart, result);
+                            
                                 if (result == true){
                                     lecturesWithinRange.push({
                                         ...lecture, ...metadata

@@ -369,8 +369,6 @@ async function startEdittingAssessment(filename, assessmentType, type="teacher")
         questionEditMapSwitch(question)
     );
 
-    // console.log("qa: ", questionsArray);
-
     let currentLanguage = extrapolateLanguage();
     let assessment = new EditAssessment(questionsArray, type, filename, assessmentType,currentLanguage);
 
