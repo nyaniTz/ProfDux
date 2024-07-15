@@ -8,6 +8,8 @@
     <page data-id="Exam"></page>
 
     <?php include '../include/studentImports.php'; ?>
+
+    <script src="../js/TakeExamView.js"></script>
     
 </head>
 
@@ -19,10 +21,10 @@
         <?php include 'components/sidebar.php'; ?>
         <div class="main-container">
             <h1 class="large-title">
-                Your Exams
+                Your Upcoming Exams
             </h1>
 
-            <!-- <div class="course-view-container">
+            <div class="course-view-container">
                 <div class="container-message blank course-view-container-loader">
                     <div class="sk-fold">
                         <div class="sk-fold-cube"></div>
@@ -31,54 +33,33 @@
                         <div class="sk-fold-cube"></div>
                     </div>
                 </div>
-            </div> -->
-
-            <div>
-                <h2 class="large-title">
-                    Upcoming Exams
-                </h2>
-
-                <div class="course-view-container" id="student-exam-container" style="margin-top:10px">
-                  
-                </div>
             </div>
-
-            <?php include 'components/examModal.php' ?>
+            
+            <?php include 'components/examOverlay.php' ?>
         </div>
 
 
-        <style>
-            .classroom-inner-overlay {
-                grid-template-rows: auto 1fr;
-            }
-
-            .classroom-header-elements-container {
-                margin-bottom: 20px;
-                display: grid;
-                grid-gap: 10px;
-            }
-
-            .classroom-course-title {
-                color: var(--accent);
-            }
-
-            .classroom-course-code {
-                color: var(--dark-gray);
-            }
-
-            .course-view-container .mini-container {
-                grid-template-columns: 1fr;
-            }
-
-            .course-view-container .mini-container {}
-        </style>
-
         <script>
-            window.addEventListener("load", function() {
-                // TODO: Use a different function to call this one
-                // loadCourses("mine");
-                getAllCoursesOfStudent()
-            })
+
+            ( async () => {
+                const { id } = await getGlobalDetails();
+                await loadUpcomingExams(id);
+            })();
+
+            async function loadUpcomingExams(id){
+
+                const takeExamView = new TakeExamView({ id });
+                const examsViewContainer = document.querySelector(".course-view-container");
+                takeExamView.setExamsListContainer(examsViewContainer);
+                takeExamView.render();
+
+                //TODO: renderUpcomingExamsView
+                //TODO: BringUpView
+
+            }
+
+
+
         </script>
 </body>
 

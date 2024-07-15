@@ -370,7 +370,13 @@ async function startEdittingAssessment(filename, assessmentType, type="teacher")
     );
 
     let currentLanguage = extrapolateLanguage();
-    let assessment = new EditAssessment(questionsArray, type, filename, assessmentType,currentLanguage);
+    let assessment = new EditAssessment(
+        questionsArray, 
+        type, 
+        filename, 
+        assessmentType,
+        currentLanguage
+    );
 
     let editAssessmentOverlay = document.querySelector(".edit-assessment-overlay");
     let previousButton = editAssessmentOverlay.querySelector(".previous-question");
