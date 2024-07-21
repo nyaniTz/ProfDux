@@ -8,6 +8,9 @@
 
         <?php include '../include/teacherImports.php'; ?>
 
+        <script src="../js/Weights.js?1"></script>
+
+
     </head>
     <body>
 
@@ -16,8 +19,32 @@
         <div class="outer-container">
             <?php include 'components/sidebar.php'; ?>
             <div class="main-container">
-                <?php include 'components/dashboard.php'; ?>
+                <h1>Weights</h1>
+
+                <div class="weights-outer-container">
+                </div>
             </div>
         </div>
+
+        <script>
+
+            let userID = "ef87w9r42rbw";
+
+            ( async() => {
+
+                let result = await AJAXCall({
+                    phpFilePath: "../include/weights/getWeightsForCourse.php",
+                    rejectMessage: "Weights Not Fetched",
+                    type: "fetch",
+                    params: `userID=${userID}`,
+                });
+
+                console.log("result: ",  result);
+
+                const weights = new Weights(result);
+                weights.render();
+
+            })();
+        </script>
     </body>
 </html>

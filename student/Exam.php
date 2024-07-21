@@ -58,9 +58,9 @@
 
             }
 
-
-
         </script>
+
+        <?php include "components/takeExamOverlay.php" ?>
 </body>
 
 </html>

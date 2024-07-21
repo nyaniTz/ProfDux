@@ -22,7 +22,7 @@ class TakeExamView{
                 id: rowObject.id,
                 courseCode: rowObject.courseCode, 
                 image: rowObject.image,
-                title: rowObject.title
+                title: rowObject.title,
             };
 
             rowObject.exams.forEach( async(exam) => {
@@ -103,15 +103,121 @@ class TakeExamView{
     }
 
 
-    handleTakeExam(metadata){
-        console.log("metadata: ", metadata);
+    async handleTakeExam(metadata){
+
         openPopup(".take-exam-overlay");
-        // constructor({ questionsArray, examGradeObject, type, assessmentType, language = "english" })
-        const takeExam = new TakeExam(metadata);
-        const rootElement = document.querySelector(".take-exam-overlay");
-        takeExam.handleAttachElements(rootElement);
-        takeExam.setFinalCallback({ callback: this.render, callbackClass: this});
+
+        let { examID, courseID } = metadata;
+
+        let examQuery = await AJAXCall({
+            phpFilePath: "../include/exam/getExamDetails.php",
+            rejectMessage: "Fetching Exam Details Failed",
+            type: "fetch",
+            params: `id=${examID}`
+        })
+
+        // switch(examStatus){
+        //     case "started":
+        //         examButton.textContent = "Resume Exam"; // TODO: Localize
+        //         examButton.addEventListener("click", () => {
+        //             startExam(examObjectRequired, "resume", mode); // Resume Exam
+        //             examButton.setAttribute("disabled", true);
+        //             examButton.textContent = "started";
+        //         })
+        //     break;
+        //     case "done":
+        //         examButton.textContent = "Review Results"; // TODO: Localize
+        //         examButton.addEventListener("click", () => {
+        //             viewExamResults(studentExamFilename); // View Results
+        //         });
+        //     break;
+        // }
+
+        const { filename } = examQuery[0];
+
+        let correctPath = `../exam/generated/${filename}`;
+
+        let examFileResponse = await fetch(correctPath, {cache: "reload"});
+        console.log("examFileResponse:", examFileResponse);
+        let questions = await examFileResponse.json();
+    
+        let questionsArray = questions.map( question => 
+            questionMapSwitch(question)
+        );
+
+        const language = "english"; // TODO: make dynamic
+        const { id } = await getGlobalDetails();
+
+        const examGradeObject = {
+            id: uniqueID(1),
+            userID: id,	
+            examID,	
+            fileToSave: `Exam-${uniqueID(2)}.json`,
+            courseID,
+        }
+
+        const examObject = {
+            questionsArray, 
+            examGradeObject, 
+            type: "new", 
+            assessmentType: "exam", 
+            language
+        }
+
+        startExam(examObject);
     }
+}
+
+async function startExam(examObject, type="new", mode){
+
+    const {
+        examGradeObject,
+    } = examObject;
+
+    const takeExam = new TakeExam(examObject)
+
+    try{
+        switch(type){
+            case "resume":
+                break;
+            case "new":
+                await addNewExamGradeRowInDatabase(examGradeObject);
+                break;
+        }   
+    }catch(error){
+        console.log(error);
+    }
+
+    //TODO: load instructions and start button
+
+    // takeExam.setFinalCallback({ callback: this.render, callbackClass: this});
+
+    const rootElement = document.querySelector(".take-exam-overlay");
+    let nextButton = rootElement.querySelector(".next-question");
+    let previousButton = rootElement.querySelector(".previous-question");
+    let finishExamButton = rootElement.querySelector(".finish-exam-button");
+
+    previousButton = clearEventListenersFor(previousButton)
+    nextButton = clearEventListenersFor(nextButton)
+    finishExamButton = clearEventListenersFor(finishExamButton)
+
+    takeExam.setNextButton(nextButton)
+    takeExam.setPreviousButton(previousButton)
+    takeExam.setFinishExamButton(finishExamButton);
+
+    let examBody = document.querySelector(".exam-popup-body");
+    let resultsBody = document.querySelector(".exam-results-body");
+    let buttonGroupFooter = document.querySelector(".button-group-footer");
+
+    examBody.style.display = "grid"
+    buttonGroupFooter.style.display = "grid"
+    resultsBody.style.display = "none"
+
+    setTimeout(() => {    
+        takeExam.startExam();
+        closePopup('.take-exam-loader');
+    }, 2000);
+
 }
 
 class TakeExam {
@@ -140,6 +246,8 @@ class TakeExam {
     }
 
     constructor({ questionsArray, examGradeObject, type, assessmentType, language = "english" }){
+
+        console.log("here: ", examGradeObject);
 
         this.filename = examGradeObject.fileToSave; // ... TODO: write some documentation
         this.questions = questionsArray; // randomize(questions);
@@ -257,6 +365,8 @@ async function handleEndExam(examObject){
 
     let { result, totalMarks } = mark(questions, language);
 
+    console.log(`result: ${result}, totalMarks: ${totalMarks}`);
+
     let examBody = document.querySelector(".exam-popup-body");
     let resultsBody = document.querySelector(".exam-results-body");
     let footers = examBody.parentElement.querySelectorAll(".popup-footer");
@@ -342,185 +452,18 @@ async function handleEndExam(examObject){
 
 }
 
-async function startExam(examGradeObject, type="new", mode){
-
-    openPopup('.take-exam-overlay');
-    openPopup(".take-exam-loader");
-
-    let { fileToLoad, fileToSave, hierarchy } = examGradeObject;
-
-    console.log("fileToLoad: ", fileToLoad);
-    console.log("fileToSave: ", fileToSave);
-
-    let correctPath;
-
-    switch(type){
-        case "resume":
-            correctPath = `../exam/taken/${fileToLoad}`;
-            break;
-        case "new":
-            correctPath = `../exam/generated/${fileToLoad}`;
-            break;
-    }
-
-    let examFileResponse = await fetch(correctPath, {cache: "reload"});
-    console.log("examFileResponse:", examFileResponse);
-    let questions = await examFileResponse.json();
-
-
-    let questionsArray = questions.map( question => 
-        questionMapSwitch(question)
-    );
-
-    //TODO: start by saving the filename with the id of the examGradeObject
-    // if the type is new
-
-    const language = extrapolateLanguage();
-    
-    const examObject = {
-        questionsArray, 
-        examGradeObject, 
-        type, 
-        language, 
-        assessmentType: "exam",
-        hierarchy
-    }
-
-    const exam = new TakeExam(examObject)
-
-    switch(type){
-        case "resume":
-            break;
-        case "new":
-            await addNewExamGradeRowInDatabase(examGradeObject);
-            break;
-    }
-
-    let previousButton = document.querySelector(".previous-question");
-    let nextButton = document.querySelector(".next-question");
-    let finishExamButton = document.querySelector(".finish-exam-button");
-
-    previousButton = clearEventListenersFor(previousButton)
-    nextButton = clearEventListenersFor(nextButton)
-    finishExamButton = clearEventListenersFor(finishExamButton)
-
-    exam.setNextButton(nextButton);
-    exam.setPreviousButton(previousButton);
-    exam.setFinishExamButton(finishExamButton);
-
-    let examBody = document.querySelector(".exam-popup-body");
-    let resultsBody = document.querySelector(".exam-results-body");
-    let buttonGroupFooter = document.querySelector(".button-group-footer");
-
-    examBody.style.display = "grid"
-    buttonGroupFooter.style.display = "grid"
-    resultsBody.style.display = "none"
-
-    setTimeout(() => {    
-        exam.startExam();
-        closePopup('.take-exam-loader');
-    }, 2000);
-
-    // return exam;
-
-}
-
-async function handleExam(exam, examButton, mode){
-
-    let {
-        id: examID,
-        filename: fromTeacherExamFilename,
-        courseID,
-        hierarchy
-        // name,
-    } = exam;
-
-    let { id: globalUserID } = globalUserDetails;
-    console.log("user id: ", globalUserID);
-
-    const examResponse = await AJAXCall({
-        phpFilePath: "../include/exam/getPersonalExamGrades.php",
-        rejectMessage: "Exam Grades Failed To Be Fetched",
-        params: `userID=${globalUserID}&&examID=${examID}`,
-        type: "fetch",
-    }); // TODO:
-
-    console.log("exam response: ", examResponse);
-
-    if(examResponse.length > 0){
-
-        let {
-            id: examGradeID,
-            filename: studentExamFilename,
-            status: examStatus,
-        } = examResponse[0];
-
-        const examObjectRequired = {
-                id: examGradeID,
-                userID: globalUserID,
-                examID,	
-                fileToLoad: studentExamFilename,
-                fileToSave: studentExamFilename,
-                courseID,
-                hierarchy
-        }
-
-        switch(examStatus){
-            case "started":
-                examButton.textContent = "Resume Exam"; // TODO: Localize
-                examButton.addEventListener("click", () => {
-                    startExam(examObjectRequired, "resume", mode); // Resume Exam
-                    examButton.setAttribute("disabled", true);
-                    examButton.textContent = "started";
-                })
-            break;
-            case "done":
-                examButton.textContent = "Review Results"; // TODO: Localize
-                examButton.addEventListener("click", () => {
-                    viewExamResults(studentExamFilename); // View Results
-                });
-            break;
-        }
-    }else{
-
-        const examObjectRequired = {
-            id: uniqueID(1),
-            userID: globalUserID,	
-            examID,	
-            fileToLoad: fromTeacherExamFilename,
-            fileToSave: `Exam-${uniqueID(2)}.json`,
-            courseID,
-            hierarchy
-        }
-
-        console.log("examObjectRequired: ", examObjectRequired);
-
-
-        examButton.textContent = "Start Exam"; // TODO: Localize
-        examButton.addEventListener("click", () => {
-            startExam(examObjectRequired, "new", mode); // New Exam
-            examButton.setAttribute("disabled", true);
-            examButton.textContent = "started";
-        });
-    }
-}
-
 async function addNewExamGradeRowInDatabase(examGradeObject){
 
-    let {
-        id,
-        userID,	
-        examID,	
-        fileToSave,
-        courseID,
-        hierarchy
-    } = examGradeObject;
+    const _examGradeObject = {
+        ...examGradeObject, 
+        timeStarted: getCurrentTimeInJSONFormat(),
+        status: "started",
+        filename: examGradeObject.fileToSave
+    };
 
-    let timeStarted = getCurrentTimeInJSONFormat();
+    console.log("_examGradeObject: ", _examGradeObject);
 
-    let params = `id=${id}&&userID=${userID}&&examID=${examID}`+
-    `&&filename=${fileToSave}&&timeStarted=${timeStarted}&&status=started`
-    + `&&courseID=${courseID}&&hierarchy=${hierarchy}`;
+    let params = createParamatersFrom(_examGradeObject);
 
     let response = await AJAXCall({
         phpFilePath: "../include/exam/addNewExamGradeRow.php",
@@ -529,6 +472,6 @@ async function addNewExamGradeRowInDatabase(examGradeObject){
         params
     });
 
-    console.log(response);
+    console.log("add new exam: ", response);
 
 }

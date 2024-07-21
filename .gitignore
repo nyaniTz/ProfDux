@@ -5,5 +5,5 @@ uploads/*
 !uploads/demoAccount.png
 quiz/*.json
 objectives/*json
-exam/*json
+exam/*
 templates/longGenerations.js

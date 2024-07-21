@@ -62,62 +62,6 @@
 
             ( async () => {
 
-                // let { id } = await getUserDetails();
-
-                // console.log(id);
-
-                // let resourcesResult = await AJAXCall({
-                //     phpFilePath: "../include/course/getResourcesForUser.php",
-                //     rejectMessage: "Running Query Failed",
-                //     params: `id=${id}`,
-                //     type: "fetch"
-                // });
-
-                // console.log(resourcesResult);
-
-                // let reMapped = resourcesResult.map( course => {
-
-                //     let ebooks = [];
-
-                //     course.lectures.forEach( lectures => 
-                        
-                //         lectures.subtopics.forEach( subtopic => 
-
-                //             subtopic.resources.forEach( resource => 
-                //                 resource.type == "application/pdf" ? ebooks.push({
-                //                     title: resource.title,
-                //                     value: resource.value
-                //                 }) : false
-                //             )
-
-                //         )
-
-                //     )
-                    
-                //     return {
-                //         title: course.title,
-                //         courseCode: course.courseCode,
-                //         ebooks
-                //     }
-                // })
-
-                // console.log("reMapped: ", reMapped);
-
-            //     let course = [{
-            //         title: "Introduction to C++",
-            //         courseCode: "C453",
-            //         weights: [
-            //             { id: "9f43t", value: "5", foreignID: "4535f", type: "quiz", title: "Quiz about water"},
-            //             { id: "f25245", value: "5", foreignID: "4535f", type: "quiz", title: "Quiz about fire"},
-            //             { id: "42545", value: "5", foreignID: "4535f", type: "quiz", title: "Quiz about earth"},
-            //             { id: "f24925", value: "60", foreignID: "4535f", type: "exam", title: "Quiz about air"},
-            //         ]
-            //     }
-            // ]
-
-            //     let weights = new Weights(course);
-            //     weights.renderWeights();
-
             })();
 
             // Viewer
@@ -125,10 +69,16 @@
             let course = [{
                     title: "Introduction to C++",
                     courseCode: "C453",
-                    weights: [
+                    quizWeights: [
                         { id: "9f43t", value: "5", foreignID: "4535f", type: "quiz", title: "Quiz about water"},
                         { id: "f25245", value: "5", foreignID: "4535f", type: "quiz", title: "Quiz about fire"},
                         { id: "42545", value: "5", foreignID: "4535f", type: "quiz", title: "Quiz about earth"},
+                        { id: "f24925", value: "60", foreignID: "4535f", type: "quiz", title: "Quiz about Water"},
+                    ],
+                    examWeights: [
+                        { id: "f24925", value: "60", foreignID: "4535f", type: "exam", title: "Exam about Water"},
+                        { id: "f24925", value: "60", foreignID: "4535f", type: "exam", title: "Exam about Water"},
+                        { id: "f24925", value: "60", foreignID: "4535f", type: "exam", title: "Exam about Water"},
                         { id: "f24925", value: "60", foreignID: "4535f", type: "exam", title: "Exam about Water"},
                     ]
                 }

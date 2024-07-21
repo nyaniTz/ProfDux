@@ -4,99 +4,116 @@ class Weights {
         this.weightsArray = weightsArray
     }
 
-    renderWeights(){
+    createWeightElement(weight, type){
+        const lessonItemContainer = document.createElement("div");
+        lessonItemContainer.className = "lesson-item-container";
+
+        const lessonNumbering = document.createElement("div");
+        lessonNumbering.className = "numbering";
+
+        const lessonItemInnerContainer = document.createElement("div");
+        lessonItemInnerContainer.className = "lesson-item-inner-container";
+
+
+        const lessonTitle = document.createElement("div");
+        lessonTitle.className = "lesson-title";
+
+        if(type == "exam"){
+            lessonTitle.textContent = "Exam: " + weight.title
+        }else {
+            lessonTitle.textContent = "Quiz: " + weight.title
+        }
+
+        const lessonTime = document.createElement("div");
+        lessonTime.className = "lesson-time";
+
+        const weightInput = document.createElement("input");
+        weightInput.setAttribute("type", "text");
+        weightInput.className = "weight-input";
+        weightInput.value = weight.value;
+
+        weightInput.setAttribute("lectureID", weight.id)
+
+        lessonTime.appendChild(weightInput);
+
+        lessonItemInnerContainer.appendChild(lessonTitle)
+        lessonItemInnerContainer.appendChild(lessonTime)
+
+        lessonItemContainer.appendChild(lessonNumbering);
+        lessonItemContainer.appendChild(lessonItemInnerContainer);
+        
+        return lessonItemContainer;
+    }
+
+    createLessonPlanner(course){
+        const lessonPlanContainer = document.createElement("div");
+        lessonPlanContainer.className = "lesson-plan-container";
+
+        // Fetch Lesson Image from course ID.
+
+        const lessonLeftPane = document.createElement("div");
+        lessonLeftPane.className = "lesson-left-pane";
+        const lessonImageBox = document.createElement("div");
+        lessonImageBox.className = "image-container-box"; //TODO: refactor to image-container-box
+
+        const image = document.createElement("img");
+        image.src = `../uploads/${course.image}`;
+        lessonImageBox.appendChild(image);
+
+        const courseDetails = document.createElement("div");
+        courseDetails.className = "course-details-box";
+        courseDetails.textContent = `${course.courseCode} : ${course.title}`;
+        lessonImageBox.appendChild(courseDetails);
+
+        const saveButton = document.createElement("button");
+        saveButton.textContent = "Save";
+        saveButton.className = "button save-schedule-button";
+
+        lessonLeftPane.appendChild(lessonImageBox);
+        lessonLeftPane.appendChild(saveButton);
+
+        const lessonRightPane = document.createElement("div");
+        lessonRightPane.className = "lesson-right-pane one-column";
+
+        saveButton.addEventListener("click", () => saveWeightsFor(lessonRightPane) );
+
+        return { lessonPlanContainer, lessonLeftPane, lessonRightPane };
+    }
+
+    render(){
 
         const weightsOuterContainer = document.querySelector(".weights-outer-container");
     
         this.weightsArray.forEach( course => {
 
-            const lessonPlanContainer = document.createElement("div");
-            lessonPlanContainer.className = "lesson-plan-container";
+            const { lessonPlanContainer, lessonLeftPane, lessonRightPane } = this.createLessonPlanner(course);
 
-            // Fetch Lesson Image from course ID.
+            const twoGridContainerForQuizElements = document.createElement("div");
+            twoGridContainerForQuizElements.className = "two-column-grid";
 
-            const lessonLeftPane = document.createElement("div");
-            lessonLeftPane.className = "lesson-left-pane";
-            const lessonImageBox = document.createElement("div");
-            lessonImageBox.className = "image-container-box"; //TODO: refactor to image-container-box
+            course.quizArray.forEach( weight => {
 
-            const image = document.createElement("img");
-            image.src = `../uploads/${course.image}`;
-            lessonImageBox.appendChild(image);
-
-            const courseDetails = document.createElement("div");
-            courseDetails.className = "course-details-box";
-            courseDetails.textContent = `${course.courseCode} : ${course.title}`;
-            lessonImageBox.appendChild(courseDetails);
-
-            const saveButton = document.createElement("button");
-            saveButton.textContent = "Save";
-            saveButton.className = "button save-schedule-button";
-
-            lessonLeftPane.appendChild(lessonImageBox);
-            lessonLeftPane.appendChild(saveButton);
-
-            const lessonRightPane = document.createElement("div");
-            lessonRightPane.className = "lesson-right-pane one-column";
-
-            saveButton.addEventListener("click", () => saveSchedulesFor(lessonRightPane) );
-
-            course.weights.forEach( weight => {
-                
-                const lessonItemContainer = document.createElement("div");
-                lessonItemContainer.className = "lesson-item-container";
-
-                const lessonNumbering = document.createElement("div");
-                lessonNumbering.className = "numbering";
-
-                const lessonItemInnerContainer = document.createElement("div");
-                lessonItemInnerContainer.className = "lesson-item-inner-container";
-
-
-                const lessonTitle = document.createElement("div");
-                lessonTitle.className = "lesson-title";
-                lessonTitle.textContent = weight.title
-
-                const lessonTime = document.createElement("div");
-                lessonTime.className = "lesson-time";
-
-                const weightInput = document.createElement("input");
-                weightInput.setAttribute("type", "text");
-                weightInput.className = "weight-input";
-                weightInput.value = weight.value;
-
-                weightInput.setAttribute("lectureID", weight.id)
-                
-
-                lessonTime.appendChild(weightInput);
-
-                lessonItemInnerContainer.appendChild(lessonTitle)
-                lessonItemInnerContainer.appendChild(lessonTime)
-
-                lessonItemContainer.appendChild(lessonNumbering);
-                lessonItemContainer.appendChild(lessonItemInnerContainer);
-
-                lessonRightPane.appendChild(lessonItemContainer);
+                const weightElement = this.createWeightElement(weight, "quiz");
+                twoGridContainerForQuizElements.appendChild(weightElement);
 
             });
 
+            const twoGridContainerForExamElements = document.createElement("div");
+            twoGridContainerForExamElements.className = "two-column-grid";
+
+            course.examArray.forEach( weight => {
+
+                const weightElement = this.createWeightElement(weight, "exam");
+                twoGridContainerForExamElements.appendChild(weightElement);
+
+            });
+
+            lessonRightPane.appendChild(twoGridContainerForQuizElements);
+            lessonRightPane.appendChild(twoGridContainerForExamElements);
+
             lessonPlanContainer.appendChild(lessonLeftPane);
             lessonPlanContainer.appendChild(lessonRightPane);
-
             weightsOuterContainer.appendChild(lessonPlanContainer);
-
-            // HTML Rendering
-
-            // <div class="lesson-item-container">
-            //     <div class="numbering"></div>
-            //     <div class="lesson-item-inner-container">
-            //         <div class="lesson-title">Lecture 1 Intro For Medicine Students</div>
-            //         <div class="lesson-time">
-            //             <input type="date" class="date-input"/>
-            //         </div>
-            //     </div>
-            // </div>
-            
 
         });
 
@@ -113,23 +130,22 @@ function saveWeightsFor(lessonParentContainer){
     lessonElements.forEach( async (lessonElement, index) => {
         
         let time = lessonElement.value;
-        let isScheduleSet = lessonElement.getAttribute("isScheduleSet");
+        let isWeightSet = lessonElement.getAttribute("isWeightSet");
         let lectureID = lessonElement.getAttribute("lectureID");
 
         let JSONTime = new Date(time).toJSON();
 
         const id = uniqueID(1);
         let params = `id=${id}&&foreignID=${lectureID}&&timeStart=${JSONTime}`;
-
         let result;
 
         try{
-            switch(isScheduleSet){
+            switch(isWeightSet){
                 case "true":
-                    result = await updateScheduleTime(params);
+                    result = await updateWeight(params);
                     break;
                 case "false":
-                    if(JSONTime) result = await newScheduleTime(params);
+                    if(JSONTime) result = await newWeight(params);
                     break;
             }
 
@@ -154,7 +170,7 @@ function saveWeightsFor(lessonParentContainer){
 
 }
 
-async function updateScheduleTime(params){
+async function updateWeight(params){
 
     return new Promise( async (resolve) => {
 
@@ -170,7 +186,7 @@ async function updateScheduleTime(params){
 
 }
 
-async function newScheduleTime(params){
+async function newWeight(params){
     
     return new Promise( async (resolve) => {
 

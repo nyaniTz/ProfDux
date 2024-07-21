@@ -1,11 +1,8 @@
-.section-title{
-    color: black;
-    margin-bottom: 30px;
-}
-
 /* TODO: Get rid of scrollbars on table */
 :root {
-    --number-cols: 12;
+    --number-cols: 10;
+    --grid-table-template-columns: repeat(var(--number-cols), auto);
+    --min-width: calc(100px * var(--number-cols));
 }
 
 .main-container {
@@ -19,7 +16,9 @@
 }
 
 .grades-stats-review-container{
-    border: 1px solid red;
+    /* border: 1px solid red; */
+    position: relative;
+    display: grid;
 }
 
 .center-content {
@@ -42,7 +41,7 @@
 .grid-table-section {
     --table-color: #babababa;
     --table-border-width: 2px;
-    --min-width: calc(100px * var(--number-cols));
+    width: 100%;
     counter-reset: section;
     width: var(--min-width);
 }
@@ -50,19 +49,20 @@
 .grid-table-section.tasks-grid-table > .grid-header,
 .grid-table-section.tasks-grid-table > .grid-row
 {
-    grid-template-columns: repeat(var(--number-cols), auto);
+    grid-template-columns: var(--grid-table-template-columns);
 }
 
 .grid-header, .grid-row {
     display: grid;
     list-style: none;
-    grid-template-columns: repeat(var(--number-cols), auto);
+    grid-template-columns: var(--grid-table-template-columns);
 }
 
-.grid-header {
-    width: var(--min-width);
-    background: #ffe5e5;
+.grid-header { 
+    width: var(--min-width); 
+    /* border: 3px solid green; */
 }
+.grid-header * { background: #ffe5e5; }
 
 .grid-header > *, .grid-row > * {
     border: var(--table-border-width) solid var(--table-color);
@@ -116,7 +116,7 @@
 }
 .slide-to-scroll {
     position: absolute;
-    right: calc(40px);
+    right: 0px;
     /* margin-right: 7.5px; */
     margin-top: 13px;
     font-size: 13px;
@@ -204,4 +204,17 @@
 
 .fixed100{
     width: 100px;
+}
+
+.fixed150{
+    width: 150px;
+}
+
+.fixed200{
+    width: 200px;
+}
+
+.freefraction{
+    width: unset;
+    min-width: 200px;
 }

@@ -1,17 +1,12 @@
-<div class="overlay take-quiz-overlay">
-    <div class="popup quiz-popup">
+<div class="overlay take-exam-overlay">
+    <div class="popup exam-popup">
         <div class="popup-header">
-            <!-- <div class="close-button" onclick="
-            closePopup('.take-quiz-overlay');
-            ">
-                <img src="../assets/icons/close.png" alt="">
-            </div> -->
             <h1 class="pop-up-title">
-                <div class="quiz-details">Quiz</div>
+                <div class="quiz-details">Exam</div>
             </h1> 
         </div>
 
-        <div class="popup-body quiz-popup-body">
+        <div class="popup-body exam-popup-body">
 
             <div class="question-header">
                 
@@ -22,48 +17,45 @@
             </div>
         </div>
 
-        <div class="popup-body quiz-results-body">
+        <div class="popup-body exam-results-body">
             <h1>Your Results</h1>
 
-            <div class="quiz-result-area">
-                <div class="total-quiz-mark">
+            <div class="exam-result-area">
+                <div class="total-exam-mark">
                     <div class="text-divider">
                         <text>Total Quiz Marks</text>
                         <p>:</p>
                     </div>
-                    <p class="total-quiz-mark-placeholder">0</p>
+                    <p class="total-exam-mark-placeholder">0</p>
                 </div>
 
-                <div class="earned-quiz-mark">
+                <div class="earned-exam-mark">
                     <div class="text-divider">
                         <text>Score</text>
                         <p>:</p>
                     </div>
-                    <p class="earned-quiz-mark-placeholder">0</p>
+                    <p class="earned-exam-mark-placeholder">0</p>
                 </div>
             </div>
 
             <div class="button" onclick="
-            closePopup('.take-quiz-overlay');
-            refreshCourseOutline();
-            // This will cause bugs when the layout is called in a different place
-            // where refreshOutline is not applicable. Pass as a dependency.
+            closePopup('.take-exam-overlay');
             ">Done</div>
         </div>
 
         <div class="popup-footer button-group-footer">
-            <div class="button-group quiz-button-group">
+            <div class="button-group exam-button-group">
                 <button class="button previous-question" disabled>Previous Question</button>
                 <button class="button next-question">Next Question</button>
             </div>
         </div>
 
         <div class="popup-footer submit-footer">
-            <button class="button finish-quiz-button">Submit Quiz</button>
+            <button class="button finish-exam-button">Submit Quiz</button>
         </div>
 
 
-        <div class="loader-view take-quiz-loader">
+        <div class="loader-view take-exam-loader">
             <div>
                 <div class="sk-fold">
                     <div class="sk-fold-cube"></div>
