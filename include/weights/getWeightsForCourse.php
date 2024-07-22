@@ -53,7 +53,7 @@
                 $quizArray[] = [
                     "id" => $quizID,
                     "title" => $quiz['name'],
-                    "weight" => $quizWeight,
+                    "weight" => $quizWeight[0],
                 ];
 
             }
@@ -61,7 +61,7 @@
             $examQuery = "
                 SELECT id, name
                 FROM `exam` WHERE courseID = '$courseID'
-                ORDER BY quiz.hierarchy
+                ORDER BY exam.hierarchy
             ";
 
             $examResult = mysqli_query($conn,$examQuery);
@@ -85,7 +85,7 @@
                 $examArray[] = [
                     "id" => $examID,
                     "title" => $exam['name'],
-                    "weight" => $examWeight,
+                    "weight" => $examWeight[0],
                 ];
 
             }

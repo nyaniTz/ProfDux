@@ -8,7 +8,7 @@
 
         <?php include '../include/teacherImports.php'; ?>
 
-        <script src="../js/Weights.js?1"></script>
+        <script src="../js/Weights.js?2"></script>
 
 
     </head>

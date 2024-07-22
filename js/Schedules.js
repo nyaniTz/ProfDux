@@ -98,11 +98,14 @@ class Schedules {
 
             });
 
-            if(course.exams.length > 0){
+
+            if(course.exams.length > 0 && course.lectures.length > 0){
                 const divider = document.createElement("div");
                 divider.className = "line-divider";
                 lessonRightPane.appendChild(divider);
-    
+            }
+
+            if(course.exams.length > 0){    
                 const miniExamTitle = document.createElement("div");
                 miniExamTitle.className = "mini-title";
                 miniExamTitle.textContent = "Exam Times";

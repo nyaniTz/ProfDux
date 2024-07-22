@@ -193,7 +193,7 @@ class ExamsView{
             phpFilePath: "../include/exam/getExamDetails.php",
             rejectMessage: "Getting Exam Details Failed",
             type: "fetch",
-            params: createParamatersFrom({ id })
+            params: createParametersFrom({ id })
         });
 
         let { filename } = result[0];
@@ -415,7 +415,7 @@ class CreateExam {
             totalMarks
         }
 
-        const params = createParamatersFrom(examObject);
+        const params = createParametersFrom(examObject);
 
         let response = await AJAXCall({
             phpFilePath: "../include/exam/addNewExam.php",

@@ -344,10 +344,19 @@ a {
     right: -10px;
 }
 
-.alert-badge{
+.alert-badge, .green-badge{
     color: white;
     background-color: var(--pop);
     padding: 3px 9px;
     font-size: 9px;
     border-radius: 5px;
+}
+
+.green-badge {
+    background-color: #1E883E;
+}
+
+.auto-two-column-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
 }

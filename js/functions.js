@@ -522,7 +522,7 @@ async function getTitleAndFilename(givenID){
     });
 }
 
-function createParamatersFrom(data){
+function createParametersFrom(data){
 
     let params = "";
     let entries = Object.entries(data);

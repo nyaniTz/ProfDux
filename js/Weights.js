@@ -4,7 +4,15 @@ class Weights {
         this.weightsArray = weightsArray
     }
 
-    createWeightElement(weight, type){
+    createWeightElement(weightObject, courseID, type){
+
+        const { id, value } = weightObject.weight == null ? 
+        { id: uniqueID(1), value: "" } : weightObject.weight;
+
+        const isWeightSet = weightObject.weight == null ? false : true;
+
+        const { title, id:foreignID } = weightObject;
+
         const lessonItemContainer = document.createElement("div");
         lessonItemContainer.className = "lesson-item-container";
 
@@ -18,21 +26,44 @@ class Weights {
         const lessonTitle = document.createElement("div");
         lessonTitle.className = "lesson-title";
 
+        const typeBadge = `
+            <div class="auto-two-column-grid ">
+                <div class="two-column-grid">
+                    <div class=${type == "exam"? "alert-badge": "green-badge"} style="justify-self:start;">${type}</div>
+                    <p>${title}</p>
+                </div>
+                    ${ !isWeightSet ? `<div class="alert-badge" style="justify-self:end;">Weight Not Set</div>` : "" }
+            </div>
+            `;
+
         if(type == "exam"){
-            lessonTitle.textContent = "Exam: " + weight.title
+            lessonTitle.innerHTML = typeBadge;
         }else {
-            lessonTitle.textContent = "Quiz: " + weight.title
+            lessonTitle.innerHTML = typeBadge;
         }
 
         const lessonTime = document.createElement("div");
         lessonTime.className = "lesson-time";
 
+        let savingObject = {
+            id,
+            foreignID,
+            courseID,
+            value,
+            type,
+            isWeightSet
+        }
+
         const weightInput = document.createElement("input");
         weightInput.setAttribute("type", "text");
         weightInput.className = "weight-input";
-        weightInput.value = weight.value;
+        weightInput.value = value;
+        weightInput.placeholder = "Not Set";
+        weightInput.addEventListener("input", (event) => {
+            savingObject.value = event.target.value;
+        });
 
-        weightInput.setAttribute("lectureID", weight.id)
+        // weightInput.setAttribute("lectureID", weight.id)
 
         lessonTime.appendChild(weightInput);
 
@@ -42,14 +73,21 @@ class Weights {
         lessonItemContainer.appendChild(lessonNumbering);
         lessonItemContainer.appendChild(lessonItemInnerContainer);
         
-        return lessonItemContainer;
+        return { lessonItemContainer, savingObject };
+
+        lessonTitle.innerHTML = `
+        <div class="two-column-grid">
+            <p>${exam.title}</p>
+            <div class="alert-badge" style="justify-self:end;">time not set</div>
+        </div>
+    `
     }
 
     createLessonPlanner(course){
         const lessonPlanContainer = document.createElement("div");
         lessonPlanContainer.className = "lesson-plan-container";
 
-        // Fetch Lesson Image from course ID.
+        const courseID = course.id;
 
         const lessonLeftPane = document.createElement("div");
         lessonLeftPane.className = "lesson-left-pane";
@@ -75,9 +113,7 @@ class Weights {
         const lessonRightPane = document.createElement("div");
         lessonRightPane.className = "lesson-right-pane one-column";
 
-        saveButton.addEventListener("click", () => saveWeightsFor(lessonRightPane) );
-
-        return { lessonPlanContainer, lessonLeftPane, lessonRightPane };
+        return { lessonPlanContainer, lessonLeftPane, lessonRightPane, saveButton, courseID };
     }
 
     render(){
@@ -86,30 +122,46 @@ class Weights {
     
         this.weightsArray.forEach( course => {
 
-            const { lessonPlanContainer, lessonLeftPane, lessonRightPane } = this.createLessonPlanner(course);
+            const { lessonPlanContainer, lessonLeftPane, lessonRightPane, saveButton, courseID } = this.createLessonPlanner(course);
+            const savingArray = [];
+            
+            if(course.quizArray.length > 0){
+                const twoGridContainerForQuizElements = document.createElement("div");
+                twoGridContainerForQuizElements.className = "two-column-grid";
 
-            const twoGridContainerForQuizElements = document.createElement("div");
-            twoGridContainerForQuizElements.className = "two-column-grid";
+                course.quizArray.forEach( weight => {
 
-            course.quizArray.forEach( weight => {
+                    const { lessonItemContainer, savingObject } = this.createWeightElement(weight, courseID, "quiz");
+                    twoGridContainerForQuizElements.appendChild(lessonItemContainer);
+                    savingArray.push(savingObject);
 
-                const weightElement = this.createWeightElement(weight, "quiz");
-                twoGridContainerForQuizElements.appendChild(weightElement);
+                });
 
-            });
+                lessonRightPane.appendChild(twoGridContainerForQuizElements);
+            }
 
-            const twoGridContainerForExamElements = document.createElement("div");
-            twoGridContainerForExamElements.className = "two-column-grid";
+            if(course.quizArray.length > 0 && course.examArray.length > 0){
+                const divider = document.createElement("div");
+                divider.className = "line-divider";
+                lessonRightPane.appendChild(divider);
+            }
 
-            course.examArray.forEach( weight => {
+            if(course.examArray.length > 0){
+                const twoGridContainerForExamElements = document.createElement("div");
+                twoGridContainerForExamElements.className = "two-column-grid";
 
-                const weightElement = this.createWeightElement(weight, "exam");
-                twoGridContainerForExamElements.appendChild(weightElement);
+                course.examArray.forEach( weight => {
+    
+                    const { lessonItemContainer, savingObject } = this.createWeightElement(weight, courseID, "exam");
+                    twoGridContainerForExamElements.appendChild(lessonItemContainer);
+                    savingArray.push(savingObject);
+    
+                });
+    
+                lessonRightPane.appendChild(twoGridContainerForExamElements);
+            }
 
-            });
-
-            lessonRightPane.appendChild(twoGridContainerForQuizElements);
-            lessonRightPane.appendChild(twoGridContainerForExamElements);
+            saveButton.addEventListener("click", () => saveWeightsFor(savingArray));
 
             lessonPlanContainer.appendChild(lessonLeftPane);
             lessonPlanContainer.appendChild(lessonRightPane);
@@ -120,32 +172,25 @@ class Weights {
     }
 }
 
-function saveWeightsFor(lessonParentContainer){
-
-    let lessonElements = lessonParentContainer.querySelectorAll(".date-input");
+function saveWeightsFor(savingArray){
 
     //TODO: showLoader();
     // const loader = loadLoader("Saving Schedules");
 
-    lessonElements.forEach( async (lessonElement, index) => {
-        
-        let time = lessonElement.value;
-        let isWeightSet = lessonElement.getAttribute("isWeightSet");
-        let lectureID = lessonElement.getAttribute("lectureID");
+    savingArray.forEach( async (savingObject) => {
 
-        let JSONTime = new Date(time).toJSON();
-
-        const id = uniqueID(1);
-        let params = `id=${id}&&foreignID=${lectureID}&&timeStart=${JSONTime}`;
+        const params = createParametersFrom(savingObject);
+        const { isWeightSet } = savingObject;
         let result;
 
         try{
             switch(isWeightSet){
-                case "true":
+                case true:
                     result = await updateWeight(params);
                     break;
-                case "false":
-                    if(JSONTime) result = await newWeight(params);
+                case false:
+                    result = await newWeight(params);
+                    console.log("new: ", result);
                     break;
             }
 
@@ -161,7 +206,6 @@ function saveWeightsFor(lessonParentContainer){
             //TODO: stopLoader();
             // removeLoader(loader);
 
-
         }
 
     });
@@ -175,8 +219,8 @@ async function updateWeight(params){
     return new Promise( async (resolve) => {
 
         await AJAXCall({
-            phpFilePath: "../include/schedule/updateSchedule.php",
-            rejectMessage: "Updating Schedule Failed",
+            phpFilePath: "../include/weights/updateWeight.php",
+            rejectMessage: "Updating Weight Failed",
             params,
             type: "post"
         });
@@ -191,8 +235,8 @@ async function newWeight(params){
     return new Promise( async (resolve) => {
 
         await AJAXCall({
-            phpFilePath: "../include/schedule/newSchedule.php",
-            rejectMessage: "New Schedule Failed",
+            phpFilePath: "../include/weights/newWeight.php",
+            rejectMessage: "New Weight Failed",
             params,
             type: "post"
         });

@@ -92,7 +92,7 @@ async function saveProfileSettings() {
 
     if(_haveDetailsChanged){
 
-        const params = createParamatersFrom(details);
+        const params = createParametersFrom(details);
 
         console.log(params);
 

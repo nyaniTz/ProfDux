@@ -463,7 +463,7 @@ async function addNewExamGradeRowInDatabase(examGradeObject){
 
     console.log("_examGradeObject: ", _examGradeObject);
 
-    let params = createParamatersFrom(_examGradeObject);
+    let params = createParametersFrom(_examGradeObject);
 
     let response = await AJAXCall({
         phpFilePath: "../include/exam/addNewExamGradeRow.php",
