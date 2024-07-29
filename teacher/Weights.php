@@ -28,9 +28,9 @@
 
         <script>
 
-            let userID = "ef87w9r42rbw";
-
             ( async() => {
+
+                let { id: userID } = await getGlobalDetails();
 
                 let result = await AJAXCall({
                     phpFilePath: "../include/weights/getWeightsForCourses.php",
