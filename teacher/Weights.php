@@ -33,7 +33,7 @@
             ( async() => {
 
                 let result = await AJAXCall({
-                    phpFilePath: "../include/weights/getWeightsForCourse.php",
+                    phpFilePath: "../include/weights/getWeightsForCourses.php",
                     rejectMessage: "Weights Not Fetched",
                     type: "fetch",
                     params: `userID=${userID}`,

@@ -1,8 +1,8 @@
 /* TODO: Get rid of scrollbars on table */
 :root {
-    --number-cols: 10;
-    --grid-table-template-columns: repeat(var(--number-cols), auto);
-    --min-width: calc(100px * var(--number-cols));
+    --number-cols: 7;
+    --grid-table-template-columns: auto auto 1fr auto auto auto auto;
+    --min-width: 100%;
 }
 
 .main-container {
@@ -217,4 +217,21 @@
 .freefraction{
     width: unset;
     min-width: 200px;
+}
+
+.grid-cell-userimage {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.grid-cell-userimage img {
+    height: inherit;
+    width: inherit;
+}
+
+.span-all {
+    grid-column: 1/-1;
+    padding: 20px;
 }

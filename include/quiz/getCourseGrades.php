@@ -35,6 +35,15 @@
 
             $userID = $subscription['userID'];
 
+            $userDetailsQuery = "
+                SELECT image, name FROM `userDetails`
+                JOIN users ON userDetails.id = users.id
+                WHERE users.id = '$userID'
+            ";
+
+            $userDetailsResults = mysqli_query($conn,$userDetailsQuery);
+            $userDetails = mysqli_fetch_all($userDetailsResults,MYSQLI_ASSOC);
+
             $quizGradeQuery = "
                 SELECT quizID, filename, status, value FROM `quizGrades`
                 WHERE quizGrades.userID = '$userID' && courseID = '$courseID'
@@ -44,7 +53,8 @@
             $quizGrades = mysqli_fetch_all($quizGradeResults,MYSQLI_ASSOC);
 
             $quizGradesArray[] = array(
-                $userID => $quizGrades
+                $userID => $quizGrades,
+                "details" => $userDetails[0],
             );
 
         }

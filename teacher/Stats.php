@@ -8,8 +8,10 @@
 
         <?php include '../include/teacherImports.php'; ?>
 
-        <link rel="stylesheet" href="../css/grid-table.css?2">
-        <script src="../js/StatsView.js?" defer></script>
+        <link rel="stylesheet" href="../css/grid-table.css?4">
+        <script src="../js/StatsView.js?3" defer></script>
+        <script src="../js/Stats.js?1"></script>
+        <script src="../js/UILoaders.js?1"></script>
 
     </head>
     <body>
@@ -21,105 +23,45 @@
             <div class="main-container">
                 <h1 class="large-title">Grades</h1>
 
-                <div class="grades-stats-review-container">
-                    <div class="center-content">
-                        <div class="extended-wrapper">
-                            <div class="grid-table-section user-table">
-                                <ul class="grid-header" data-title="header">
-                                    <li class="fixed100">#</li>
-                                    <li class="fixed100">Name</li>
-                                    <li class="fixed100">Email</li>
-                                    <li class="fixed100">Current</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                </ul>
-
-                                <ul class="grid-row">
-                                    <li class="itemization-badge fixed100"></li>
-                                    <li class="fixed100">Munim</li>
-                                    <li class="fixed100">40</li>
-                                    <li class="fixed100">40</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                </ul>
-
-                                <ul class="grid-row">
-                                    <li class="itemization-badge fixed100"></li>
-                                    <li class="fixed100">Munim</li>
-                                    <li class="fixed100">40</li>
-                                    <li class="fixed100">40</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                    <li class="fixed100">...</li>
-                                </ul>
-
-                            </div>
-
-                            <div class="slide-to-scroll">scroll / slide → </div>
+                <div class="course-view-container" id="load-exam-container" style="margin-top:10px">
+                    <div class="container-message blank course-view-container-loader" style="height: 100%">
+                        <div class="sk-fold">
+                            <div class="sk-fold-cube"></div>
+                            <div class="sk-fold-cube"></div>
+                            <div class="sk-fold-cube"></div>
+                            <div class="sk-fold-cube"></div>
                         </div>
                     </div>
+                </div>
+
+                <div class="load-grades-container inner-overlay">
+
+                    <div class="back-arrow" onclick="openPopup('.course-view-container'); closePopup('.load-grades-container')">
+                        <img class="icon" src="../assets/icons/fi/fi-rr-arrow-alt-left.svg" alt="">
+                    </div>
+
+                    <?php include 'components/loadGradesOverlay.php' ?>
+
                 </div>
             </div>
         </div>
 
+        <style>
+
+            .load-grades-container{
+                grid-template-rows: auto auto 1fr;
+            }
+
+        </style>
+
         <script>
-
-            const id = "lth0xgwp";
-
-            //TODO: render choice options ( generic );
-            //TODO: on click render class grades view for course.
 
             ( async () => {
 
-                try {
+                await loadCoursesGeneric("id", loadGrades);
 
-                    let quizStructure = await AJAXCall({
-                        phpFilePath: "../include/quiz/getQuizStructure.php",
-                        rejectMessage: "Getting Structure Failed",
-                        params: `id=${id}`,
-                        type: "fetch"
-                    });
-                    
-                    let result = await AJAXCall({
-                        phpFilePath: "../include/quiz/getCourseGrades.php",
-                        rejectMessage: "Getting Timetable Failed",
-                        params: `id=${id}`,
-                        type: "fetch"
-                    });
+            })();
 
-                    const quizGrades = result.quizGrades
-                    console.log("quizGrades: ", quizGrades);
-                    console.log("structure: ", quizStructure);
-
-                    quizStructure.forEach( structureItem => {
-                        console.log(`Quiz ${structureItem.hierarchy}`);
-                    });
-
-                    let objectEntries = Object.entries(quizGrades)
-                    console.log(objectEntries[0][1]);
-
-                }catch(error){
-                    console.log(error)
-                }
-
-            })()
         </script>
     </body>
 </html>

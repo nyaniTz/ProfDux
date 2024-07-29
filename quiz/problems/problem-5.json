@@ -1,0 +1,13 @@
+{
+    "question": {
+        "english": "Water molecules form hydrogen bonds with each other.",
+        "turkish": "Su molekülleri birbirleriyle hidrojen bağları oluşturur."
+    },
+    "answerOptions": null,
+    "answer": {
+        "english": "True",
+        "turkish": "Doğru"
+    },
+    "type": "trueFalse",
+    "hardness": "extremely difficult"
+}

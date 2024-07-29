@@ -1,0 +1,28 @@
+{
+    "question": {
+        "english": "What is Water?",
+        "turkish": "Su nedir?"
+    },
+    "answerOptions": {
+        "english": {
+            "trueFalse": [
+                "True",
+                "False"
+            ],
+            "multipleChoice": null
+        },
+        "turkish": {
+            "trueFalse": [
+                "Doğru",
+                "Yanlış"
+            ],
+            "multipleChoice": null
+        }
+    },
+    "answer": {
+        "english": "True",
+        "turkish": "Doğru"
+    },
+    "type": "trueFalse",
+    "hardness": "easy"
+}
