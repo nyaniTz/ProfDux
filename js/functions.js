@@ -679,15 +679,19 @@ async function fetchCourseWithID(givenID){
         course.renderEditLearningObjectivesButton();
         course.renderLectureSection();
 
-        findElement("#addNewLecture").addEventListener("click", () => {
-            course.addLectureElement();
-        })
+        let addNewLectureButton = clearEventListenersFor(findElement("#addNewLecture"));
+        let saveCourseDetailsButton = clearEventListenersFor(findElement("#saveCourseDetails"));
+        let excelCourseFileUploadButton = clearEventListenersFor(findElement("#excelCourseFileUpload"));
 
-        findElement("#saveCourseDetails").addEventListener("click", async () => {
-            courseItemObjectLooper(course);
-        })
+        addNewLectureButton.addEventListener("click", () => 
+            course.addLectureElement()
+        )
 
-        findElement("#excelCourseFileUpload").addEventListener("change", async (event) => { 
+        saveCourseDetailsButton.addEventListener("click", async () => 
+            courseItemObjectLooper(course)
+        )
+
+        excelCourseFileUploadButton.addEventListener("change", async (event) => { 
 
             console.log("clickeddddd");
 
