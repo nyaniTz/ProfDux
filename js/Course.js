@@ -8,6 +8,8 @@ class Course {
     deleteLectures = {}
     deleteSubtopics = {}
     deleteResource = {}
+
+    itemizationIndex = 0;
     
     markAllForDeletion(){
         this.lectures.forEach( lecture => {
@@ -77,12 +79,13 @@ class Course {
 
         let courseGridContainer = findElement("#course-grid-container");
         courseGridContainer.innerHTML = "";
+ 
+        this.lectures.forEach( (lecture, index) => {
 
-        this.lectures.forEach( lecture => {
-
-            console.log("lectures object: ", JSON.stringify(lecture))
+            console.log("lectures object: ", JSON.stringify(lecture));
 
             this.lectureIndex = lecture.hierarchy;
+            this.itemizationIndex = index + 1;
 
             let lectureSection = document.createElement("div");
             lectureSection.className = "lecture-section";
@@ -90,6 +93,7 @@ class Course {
             let itemizationElement = document.createElement("div");
             itemizationElement.className = "itemization";
             itemizationElement.setAttribute("hierarchy", lecture.hierarchy);
+            itemizationElement.textContent = this.itemizationIndex + ".";
 
             let lectureInnerContainer = document.createElement("div");
             lectureInnerContainer.className = "lecture-inner-container";
@@ -334,6 +338,7 @@ class Course {
 
         let itemizationElement = document.createElement("div");
         itemizationElement.className = "itemization";
+        itemizationElement.textContent = ++this.itemizationIndex + ".";
 
         let lectureInnerContainer = document.createElement("div");
         lectureInnerContainer.className = "lecture-inner-container";
@@ -385,6 +390,16 @@ class Course {
         let editCourseContainer = document.querySelector(".edit-course-container");
         scrollBottom(editCourseContainer);
         
+    }
+
+    recountItemizations(){
+        let courseGridContainer = findElement("#course-grid-container");
+        const itemizationElements = courseGridContainer.querySelectorAll(".itemization");
+
+        itemizationElements.forEach((itemizationElement, index) => {
+            this.itemizationIndex = index + 1;
+            itemizationElement.textContent = this.itemizationIndex + ".";
+        })
     }
 
     addSubtopicElement({ parentID, parentElement, hierarchy }, subtopicTitle = ""){
@@ -621,6 +636,7 @@ class Course {
             switch(type){
                 case "lecture":
                     inputElementContainer.parentElement.parentElement.remove();
+                    this.recountItemizations();
                     this.searchAndDeleteLecture(id)
                     this.lectureIndex--
                     break;

@@ -24,11 +24,6 @@
     grid-column: 1;
 }
 
-.itemization::before{
-    counter-increment: course-outline-counter;
-    content: counter(course-outline-counter) ". ";
-}
-
 .lecture-inner-container {
     display: grid;
     grid-gap: 20px;
