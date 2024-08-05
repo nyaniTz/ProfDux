@@ -26,6 +26,7 @@
         "../css/exam.css",
         "../css/classroom.css",
         "../css/image-viewer.css",
+        "../css/messaging.css"
     );
 
     // These are for javascript files that you want
@@ -36,7 +37,8 @@
         "../js/localize.js",
         "../js/Schedules.js",
         "../js/excelParser.js",
-        "../js/Objectives.js"
+        "../js/Objectives.js",
+        "../js/Messaging.js",
     );
 
     // These are for javascript files that you want

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messaging</title>
+    <link rel="stylesheet" href="../css/translation.css">
+    <link rel="stylesheet" href="../css/root.css">
+    <link rel="stylesheet" href="../css/tab.css">
+    <link rel="stylesheet" href="../css/inputs.css">
+
+
+    <script src="../js/functions.js"></script>
+    <script src="../js/localize.js" defer></script>
+    <script src="../js/tab.js" defer></script>
+    <script src="../js/Messaging.js"></script>
+
+    <link rel="stylesheet" href="../css/spinkit.css">
+    <link rel="stylesheet" href="../css/popup.css">
+    <link rel="stylesheet" href="../css/messaging.css?3">
+</head>
+<body>
+
+
+    <h1>Messaging</h1>
+
+    <div class="tab-container-view">
+
+        <div class="tab-header">
+            <div class="header-tab active" data-for="direct-messages">
+                Direct Messages
+            </div>
+            <div class="header-tab" data-for="class-announcements">
+                Class Announcements
+            </div>
+        </div>
+              
+        <div class="tab-body" data-for="direct-messages">
+            
+            <div class="create-new-message-area">
+                <p>Click this button to send a direct message</p>
+                <div class="button" onclick="openPopup('.send-direct-messsage-overlay')">New Message</div>
+            </div>
+
+            <div class="messages-container" id="directMessageRenderContainer">
+                <p class="empty-message-view">
+                    You currently have no messages
+                </p>
+            </div>
+        </div>
+
+        <div class="tab-body" data-for="class-announcements">    
+            <div class="create-new-message-area">
+                <p>Click this button to send an announcement</p>
+                <div class="button" onclick="openPopup('.send-announcement-overlay')">New Announcement</div>
+            </div>
+
+            <div class="messages-container" id="announcementRenderContainer">
+                <p class="empty-message-view">
+                    You currently have no messages
+                </p>
+            </div>   
+        </div>
+    </div>
+
+    <script>
+
+
+
+    </script>
+
+<div class="overlay send-direct-messsage-overlay">
+    <div class="popup send-direct-messsage-popup">
+        <div class="popup-header">
+            <div class="close-button" onclick="closePopup('.send-direct-messsage-overlay'); clearTextContent('#directMessageContainer'); clearTextContent('#directMessageLimit')">
+                <img src="../assets/icons/close.png" alt="">
+            </div>
+            <h2 class="pop-up-title">
+                <text>Send Message</text>
+            </h2> 
+        </div>
+
+        <div class="popup-body send-direct-messsage-popup-body">
+
+            <div class="loader-view" id="sendDirectMessageLoader" style="display: none;">
+                <div>
+                    <div class="sk-fold">
+                        <div class="sk-fold-cube"></div>
+                        <div class="sk-fold-cube"></div>
+                        <div class="sk-fold-cube"></div>
+                        <div class="sk-fold-cube"></div>
+                    </div>
+                    <p>...</p>
+                </div>
+            </div>
+
+            
+            <div class="simple-grid">
+
+                <div class="limit" id="directMessageLimit"></div>
+                <div class="form-input-container">
+                    <span class="form-input-label">To</span>
+                    <div class="in-type-input" id="directMessageFilterContainer">
+                        <input type="text" class="form-input" placeholder="Person's Name" required>
+                        <div class="parent-task filter-list">
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="position: relative;">
+                    <div class="message-container" id="directMessageContainer" contenteditable=""></div>
+                
+                    <div class="send-message-button" id="directMessageSendButton">
+                        <img src="../assets/icons/send.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="overlay send-announcement-overlay">
+    <div class="popup send-announcement-popup">
+        <div class="popup-header">
+            <div class="close-button" onclick="closePopup('.send-announcement-overlay'); clearTextContent('#announcementContainer'); clearTextContent('#announcementLimit')">
+                <img src="../assets/icons/close.png" alt="">
+            </div>
+            <h2 class="pop-up-title">
+                <text>Send Announcement</text>
+            </h2> 
+        </div>
+
+        <div class="popup-body send-announcement-popup-body">
+
+            <div class="loader-view" id="sendAnnouncementLoader" style="display: none;">
+                <div>
+                    <div class="sk-fold">
+                        <div class="sk-fold-cube"></div>
+                        <div class="sk-fold-cube"></div>
+                        <div class="sk-fold-cube"></div>
+                        <div class="sk-fold-cube"></div>
+                    </div>
+                    <p>...</p>
+                </div>
+            </div>
+
+            
+            <div class="simple-grid">
+
+                <div class="limit" id="announcementLimit"></div>
+
+                <div class="form-input-container">
+                    <span class="form-input-label">To</span>
+                    <div class="in-type-input" id="announcementFilterContainer">
+                        <input type="text" class="form-input" placeholder="Class Name" required>
+                        <div class="parent-task filter-list">
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="position: relative;">
+                    <div class="message-container" id="announcementContainer" contenteditable=""></div>
+                
+                    <div class="send-message-button" id="announcementSendButton">
+                        <img src="../assets/icons/send.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="overlay view-messsage-overlay">
+    <div class="popup view-messsage-popup">
+        <div class="popup-header">
+            <div class="close-button" onclick="closePopup('.view-messsage-overlay')">
+                <img src="../assets/icons/close.png" alt="">
+            </div>
+            <h2 class="pop-up-title">
+                <text>Message</text>
+            </h2> 
+        </div>
+
+        <div class="popup-body send-direct-messsage-popup-body">
+            <div class="simple-grid">
+                <div class="form-input-container">
+                    <span class="form-input-label">From</span>
+                    <input type="text" class="form-input" id="messageViewSender" disabled>
+                </div>
+                
+                <div style="position: relative;">
+                    <div class="message-container review" id="messageViewContainer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+
+        function clearTextContent(elementSelector){
+            const element = document.querySelector(elementSelector);
+            element.textContent = "";
+        }
+
+        (async() => {
+        
+            const { id: senderID } = await getGlobalDetails();
+
+            const messageObject = {
+                type: "direct",
+                senderID
+            }
+
+            let directMessagingEngine = new Messaging(messageObject);
+            const messageContainer = document.querySelector("#directMessageContainer");
+            const limitElement = document.querySelector("#directMessageLimit");
+            const sendMessageButton = document.querySelector("#directMessageSendButton");
+            const directMessageRenderContainer = document.querySelector("#directMessageRenderContainer");
+
+            const messageViewSender = document.querySelector("#messageViewSender");
+            const messageViewContainer = document.querySelector("#messageViewContainer");
+            const loader = document.querySelector("#sendDirectMessageLoader");
+            const directMessageFilterContainer = document.querySelector("#directMessageFilterContainer");
+
+            //TODO: reset event listeners.
+
+            directMessagingEngine.setMessageContainer(messageContainer);
+            directMessagingEngine.setSendMessageButton(sendMessageButton);
+            directMessagingEngine.setMessageRenderContainer(directMessageRenderContainer);
+            directMessagingEngine.setLimitElement(limitElement);
+
+            directMessagingEngine.setMessageViewSender(messageViewSender);
+            directMessagingEngine.setMessageViewContainer(messageViewContainer);
+            directMessagingEngine.setLoader(loader);
+            directMessagingEngine.setMessageFilterContainer(directMessageFilterContainer);
+
+
+            // Announcement
+
+            const announcementObject = {
+                type: "announcement",
+                senderID
+            }
+
+            let announcementEngine = new Messaging(announcementObject);
+            const announcementMessageContainer = document.querySelector("#announcementContainer");
+            const announcementLimitElement = document.querySelector("#announcementLimit");
+            const announcementSendMessageButton = document.querySelector("#announcementSendButton");
+            const announcementRenderContainer = document.querySelector("#announcementRenderContainer");
+
+            const announcementViewSender = document.querySelector("#messageViewSender");
+            const announcementViewContainer = document.querySelector("#messageViewContainer");
+            const announcementLoader = document.querySelector("#sendAnnouncementLoader");
+            const announcementFilterContainer = document.querySelector("#announcementFilterContainer");
+            //TODO: reset event listeners.
+
+            announcementEngine.setMessageContainer(announcementMessageContainer);
+            announcementEngine.setSendMessageButton(announcementSendMessageButton);
+            announcementEngine.setMessageRenderContainer(announcementRenderContainer);
+            announcementEngine.setLimitElement(announcementLimitElement);
+
+            announcementEngine.setMessageViewSender(announcementViewSender);
+            announcementEngine.setMessageViewContainer(announcementViewContainer);
+            announcementEngine.setLoader(announcementLoader);
+            announcementEngine.setMessageFilterContainer(announcementFilterContainer);
+
+        })();
+
+    </script>
+</body>
+</html>

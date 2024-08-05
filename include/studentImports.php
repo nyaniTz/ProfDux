@@ -30,7 +30,9 @@
         "../css/exam.css",
         "../css/examStudent.css",
         "../css/scheduling.css",
-        "../css/grades.css"
+        "../css/grades.css",
+        "../css/messaging.css"
+
     );
 
     // These are for javascript files that you want
@@ -40,6 +42,7 @@
         "../js/functions.js",
         "../js/localize.js",
         "../js/PDFSearch.js",
+        "../js/Messaging.js",
     );
 
     // These are for javascript files that you want
