@@ -1,9 +1,6 @@
 <div class="overlay edit-learning-objectives-overlay">
     <div class="popup">
         <div class="popup-header two-column-grid">
-            <div class="close-button" onclick="closePopup('.edit-learning-objectives-overlay')">
-                <img src="../assets/icons/close.png" alt="">
-            </div>
             <h1 class="pop-up-title">
                 <text>Edit Learning Objectives</text>
             </h1> 
@@ -12,7 +9,10 @@
                     <img src="../assets/icons/reload.png" alt="">
                 </div>
                 <div class="button save-learning-objectives-button">
-                    <text>Save</text>
+                    <text>Save and Close</text>
+                </div>
+                <div class="close-button" style="position:relative; top: unset; right: unset;" onclick="closePopup('.edit-learning-objectives-overlay')">
+                    <img src="../assets/icons/close.png" alt="">
                 </div>
             </div>
         </div>

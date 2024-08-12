@@ -56,6 +56,7 @@
     justify-self: start;
     padding: 0.2em 0em;
     line-height: 1.3em;
+    margin: 0;
 }
 
 .popup .close-button {

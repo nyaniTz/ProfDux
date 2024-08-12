@@ -117,7 +117,7 @@ a {
 .objectives-action-buttons {
     display: grid;
     align-items: center;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     grid-gap: 11px;
 }
 

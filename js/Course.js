@@ -994,6 +994,7 @@ async function editLearningObjectives(id){
             }
             break;
         case 1:
+        case 2:    
             filename = filenameResponse[0].filename;
             correctPath = "../objectives/" + filename;
             objectivesObjectResponse = await fetch(correctPath, {cache: "reload"});
@@ -1003,9 +1004,9 @@ async function editLearningObjectives(id){
                 type,
                 courseID: id
             }
-    
             break;
         default:
+            // delete objective.
             throw new Error("You have 2 objective files");
     }
 
@@ -1025,6 +1026,5 @@ async function editLearningObjectives(id){
     learningObjectives.renderObjectives();
     learningObjectives.setAddNewObjectiveButton(addLearningObjectiveButton);
     learningObjectives.setSaveLearningObjectivesButton(saveLearningObjectivesButton);
-    learningObjectives.saveObjectives();
     openPopup(".edit-learning-objectives-overlay");
 }

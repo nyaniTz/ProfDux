@@ -28,14 +28,15 @@ class Objectives {
     }
 
     setAddNewObjectiveButton(button){
-        button.addEventListener("click", () => {
+        clearEventListenersFor(button).addEventListener("click", () => {
             this.addObjective();
         })
     }
 
     setSaveLearningObjectivesButton(button){
-        button.addEventListener("click", () => {
+        clearEventListenersFor(button).addEventListener("click", () => {
             this.saveObjectives();
+            closePopup('.edit-learning-objectives-overlay');
         })
     }
 
@@ -195,8 +196,8 @@ async function refreshObjectives(){
         courseID: id
     }
 
-    let addLearningObjectiveButton = clearEventListenersFor(findElement(".add-learning-objective-button"));
-    let saveLearningObjectivesButton = clearEventListenersFor(findElement(".save-learning-objectives-button"));
+    let addLearningObjectiveButton = findElement(".add-learning-objective-button");
+    let saveLearningObjectivesButton = findElement(".save-learning-objectives-button");
 
     console.log("objectivesObject: ", objectives);
 
@@ -205,9 +206,6 @@ async function refreshObjectives(){
     learningObjectives.setAddNewObjectiveButton(addLearningObjectiveButton);
     learningObjectives.setSaveLearningObjectivesButton(saveLearningObjectivesButton);
 
-    setTimeout(() => {
-        learningObjectives.saveObjectives();
-        removeLoader(loader);
-    }, 2000);
+    removeLoader(loader);
 
 }
