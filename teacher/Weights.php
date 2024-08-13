@@ -19,8 +19,7 @@
         <div class="outer-container">
             <?php include 'components/sidebar.php'; ?>
             <div class="main-container">
-                <h1>Weights</h1>
-
+                <h1><text>Weights</text></h1>
                 <div class="weights-outer-container">
                 </div>
             </div>

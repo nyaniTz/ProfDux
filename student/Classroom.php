@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="inner-right-wrapper">
-                                <div class="classroom-start-class-button button" onclick="renderClassView(this)">Start Class</div>
+                                <div class="classroom-start-class-button button" onclick="renderClassView(this)"><text>Start Class</text></div>
                             </div>
                         </div>
 

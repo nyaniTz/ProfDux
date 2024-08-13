@@ -40,9 +40,9 @@
 
                 <div class="simple-grid">
                     <div class="timetable-filter buttons-array">
-                        <div class="button active this-week">This Week</div>
-                        <div class="button inactive next-week">Next Week</div>
-                        <div class="button inactive this-month">This Month</div>
+                        <text class="button active this-week">This Week</text>
+                        <text class="button inactive next-week">Next Week</text>
+                        <text class="button inactive this-month">This Month</text>
                     </div>
 
                     <div class="timetable-container">

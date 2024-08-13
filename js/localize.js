@@ -61,6 +61,21 @@ function fetchLocalization(text){
         "attach" : { "en": "attach", "tr" : "Ekle"},
         "cancel" : { "en": "cancel", "tr" : "İptal"},
         "upload resource" : { "en": "Upload Resource", "tr" : "Kaynağı Yükle"},
+
+        
+        "weights" : { "en": "Weights", "tr" : "Değerlendirme Ağırlıkları"},
+        "not set" : { "en": "Not Set", "tr" : "Ayarlanmadı"},
+        "weight not set" : { "en": "Weight Not Set", "tr" : "Değerlendirme ağırlıkları ayarlanmadı"},
+        "direct messages" : { "en": "Direct Messages", "tr" : "Mesajlar"},
+        "class announcements" : { "en": "Class Announcements", "tr" : "Ders Duyuruları"},
+        "new message" : { "en": "New Message", "tr" : "Yeni Mesaj"},
+        "start class" : { "en": "Start Class", "tr" : "Dersi Başlat"},
+        "this week" : { "en": "This Week", "tr" : "Bu Hafta"},
+        "next week" : { "en": "Next Week", "tr" : "Gelecek Hafta"},
+        "this month" : { "en": "This Month", "tr" : "Bu Ay"},
+        "view photo" : { "en": "view photo", "tr" : "fotoğrafı görüntüle"},
+        "open" : { "en": "open", "tr" : "aç"},
+
     }
 
     let escape =  { "en" : text, "tr" : text }

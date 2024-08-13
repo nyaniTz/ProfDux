@@ -31,10 +31,10 @@
 
                     <div class="tab-header">
                         <div class="header-tab active" data-for="direct-messages">
-                            Direct Messages
+                            <text>Direct Messages</text>
                         </div>
                         <div class="header-tab" data-for="class-announcements">
-                            Class Announcements
+                            <text>Class Announcements</text>
                         </div>
                     </div>
                         
