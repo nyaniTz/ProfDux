@@ -22,10 +22,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/translation.css">
     <script src="/js/auth.js?5" defer></script>
     <script src="/js/functions.js?4" defer></script>
     <script src="/js/weather.js" defer></script>
-
+    <script src="/js/localize.js"></script>
 </head>
 <body>
 
@@ -40,7 +41,7 @@
             <div class="bubble-message-container">Wrong Credentials</div>
     
             <form class="form-container login-container">
-                <p class="title-tag">dux login</p>
+                <p class="title-tag"><text>dux login</text></p>
                 <span class="text-box">
                     <!-- <p class="hint-text">You can log in with your email or </p> -->
                     <input type="text" id="username-field" required class="bordered bordered-dark" placeholder="Email / Student Number">
@@ -50,7 +51,7 @@
                 </span>
                 <div class="button background-dark" onclick="login()">login</div>
         
-                <p class="link" onclick="showSignup()">Don't have an account? Signup</p>
+                <p class="link" onclick="showSignup()"><text>Don't have an account? Signup</text></p>
             </form>
         
             <form class="form-container signup-container">
@@ -151,7 +152,7 @@
             studentPassword.value = randomstring;
         });
 
-
+        localizeTextElements();
 
     </script>
 

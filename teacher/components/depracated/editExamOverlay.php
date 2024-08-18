@@ -3,7 +3,7 @@
         <div class="popup-header">
             <div class="button save-button">Save and Close</div>
             <h1 class="pop-up-title">
-                <div class="quiz-details">Exam</div>
+                <div class="quiz-details"><text>Exam</text></div>
             </h1>
         </div>
 

@@ -2,7 +2,7 @@
     <div class="popup exam-popup">
         <div class="popup-header">
             <h1 class="pop-up-title">
-                <div class="quiz-details">Exam</div>
+                <div class="quiz-details"><text>Exam</text></div>
             </h1> 
         </div>
 

@@ -803,9 +803,9 @@ async function courseItemObjectLooper(course, type = ""){
             console.log("course deleted");
             closePopup(".edit-course-container");
             removeLoader(loader);
-            await loadCourses("id"); // YES
+            location.reload();
         }else {
-            await refreshTeacherCourseOutline(); //Bugs???
+            await refreshTeacherCourseOutline(); //TODO: Bugs??? YES!
             removeLoader(loader);
         }
     }, 5000);

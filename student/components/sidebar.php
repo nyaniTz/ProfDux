@@ -26,7 +26,7 @@
 
         <a class="sidebar-link" data-id="Exam" href="Exam.php">
             <img src="../assets/icons/fi/fi-rr-pen-circle.svg" alt="">
-            <p>Exam</p>
+            <p><text>Exam</text></p>
         </a>
 
         <a class="sidebar-link" data-id="Classroom" href="Classroom.php">
@@ -48,16 +48,16 @@
             <img src="../assets/icons/fi/fi-rr-document.svg" alt="">
             <p>E-book</p>
         </a>
+        <a class="sidebar-link" data-id="Messaging" href="Messaging.php">
+            <img src="../assets/icons/fi/fi-rr-envelope.svg" alt="">
+            <p><text>Messaging</text></p>
+        </a>
 
         <a class="sidebar-link" data-id="Settings" href="Settings.php">
             <img src="../assets/icons/fi/fi-rr-add.svg" alt="">
-            <p>Settings</p>
+            <p><text>Settings</text></p>
         </a>
 
-        <a class="sidebar-link" data-id="Messaging" href="Messaging.php">
-            <img src="../assets/icons/fi/fi-rr-envelope.svg" alt="">
-            <p>Messaging</p>
-        </a>
 
     </div>
 

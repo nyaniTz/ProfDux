@@ -43,8 +43,10 @@ function setHeaderInfo(userObject){
 
 }
 
-const currentLanguage = setCurrentLanguageToHTMLTag();
-console.log("currentLanguage: ", currentLanguage);
+setTimeout(() => {
+    setCurrentLanguageToLocalStorage();
+    console.log("currentLanguage: ", document.querySelector("html").lang);
+}, 3000);
 
 function getCurrentLanguageFromLocalStorage(){
     return window.localStorage.getItem("lang");
@@ -62,20 +64,12 @@ function extrapolateLanguage(){
 
 function setCurrentLanguageToLocalStorage() {
 
+
     setTimeout(() => {
         let htmlElement = document.querySelector("html");
         window.localStorage.setItem("lang", htmlElement.lang);
-    }, 1000)
-
-}
-
-function setCurrentLanguageToHTMLTag(){
-
-    console.log("setting from wrapper...");
-    setTimeout(() => {
-        let htmlElement = document.querySelector("html");
-        htmlElement.lang = getCurrentLanguageFromLocalStorage();
-    }, 1000)
+        console.log("current Language: ", htmlElement.lang);
+    }, 3000)
 
 }
 

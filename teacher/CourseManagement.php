@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -21,7 +21,7 @@
 
             <div class="header-combo">
                 <h1 class="large-title">
-                    Course Management
+                    <text>Course Management</text>
                 </h1>
 
                 <div class="button" onclick="openCreateCourseOverlay()">

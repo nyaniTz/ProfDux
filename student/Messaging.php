@@ -25,7 +25,7 @@
             <?php include 'components/sidebar.php'; ?>
             <div class="main-container">
 
-                <h1 class="large-title">Messaging</h1>
+                <h1 class="large-title"><text>Messaging</text></h1>
                             
                 <div class="tab-container-view">
 

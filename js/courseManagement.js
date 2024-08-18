@@ -218,6 +218,7 @@ async function loadCourses(options = "id"){
                     case "all": // Refactor this to be "student subscriptions"
                         courseViewContainer.appendChild(studentEmptyView);
                         ;
+                    break;
                     case "mine": // Refactor this to be "mine -- or -- classview"
                         courseViewContainer.appendChild(myEmptyView);
                         ;
@@ -234,6 +235,8 @@ async function loadCourses(options = "id"){
     function loadCoursesUI(coursesObject, options, userID){
 
         courseViewContainer.innerHTML = "";
+
+
 
         coursesObject.map( async (course) => {
 
@@ -320,6 +323,8 @@ async function loadCourses(options = "id"){
 
         function showDeRegisterPopup(courseID, userID){
             console.log("Course has been registered, click will bring up de registration option");
+
+            // TODO: #deregister from course
         }
 
         function showRegisterPopup(courseID, userID){

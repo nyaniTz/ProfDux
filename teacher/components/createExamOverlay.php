@@ -5,7 +5,7 @@
                 <img src="../assets/icons/close.png" alt="">
             </div>
             <h1 class="pop-up-title">
-                <text>Create Exam</text>
+                <text>Create A New Exam</text>
             </h1>
         </div>
 
@@ -72,7 +72,7 @@
 
         <div class="popup-footer">
             <div type="submit" class="button create-exam-button">
-                <text>Create Exam</text>
+                <text>Create</text>
             </div>
         </div>
     </div>

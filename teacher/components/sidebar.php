@@ -16,43 +16,44 @@
     <div class="sidebar-menu">
         <a class="sidebar-link" data-id="Dashboard" href="index.php">
             <img src="../assets/icons/fi/fi-rr-border-all.svg" alt="">
-            <p>Dashboard</p>
+            <p><text>Dashboard</text></p>
         </a>
 
         <a class="sidebar-link" data-id="Course Management" href="CourseManagement.php">
             <img src="../assets/icons/fi/fi-rr-apps-add.svg" alt="">
-            <p>Course Management</p>
+            <p><text>Course Management</text></p>
         </a>
 
         <a class="sidebar-link" data-id="Exam" href="Exam.php">
             <img src="../assets/icons/fi/fi-rr-pen-circle.svg" alt="">
-            <p>Exam</p>
+            <p><text>Exam</text></p>
         </a>
 
         <a class="sidebar-link" data-id="Scheduling" href="Scheduling.php">
             <img src="../assets/icons/fi/fi-rr-time-fast.svg" alt="">
-            <p>Scheduling</p>
+            <p><text>Scheduling</text></p>
         </a>
 
         <a class="sidebar-link" data-id="Weight Assignment" href="Weights.php">
             <img src="../assets/icons/fi/fi-rr-chart-pie-alt.svg" alt="">
-            <p>Weight Assignment</p>
+            <p><text>Weight Assignment</text></p>
         </a>
 
         <a class="sidebar-link" data-id="Class Stats" href="Stats.php">
             <img src="../assets/icons/fi/fi-rr-chart-line-up.svg" alt="">
-            <p>Class Grades</p>
-        </a>
-
-        <a class="sidebar-link" data-id="Settings" href="Settings.php">
-            <img src="../assets/icons/fi/fi-rr-settings.svg" alt="">
-            <p>Settings</p>
+            <p><text>Class Grades</text></p>
         </a>
 
         <a class="sidebar-link" data-id="Messaging" href="Messaging.php">
             <img src="../assets/icons/fi/fi-rr-mailbox.svg" alt="">
-            <p>Messaging</p>
+            <p><text>Messaging</text></p>
         </a>
+
+        <a class="sidebar-link" data-id="Settings" href="Settings.php">
+            <img src="../assets/icons/fi/fi-rr-settings.svg" alt="">
+            <p><text>Settings</text></p>
+        </a>
+
     </div>
 
     <div class="gtranslate_wrapper"></div>
