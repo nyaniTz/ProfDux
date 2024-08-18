@@ -707,6 +707,7 @@ async function editLearningObjectives(id){
 
     switch(lengthOfResponse){
         case 0:
+            console.log(`There are ${ lengthOfResponse } objectives`);
             filename = await saveLearningObjectivesInDatabase(id);
             objectives = [];
             break;
@@ -729,6 +730,7 @@ async function editLearningObjectives(id){
     let addLearningObjectiveButton = document.querySelector(".add-learning-objective-button");
     let saveLearningObjectivesButton = document.querySelector(".save-learning-objectives-button");
 
+    console.log("filename: ", filename);
     console.log("objectivesObject: ", objectives);
 
     let learningObjectives = new Objectives({ objectives, filename, details });
