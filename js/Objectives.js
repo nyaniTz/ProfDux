@@ -81,7 +81,7 @@ class Objectives {
         let hierarchy = '' + ++this.currentHierarchy;
         let index = ++this.currentIndex;
 
-        const objective = { hierarchy, title: "" };
+        const objective = { hierarchy, title: ""};
         this.objectives.push(objective);
 
         let objectiveContainer = this.createObjectiveInput(objective, index);
@@ -100,7 +100,7 @@ class Objectives {
 
             try {
                 const jsonResult = await saveLearningObjectivesAsJSON(this.filename, this.objectives);
-                if(this.details.type == "new") await saveLearningObjectivesInDatabase(this.filename, this.details);
+                // if(this.details.type == "new") await saveLearningObjectivesInDatabase(this.filename, this.details);
                 console.log(jsonResult);
             }
             catch(error){
@@ -137,16 +137,16 @@ async function saveLearningObjectivesAsJSON(filename, ArrayContainingObjects){
 
 }
 
-async function saveLearningObjectivesInDatabase(filename, details){
+async function saveLearningObjectivesInDatabase(courseID){
 
     try{
+        const id = uniqueID(1);
+        const filename = `Objective-${uniqueID(2)}.json`;
 
-        let id = uniqueID(1);
-
-        let result = await AJAXCall({
+        await AJAXCall({
             phpFilePath: "../include/course/addNewObjective.php",
             rejectMessage: "adding new objective failed",
-            params: `id=${id}&&filename=${filename}&&courseID=${details.courseID}`,
+            params: `id=${id}&&filename=${filename}&&courseID=${courseID}`,
             type: "post"
         });
 

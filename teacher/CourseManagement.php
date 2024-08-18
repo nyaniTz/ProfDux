@@ -108,7 +108,11 @@
                 params,
                 type: "post"
             });
-            console.log(result)
+
+            console.log(result);
+
+            // objectives.
+            await saveLearningObjectivesInDatabase(id);
 
             loadCourses();
 

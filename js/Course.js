@@ -67,8 +67,10 @@ class Course {
     }
 
     renderEditLearningObjectivesButton(){
-        let editLearningObjectivesButton = findElement("#editLearningObjectives");
-        editLearningObjectivesButton.addEventListener('click', () => editLearningObjectives(this.id));
+        let editLearningObjectivesButton = clearEventListenersFor(findElement("#editLearningObjectives"));
+        editLearningObjectivesButton.addEventListener('click', () => {
+            editLearningObjectives(this.id);
+        });
     }
 
     renderDeleteButton(button){
@@ -687,6 +689,52 @@ class Course {
 
 }
 
+async function editLearningObjectives(id){
+
+    const filenameResponse = await AJAXCall({
+        phpFilePath: "../include/course/getLearningObjectivesFilename.php",
+        rejectMessage: "Getting Filename Failed",
+        type: "fetch",
+        params: `courseID=${id}`
+    })
+
+    const lengthOfResponse = filenameResponse.length; 
+    let filename;
+    let correctPath;
+    let objectivesObjectResponse;
+    let objectives = [];
+    let type = "";
+
+    switch(lengthOfResponse){
+            case 1: 
+                filename = filenameResponse[0].filename;
+                correctPath = "../objectives/" + filename;
+                objectivesObjectResponse = await fetch(correctPath, {cache: "reload"});
+                objectives = await objectivesObjectResponse.json();
+                type = "edit";
+                details = {
+                    type,
+                    courseID: id
+                }
+            break;
+            default:
+                console.log(`There are ${ lengthOfResponse } objectives`);
+                // new popup for deletion or more...
+            break;
+    }
+
+    let addLearningObjectiveButton = document.querySelector(".add-learning-objective-button");
+    let saveLearningObjectivesButton = document.querySelector(".save-learning-objectives-button");
+
+    console.log("objectivesObject: ", objectives);
+
+    let learningObjectives = new Objectives({ objectives, filename, details });
+    learningObjectives.renderObjectives();
+    learningObjectives.setAddNewObjectiveButton(addLearningObjectiveButton);
+    learningObjectives.setSaveLearningObjectivesButton(saveLearningObjectivesButton);
+    openPopup(".edit-learning-objectives-overlay");
+}
+
 // TODO: Get Course class lines under 500
 
 async function generateQuiz(lectureObject, refresh = true, language="english"){
@@ -966,66 +1014,4 @@ function refreshTeacherCourseOutline(){
     let mainContainer = document.querySelector(".main-container");
     let id = mainContainer.getAttribute("data-id");
     editCourseWith(id);
-}
-
-async function editLearningObjectives(id){
-
-    const filenameResponse = await AJAXCall({
-        phpFilePath: "../include/course/getLearningObjectivesFilename.php",
-        rejectMessage: "Getting Filename Failed",
-        type: "fetch",
-        params: `courseID=${id}`
-    })
-
-    const lengthOfResponse = filenameResponse.length; 
-    let filename;
-    let correctPath;
-    let objectivesObjectResponse;
-    let objectives = [];
-    let type = "";
-
-    switch(lengthOfResponse){
-        case 0:
-            filename = `Objective-${uniqueID(2)}.json`;
-            type = "new";
-            details = {
-                type,
-                courseID: id
-            }
-            break;
-        case 1:
-        case 2:    
-            filename = filenameResponse[0].filename;
-            correctPath = "../objectives/" + filename;
-            objectivesObjectResponse = await fetch(correctPath, {cache: "reload"});
-            objectives = await objectivesObjectResponse.json();
-            type = "edit";
-            details = {
-                type,
-                courseID: id
-            }
-            break;
-        default:
-            // delete objective.
-            console.log("Filename responses: ", filenameResponse);
-            throw new Error(`You have ${lengthOfResponse} objective files`);
-    }
-
-    let addLearningObjectiveButton = document.querySelector(".add-learning-objective-button");
-    let saveLearningObjectivesButton = document.querySelector(".save-learning-objectives-button");
-
-    // async function getJSONFile(filenameObject){
-    //     filename = filenameObject.filename;
-    //     correctPath = "../objectives/" + filename;
-    //     objectivesObjectResponse = await fetch(correctPath, {cache: "reload"});
-    //     objectives = await objectivesObjectResponse.json();
-    // }
-
-    console.log("objectivesObject: ", objectives);
-
-    let learningObjectives = new Objectives({ objectives, filename, details });
-    learningObjectives.renderObjectives();
-    learningObjectives.setAddNewObjectiveButton(addLearningObjectiveButton);
-    learningObjectives.setSaveLearningObjectivesButton(saveLearningObjectivesButton);
-    openPopup(".edit-learning-objectives-overlay");
 }
