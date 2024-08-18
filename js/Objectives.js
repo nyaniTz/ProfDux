@@ -139,10 +139,10 @@ async function saveLearningObjectivesAsJSON(filename, ArrayContainingObjects){
 
 async function saveLearningObjectivesInDatabase(courseID){
 
-    try{
-        const id = uniqueID(1);
-        const filename = `Objective-${uniqueID(2)}.json`;
+    const id = uniqueID(1);
+    const filename = `Objective-${uniqueID(2)}.json`;
 
+    try{
         await AJAXCall({
             phpFilePath: "../include/course/addNewObjective.php",
             rejectMessage: "adding new objective failed",
@@ -154,6 +154,8 @@ async function saveLearningObjectivesInDatabase(courseID){
         //TODO: bubbleUpError()
         console.log(error);
     }
+
+    return filename;
 
 }
 

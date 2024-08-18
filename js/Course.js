@@ -706,21 +706,30 @@ async function editLearningObjectives(id){
     let type = "";
 
     switch(lengthOfResponse){
-            case 1: 
-                filename = filenameResponse[0].filename;
-                correctPath = "../objectives/" + filename;
-                objectivesObjectResponse = await fetch(correctPath, {cache: "reload"});
-                objectives = await objectivesObjectResponse.json();
-                type = "edit";
-                details = {
-                    type,
-                    courseID: id
-                }
-            break;
-            default:
-                console.log(`There are ${ lengthOfResponse } objectives`);
-                // new popup for deletion or more...
-            break;
+        case 0:
+            filename = await saveLearningObjectivesInDatabase(id);
+        break;
+        case 1: 
+            filename = filenameResponse[0].filename;
+        break;
+    }
+
+    switch(lengthOfResponse){
+        case 0:
+        case 1: 
+            correctPath = "../objectives/" + filename;
+            objectivesObjectResponse = await fetch(correctPath, {cache: "reload"});
+            objectives = await objectivesObjectResponse.json();
+            type = "edit";
+            details = {
+                type,
+                courseID: id
+            }
+        break;
+        default:
+            console.log(`There are ${ lengthOfResponse } objectives`);
+            // new popup for deletion or more...
+        break;
     }
 
     let addLearningObjectiveButton = document.querySelector(".add-learning-objective-button");
