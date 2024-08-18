@@ -1007,7 +1007,8 @@ async function editLearningObjectives(id){
             break;
         default:
             // delete objective.
-            throw new Error("You have 2 objective files");
+            console.log("Filename responses: ", filenameResponse);
+            throw new Error(`You have ${lengthOfResponse} objective files`);
     }
 
     let addLearningObjectiveButton = document.querySelector(".add-learning-objective-button");
