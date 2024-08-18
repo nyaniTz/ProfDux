@@ -708,14 +708,8 @@ async function editLearningObjectives(id){
     switch(lengthOfResponse){
         case 0:
             filename = await saveLearningObjectivesInDatabase(id);
-        break;
-        case 1: 
-            filename = filenameResponse[0].filename;
-        break;
-    }
-
-    switch(lengthOfResponse){
-        case 0:
+            objectives = [];
+            break;
         case 1: 
             correctPath = "../objectives/" + filename;
             objectivesObjectResponse = await fetch(correctPath, {cache: "reload"});

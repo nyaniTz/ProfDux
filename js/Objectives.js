@@ -3,11 +3,10 @@ class Objectives {
     currentHierarchy = 0
     currentIndex = 0
 
-    constructor({ objectives, filename, details }){
+    constructor({ objectives, filename }){
         // this.id = objectivesObject.id;
         this.filename = filename;
         this.objectives = objectives;
-        this.details = details;
         this.currentIndex = this.objectives.length - 1;
     }
 
@@ -100,7 +99,6 @@ class Objectives {
 
             try {
                 const jsonResult = await saveLearningObjectivesAsJSON(this.filename, this.objectives);
-                // if(this.details.type == "new") await saveLearningObjectivesInDatabase(this.filename, this.details);
                 console.log(jsonResult);
             }
             catch(error){
