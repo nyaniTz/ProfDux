@@ -68,5 +68,37 @@
             </div>
         </div>
 
+        <div class="overlay deregister-course">
+            <div class="popup">
+                <div class="popup-header">
+                    <div class="close-button" onclick="closePopup('.deregister-course')">
+                        <img src="../assets/icons/close.png" alt="">
+                    </div>
+                    <h1 class="pop-up-title">
+                        <p>Deregister From Course</p>
+                    </h1> 
+                </div>
+
+                <div class="popup-body">
+
+                    <h2>-- Course Title --</h2>
+
+                    <p class="description">
+                        -- Course Description --
+                    </p>
+
+                    <p class="instructor-details">
+                        -- Instructor Details -- 
+                    </p>
+                </div>
+
+                <div class="popup-footer">
+                    <div type="submit" class="button deregister-course-button" onclick="deregisterFromCourse(this)">
+                        <p>Deregister</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </body>
 </html>

@@ -325,6 +325,13 @@ async function loadCourses(options = "id"){
             console.log("Course has been registered, click will bring up de registration option");
 
             // TODO: #deregister from course
+
+            let deregisterButton = document.querySelector(".deregister-course-button");
+            deregisterButton.setAttribute("data-courseID", courseID);
+            deregisterButton.setAttribute("data-userID", userID);
+
+            openPopup(".deregister-course");
+
         }
 
         function showRegisterPopup(courseID, userID){
@@ -381,6 +388,29 @@ function editCourseWith(id){
 
 }
 
+async function deregisterFromCourse(buttonElement){
+
+    let courseID = buttonElement.getAttribute("data-courseID");
+    let userID = buttonElement.getAttribute("data-userID");
+
+    try {
+        let result = await AJAXCall({
+            phpFilePath: "../include/course/deregisterFromCourse.php",
+            params: `courseID=${courseID}&&userID=${userID}`,
+            rejectMessage: "Error Deregistering From Course",
+            type: "post"
+        });
+
+        console.log(result);
+
+        window.location.href = "Courses.php"
+
+    }catch(error){
+        console.log(error);
+    }
+
+}
+
 async function enrollToCourse(buttonElement){
 
     let courseID = buttonElement.getAttribute("data-courseID");
@@ -388,24 +418,21 @@ async function enrollToCourse(buttonElement){
 
     let id = uniqueID(1);
 
-            try {
-                let result = await AJAXCall({
-                    phpFilePath: "../include/course/addSubscriptionToCourse.php",
-                    params: `id=${id}&&courseID=${courseID}&&userID=${userID}`,
-                    rejectMessage: "Error Subscribing To Course",
-                    type: "post"
-                });
+    try {
+        let result = await AJAXCall({
+            phpFilePath: "../include/course/addSubscriptionToCourse.php",
+            params: `id=${id}&&courseID=${courseID}&&userID=${userID}`,
+            rejectMessage: "Error Subscribing To Course",
+            type: "post"
+        });
 
-                console.log(result);
+        console.log(result);
 
-                window.location.href = "Classroom.php"
+        window.location.href = "Classroom.php"
 
-                //TODO: close popup
-                //TODO: refresh container
-
-            }catch(error){
-                console.log(error);
-            }
+    }catch(error){
+        console.log(error);
+    }
 
 }
 

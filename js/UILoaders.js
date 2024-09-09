@@ -1,40 +1,18 @@
-async function loadCoursesGeneric(options = "id", eventListener){
+async function loadCoursesGeneric(options = "id", eventListener, metadata){
+
+    let emptyMessage = null;
+
+    if(metadata) emptyMessage = metadata.emptyMessage;
 
     let courseViewContainer = document.querySelector(".course-view-container");
-    let loader = courseViewContainer.querySelector(".course-view-container-loader");
 
-    let noCoursesYetText = createLocalizedTextElement("No courses yet");
-    let createCourseText = createLocalizedTextElement("Create Course");
-    let errorText = createLocalizedTextElement("Something Went Wrong");
-
+    let noCoursesYetText = createLocalizedTextElement(emptyMessage ?? "No courses yet");
     let emptyView = createElement("div", "container-message");
-    let largeMessage = createElement("div", "large-message");
-    largeMessage.appendChild(noCoursesYetText);
+    emptyView.append(noCoursesYetText);
 
-    // let createCourseButton = createElement("div", "button");
-    // createCourseButton.appendChild(createCourseText);
-    // createCourseButton.addEventListener("click", () => openCreateCourseOverlay())
-
-    emptyView.appendChild(largeMessage);
-    // emptyView.appendChild(createCourseButton);
-
+    let errorText = createLocalizedTextElement("Something Went Wrong");
     let errorView = createElement("div", "container-message");
-    largeMessage.innerHTML = "";
-    largeMessage.appendChild(errorText);
-    errorView.appendChild(largeMessage);
-
-    /* STUDENT VIEW */
-    let studentEmptyView = createElement("div", "container-message");
-    let NoCoursesYet = createLocalizedTextElement("No Courses Yet");
-    let studentlargeMessage = createElement("div", "large-message");
-    studentlargeMessage.appendChild(NoCoursesYet);
-    studentEmptyView.appendChild(studentlargeMessage);
-
-    let myEmptyView = createElement("div", "container-message");
-    let NoSelectedCoursesYet = createLocalizedTextElement("You haven't chosen any courses yet");
-    let myLargeMessage = createElement("div", "large-message");
-    myLargeMessage.appendChild(NoSelectedCoursesYet);
-    myEmptyView.appendChild(myLargeMessage);
+    errorView.appendChild(errorText);
 
     return new Promise(async (resolve, reject) => {
 
@@ -65,30 +43,15 @@ async function loadCoursesGeneric(options = "id", eventListener){
             type: "fetch"
         });
 
-        setTimeout(() => {
-
-            if(result && result.length > 0) {
-                loadCoursesUI(result, userID, eventListener);
-                resolve();
-            }
-            else {
-
-                //TODO: This part might cause bugs in future versions
-                courseViewContainer.innerHTML = "";
-
-                switch(options){
-                    case "id":  // Refactor this to be "teacher"
-                        courseViewContainer.appendChild(emptyView);
-                    break;
-                    case "all": // Refactor this to be "student subscriptions"
-                        courseViewContainer.appendChild(studentEmptyView);
-                        ;
-                    case "mine": // Refactor this to be "mine -- or -- classview"
-                        courseViewContainer.appendChild(myEmptyView);
-                        ;
-                }
-            }
-        }, 2000);
+        if(result && result.length > 0) {
+            loadCoursesUI(result, userID, eventListener);
+            resolve();
+        }
+        else {
+            courseViewContainer.innerHTML = "";
+            courseViewContainer.appendChild(emptyView);
+        }
+        
     }
     catch(error){
 

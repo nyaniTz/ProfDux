@@ -120,6 +120,8 @@ class Weights {
 
         const weightsOuterContainer = document.querySelector(".weights-outer-container");
     
+        if(this.weightsArray.length > 0 ) weightsOuterContainer.innerHTML = "";
+
         this.weightsArray.forEach( course => {
 
             const { lessonPlanContainer, lessonLeftPane, lessonRightPane, saveButton, courseID } = this.createLessonPlanner(course);

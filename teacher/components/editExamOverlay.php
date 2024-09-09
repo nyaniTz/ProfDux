@@ -9,8 +9,10 @@
     </div>
 </div>
 
-<div class="grid-container exam-grid-container">
-
+<div class="grid-container exam-grid-container view">
+    <div class="empty-view">
+        There are no exams yet.
+    </div>
 </div>
 
 <div class="overlay edit-assessment-overlay">

@@ -19,7 +19,7 @@
 *,
 *::before,
 *::after {
-    font-family: Inter;
+    font-family: Inter, Avenir Next;
     margin: 0 0;
     padding: 0 0;
     box-sizing: border-box;
@@ -359,4 +359,24 @@ a {
 .auto-two-column-grid {
     display: grid;
     grid-template-columns: auto 1fr;
+}
+
+.empty-view {
+    display: grid;
+    border: 2px solid var(--medium-gray);
+    border-radius: 5px;
+    padding: 13px;
+    grid-gap: 20px;
+    color: var(--medium-gray);
+    height: 100%;
+    place-content: center;
+    grid-template-columns: 1fr;
+    text-align: center;
+    box-sizing: border-box;
+    grid-column: 1/-1;
+    grid-row: 1/-1;
+}
+
+.view:has(.empty-view){
+    height: 100%;
 }

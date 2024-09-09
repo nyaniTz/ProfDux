@@ -13,9 +13,15 @@ class TakeExamView{
 
         await pointer.getExamRows();
 
+        const emptyView = document.createElement("div");
+        emptyView.className = "empty-view";
+        emptyView.textContent = "There are no exams";
+        // emptyView.append(createLocalizedTextElement("There are no exams"))
+
         pointer.examsListContainer.innerHTML = "";
 
-        
+        if(pointer.examsObject.length <= 0) pointer.examsListContainer.append(emptyView);
+
         pointer.examsObject.forEach( rowObject => {
     
             const metadata = {

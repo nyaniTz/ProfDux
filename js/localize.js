@@ -119,3 +119,13 @@ function createLocalizedTextElement(text){
 
     return textElement;
 }
+
+/*
+
+NEW
+
+ >> There are no grades yet.
+ >> There are no lectures / tests / exams to creates weights for yet.
+ >> There are no lectures to create schedules for.
+ >> No Course To Show Grades For Yet.
+*/

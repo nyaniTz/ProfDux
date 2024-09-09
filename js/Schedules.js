@@ -10,6 +10,8 @@ class Schedules {
 
         // const entries = Object.entries(this.schedulesArray);
 
+        if(this.schedulesArray.length > 0) schedulesOuterContainer.innerHTML = "";
+
         this.schedulesArray.forEach( course => {
 
             const lessonPlanContainer = document.createElement("div");

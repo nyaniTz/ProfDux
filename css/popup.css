@@ -41,12 +41,18 @@
 }
 
 .back-arrow {
-    height: 50px;
+    height: 40px;
+    width: 40px;
     margin-bottom: 50px;
+    border-radius: 50%;
+    background-color: white;
+    border: 1.3px solid var(--accent);
+    display: grid;
+    place-items: center;
 }
 
 .back-arrow img {
-    height: inherit;
+    width: 30px;
 }
 
 .pop-up-title{

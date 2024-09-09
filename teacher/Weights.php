@@ -20,7 +20,10 @@
             <?php include 'components/sidebar.php'; ?>
             <div class="main-container">
                 <h1><text>Weights</text></h1>
-                <div class="weights-outer-container">
+                <div class="weights-outer-container view">
+                    <div class="empty-view">
+                    There are no lectures / tests / exams to creates weights for yet.
+                    </div>
                 </div>
             </div>
         </div>

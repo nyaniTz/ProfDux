@@ -22,8 +22,10 @@
 
                 <h1 class="large-title">Course Scheduling</h1>
                 
-                <div class="schedules-outer-container">
-                    
+                <div class="schedules-outer-container view">
+                    <div class="empty-view">
+                        There are no lectures to create schedules for.
+                    </div>
                 </div>
             </div>
         </div>

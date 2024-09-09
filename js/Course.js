@@ -714,7 +714,14 @@ async function editLearningObjectives(id){
         case 1: 
             filename = filenameResponse[0].filename;
             correctPath = "../objectives/" + filename;
-            objectivesObjectResponse = await fetch(correctPath, {cache: "reload"});
+            objectivesObjectResponse
+            
+            try {
+                objectivesObjectResponse = await fetch(correctPath, {cache: "reload"});
+            }catch(error){
+                saveLearningObjectivesAsJSON(filename, []);
+            }
+
             objectives = await objectivesObjectResponse.json();
             type = "edit";
             details = {

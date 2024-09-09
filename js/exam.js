@@ -101,7 +101,7 @@ class ExamsView{
 
         await pointer.getExamRows();
 
-        pointer.examsListContainer.innerHTML = "";
+        if(pointer.examsObject.length > 0) pointer.examsListContainer.innerHTML = "";
 
         pointer.examsObject.forEach( rowObject => {
             let row = pointer.createExamRow(rowObject);

@@ -8,8 +8,8 @@
     <page data-id="Exam"></page>
 
     <?php include '../include/teacherImports.php'; ?>
-    <script src="../js/UILoaders.js?2"></script>
-    <script src="../js/Exam.js?2"></script>
+    <script src="../js/UILoaders.js?3"></script>
+    <script src="../js/Exam.js?3"></script>
     <script src="../js/BatchGenerator.js?1"></script>
 
 </head>
@@ -56,7 +56,7 @@
     <script>
 
         ( async () => {
-            await loadCoursesGeneric("id", editExam);
+            await loadCoursesGeneric("id", editExam, { emptyMessage: "No Courses To Create Exams For Yet." });
         })();
 
     </script>

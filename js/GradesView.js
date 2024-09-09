@@ -8,6 +8,8 @@ class GradesView {
 
         const gradesOuterContainer = document.querySelector(".personal-grades-outer-container");
     
+        if(this.gradesArray.quizGrades.length > 0) gradesOuterContainer.innerHTML = "";
+
         this.gradesArray.quizGrades.forEach( course => {
 
             console.log("here");

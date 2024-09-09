@@ -18,8 +18,10 @@
             <div class="main-container">
                 <h1 class="large-title">Grades</h1>
 
-                <div class="personal-grades-outer-container">
-
+                <div class="personal-grades-outer-container view">
+                    <div class="empty-view">
+                        There are no grades yet.
+                    </div>
                 </div>
             </div>
         </div>
