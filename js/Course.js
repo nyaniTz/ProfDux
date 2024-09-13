@@ -715,11 +715,7 @@ async function editLearningObjectives(id){
 
     correctPath = "../objectives/" + filename;
     
-    try {
-        objectivesObjectResponse = await fetch(correctPath, {cache: "reload"});
-    }catch(error){
-        console.log(error);
-    }
+    objectivesObjectResponse = await fetch(correctPath, {cache: "reload"});
 
     objectives = await objectivesObjectResponse.json();
     type = "edit";
