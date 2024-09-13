@@ -27,13 +27,16 @@ async function findAndFixMissingObjectiveFiles(){
             .then((responseJson) => {
             // Do something with the response
             })
-            .catch((error) => {
+            .catch( async(error) => {
                 console.log(error)
+
+                await saveLearningObjectivesAsJSON(filename, []);
+
                 errors.push({
                     ...fileObject
                 })
         });
     }
-    
+
     await saveLearningObjectivesAsJSON(`ObjectiveErrors-${uniqueID(2)}`, errors);
 }
