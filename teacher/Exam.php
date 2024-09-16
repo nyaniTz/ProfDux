@@ -9,7 +9,7 @@
 
     <?php include '../include/teacherImports.php'; ?>
     <script src="../js/UILoaders.js?3"></script>
-    <script src="../js/Exam.js?3"></script>
+    <script src="../js/exam.js?4"></script>
     <script src="../js/BatchGenerator.js?1"></script>
 
 </head>
