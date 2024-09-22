@@ -740,11 +740,13 @@ async function editLearningObjectives(id){
 
 // TODO: Get Course class lines under 500
 
-async function generateQuiz(lectureObject, refresh = true, language="english"){
+async function generateQuiz(lectureObject, refresh = true){
     let loader = loadLoader("Generating Quiz");
 
+    console.log("lecture data for quiz generation: ", lectureObject);
+
     const languages = ["english", "turkish"];
-    const educationEnvironment = "college students";
+    const educationEnvironment = "university students";
     const types = ["multiple choice questions", "fill in the blanks", "true and false"];
     const levels = ["easy", "medium", "hard", "difficult", "extremely difficult"];
 
@@ -781,7 +783,6 @@ async function generateQuiz(lectureObject, refresh = true, language="english"){
     }
 
     console.log("quizQuestions: ", quizQuestions);
-
 
     let filename = `Quiz-${uniqueID(2)}.json`;
     saveAssessmentAsJSON(filename, quizQuestions,"quiz","generated");
