@@ -6,4 +6,3 @@
 
         return filemtime($file_url);
     }
-?>

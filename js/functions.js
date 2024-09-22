@@ -724,6 +724,8 @@ async function generateQuestion(generateQuestionObject, amount){
         topics
     } = generateQuestionObject;
 
+    console.log("Given question object: ", generateQuestionObject )
+
     let query = 
     `create for me in valid json format using ISO encoding, ${amount} questions with the keywords 'questions' in the ${languages.map( language => `${language}`).join("and ")} as well as their answers 
     in the ${languages.map( language => `${language}`).join("and ")} with those exact key names in the topics of ${topics} 
