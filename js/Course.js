@@ -738,13 +738,13 @@ async function editLearningObjectives(id){
     openPopup(".edit-learning-objectives-overlay");
 }
 
-// TODO: Get Course class lines under 500
-
-async function generateQuiz(lectureObject, refresh = true, language="english"){
+async function generateQuiz(lectureObject, refresh = true){
     let loader = loadLoader("Generating Quiz");
 
+    console.log("geneating quiz line: ");
+
     const languages = ["english", "turkish"];
-    const educationEnvironment = "college students";
+    const educationEnvironment = "university students";
     const types = ["multiple choice questions", "fill in the blanks", "true and false"];
     const levels = ["easy", "medium", "hard", "difficult", "extremely difficult"];
 
