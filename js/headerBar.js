@@ -1,4 +1,5 @@
 let globalUserDetails;
+let DEMOACCOUNT = false;
 
 ( async () => {
 
@@ -6,6 +7,10 @@ let globalUserDetails;
     globalUserDetails = result;
     localizeTextElements();
     setHeaderInfo(result);
+
+    if(result.email == "220000@profdux.aiiot.website"){
+        DEMOACCOUNT = true;
+    }
 
 })();
 
