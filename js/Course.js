@@ -14,17 +14,6 @@ class Course {
         });
     }
 
-    eraseForExcelUpload(lectures){
-        this.lectureIndex = 0;
-        this.lectureUpdates,
-        this.newLectures,
-        this.newResources = {}
-        this.lectures = lectures;
-        
-        this.renderLectureSection("excel")
-        this.forceNewCourseDataAsNew()
-    }
-
     constructor(courseObject){
         
         let {
@@ -125,10 +114,6 @@ class Course {
                switch(from){
                 case "object": 
                     generateQuiz({ courseID: this.id, ...lecture });
-                    break;
-                case "excel": 
-                    generateQuiz({ courseID: this.id, ...lecture }, false);
-                    this.save();
                     break;
                }
             });
@@ -483,6 +468,10 @@ class Course {
         generatePDFButton.className = "generate-pdf-button";
         generatePDFButton.innerHTML = `<img src="../assets/icons/fi/arrows-rotate.svg" alt="">`;
 
+        let generateVideoButton = document.createElement("div");
+        generateVideoButton.className = "generate-video-button";
+        generateVideoButton.innerHTML = `<img src="../assets/icons/fi/arrows-rotate.svg" alt="">`;
+
         deleteButton.addEventListener("click", () => {
 
             switch(type){
@@ -508,6 +497,7 @@ class Course {
         inputElementContainer.appendChild(makeShiftInputWrapper);
         inputElementContainer.appendChild(this.createAttachButton(id));
         if (title.length > 0 && DEMOACCOUNT) inputElementContainer.appendChild(generatePDFButton);
+        inputElementContainer.appendChild(generateVideoButton);
         inputElementContainer.appendChild(deleteButton);
 
         return { inputElementContainer, makeShiftInputWrapper };

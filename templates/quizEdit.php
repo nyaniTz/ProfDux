@@ -124,7 +124,7 @@
             </div>
 
             <div class="popup-footer">
-                <div class="button" onclick="generateQuiz('lsibo3tt')">Generate Quiz</div>
+                <div class="button" onclick="generateQuiz('lsibo3tt')">Generate Quiz j</div>
             </div>
 
         </div>
